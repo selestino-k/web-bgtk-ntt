@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link"
-import { Mail, MapPin } from "lucide-react"
+import { Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import { scrollToElement } from "@/utils/scroll";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-primary w-full dark:bg-gray-950/80">
+    <footer className="bg-primary w-full dark:bg-gray-950/80">
       <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16 max-w-7xl font-inter">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4 place-items-center md:place-items-start">
    
@@ -33,28 +34,29 @@ export function Footer() {
        
             <div className="space-y-4 text-center md:text-left">
                 <h3 className="text-lg font-semibold text-white">Tag Berita</h3>
-                <ul className="space-y-2 text-sm text-white">
-                    <li>
-                        <Link href="/pinjam" className="hover:underline cursor-pointer">
-                        Pinjam Sekarang
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/daftar-alat" className="hover:underline cursor-pointer">
-                        Inventaris Lab
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#tentang" className="hover:underline cursor-pointer" onClick={() => scrollToElement('tentang')}>
-                        Tentang
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                        Statistik
-                        </Link>
-                    </li>
-                </ul>
+                    <div className="flex w-full flex-wrap gap-2 h-25">
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold font-geist text-lg">Kabar Kementerian</Link>                        
+                        </Badge>
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold text-base">Internasional</Link>                        
+                        </Badge>    
+                        <Badge variant="secondary" asChild className="px-2 py-1"> 
+                            <Link href="/" className="font-semibold text-base">Teknologi</Link>
+                        </Badge>
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold text-base">Humas</Link>
+                        </Badge>
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold text-base">Rumah Pendidikan</Link>
+                        </Badge>
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold text-base">Pendidikan</Link>
+                        </Badge>
+                        <Badge variant="secondary" asChild className="px-2 py-1">
+                            <Link href="/" className="font-semibold text-base">Kabar Balai</Link>
+                        </Badge>
+                    </div>
             </div>
 
             <div className="space-y-4 text-center md:text-left">
@@ -62,22 +64,37 @@ export function Footer() {
                 <ul className="space-y-2 text-sm text-white">
                     <li>
                         <Link href="/pinjam" className="hover:underline cursor-pointer">
-                        Pinjam Sekarang
+                        Sistem Verifikasi Ijazah secara Elektronik (SIVIL)
                         </Link>
                     </li>
                     <li>
                         <Link href="/daftar-alat" className="hover:underline cursor-pointer">
-                        Inventaris Lab
+                        Penomoran Ijazah Nasional (PIN)
                         </Link>
                     </li>
                     <li>
                         <Link href="#tentang" className="hover:underline cursor-pointer" onClick={() => scrollToElement('tentang')}>
-                        Tentang
+                        Pangkalan Data Pendidikan Tinggi (PDDikti)
                         </Link>
                     </li>
                     <li>
                         <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                        Statistik
+                        Kementerian Riset dan Teknologi
+                        </Link>
+                    </li>
+                      <li>
+                        <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                        Kementerian Pendidikan Dasar dan Menengah Republik Indonesia
+                        </Link>
+                    </li>
+                      <li>
+                        <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                        Sistem Akreditasi Perguruan Tinggi Online
+                        </Link>
+                    </li>
+                      <li>
+                        <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                        Sinta (Science and Technology Index)
                         </Link>
                     </li>
                 </ul>
@@ -88,28 +105,44 @@ export function Footer() {
                 <ul className="space-y-2 text-sm text-white">
                 <li>
                     <Link href="/pinjam" className="hover:underline cursor-pointer">
-                    Pinjam Sekarang
+                    Rapat Presentasi Laman Website BGTK NTT
                     </Link>
                 </li>
                 <li>
                     <Link href="/daftar-alat" className="hover:underline cursor-pointer">
-                    Inventaris Lab
+                    Workshop Penyusunan Dokumen Prosedur Operasional Standar (POS)
                     </Link>
                 </li>
                 <li>
                     <Link href="#tentang" className="hover:underline cursor-pointer" onClick={() => scrollToElement('tentang')}>
-                    Tentang
+                    Rapat Evaluasi Pelaksanaan Anggaran Tahun 2024
                     </Link>
                 </li>
                 <li>
                     <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                    Statistik
+                    Sosialisasi ISK dan IPEPA oleh BAN-PT
+                    </Link>
+                </li>
+                <li>
+                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                    Rapat Pleno PAK
+                    </Link>
+                </li>
+                <li>
+                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                    Rapat Tim EKA
+                    </Link>
+                </li>
+                <li>
+                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                    Rapat Evaluasi Tim Penilai Angka Kredit (PAK)
                     </Link>
                 </li>
                 </ul>
             </div>
+
         </div>
-        <div className="md:hidden mt-8 pt-8  items-center text-center text-sm text-white">
+        <div className="md:hidden mt-8 pt-8  justify-center items-center text-center text-sm text-white">
              <Image
                 src="/logo/ramah.svg"
                 alt="Kemendikdasmen Ramah"
@@ -122,12 +155,24 @@ export function Footer() {
                 width={120}
                 height={40}
             />
-            </div>
-            <div className="mt-8 pt-8  text-center text-sm text-white">
-                <p>© {new Date().getFullYear()} BGTK NTT</p>
-            </div>
-
         </div>
-    </footer>
-  )
+        
+        <div className="mt-8 pt-8  text-start text-sm text-white flex items-end justify-between space-between">
+            <div>
+                 <p>© {new Date().getFullYear()} BGTK NTT</p>
+
+            </div>
+            <div className="ml-4 justify-center flex">
+                 <Facebook className="inline-block mr-2 hover:cursor-pointer" />
+                 <Twitter className="inline-block mr-2 hover:cursor-pointer" />
+                 <Instagram className="inline-block mr-2 hover:cursor-pointer" />
+                 <Youtube className="inline-block mr-2 hover:cursor-pointer" />  
+            </div>
+        </div>
+
+    </div>
+</footer>
+  
+
+  );
 }

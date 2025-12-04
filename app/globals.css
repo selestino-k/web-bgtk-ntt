@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-inter: Inter, sans-serif;
   --font-geist: Geist, sans-serif;
+  --font-redhat: Red Hat Display, sans-serif;
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -50,6 +51,7 @@
 :root {
   --font-inter: var(--font-inter);
   --font-geist: var(--font-geist-sans );
+  --font-redhat: var(--font-redhat-display);
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
