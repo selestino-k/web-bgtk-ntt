@@ -11,6 +11,8 @@ const config: Config = {
       fontFamily: {
         inter: "var(--font-inter)",
         geist: "var(--font-geist-mono)",
+        google: "var(--font-google)",
+        redhat: "var(--font-redhat-display)",
       },
     },
   },

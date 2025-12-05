@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 export function Footer() {
   return (
     <footer className="bg-primary w-full dark:bg-gray-950/80">
-      <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16 max-w-7xl font-inter">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 place-items-center md:place-items-start">
+      <div className="container mx-auto px-4 py-12 md:px-6 max-w-7xl font-inter">
+        <div className="grid sm:grid-cols-1 gap-8 md:grid-cols-4 place-items-center md:place-items-start">
    
             <div className="space-y-4 text-center md:text-left">
                 <h2 className="text-lg font-bold text-white font-inter">Hubungi Kami</h2>
@@ -162,11 +162,11 @@ export function Footer() {
                  <p>© {new Date().getFullYear()} BGTK NTT</p>
 
             </div>
-            <div className="ml-4 justify-center flex">
-                 <Facebook className="inline-block mr-2 hover:cursor-pointer" />
-                 <Twitter className="inline-block mr-2 hover:cursor-pointer" />
-                 <Instagram className="inline-block mr-2 hover:cursor-pointer" />
-                 <Youtube className="inline-block mr-2 hover:cursor-pointer" />  
+            <div className="ml-4 justify-center flex gap-4">
+                 <Facebook className="inline-block hover:cursor-pointer" />
+                 <Twitter className="inline-block hover:cursor-pointer" />
+                 <Instagram className="inline-block hover:cursor-pointer" />
+                 <Youtube className="inline-block hover:cursor-pointer" />  
             </div>
         </div>
 

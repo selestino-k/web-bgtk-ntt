@@ -26,7 +26,7 @@ export const features = [
 ];
  export default function ProgramCardList() {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 w-full mx-auto mt-10 items-center sm:justify-center">
+        <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-screen mx-auto mt-10 items-center">
         {features.map((feature, index) => (
             <FeatureCard
             key={index}

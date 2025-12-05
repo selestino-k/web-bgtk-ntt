@@ -8,21 +8,23 @@ export const metadata: Metadata = {
   description: "Website Resmi Balai GTK Provinsi NTT",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full dark:bg-gray-900">
-      <body className="m-0 p-0 w-full">
-        <main className="w-full scroll-smooth">
-          <NavBar />
-          <div className="flex w-full min-h-screen items-center justify-center">
+    
+    
+    <html lang="en">
+      <body>
+        <main className="gap-3 w-full scroll-smooth">
+          <div className="flex w-full min-h-screen items-center justify-items-center">
             {children}
           </div>
         </main>
-        <Footer />
       </body>
     </html>
   );
