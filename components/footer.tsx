@@ -14,7 +14,7 @@ export function Footer() {
             <div className="space-y-4 text-center md:text-left">
                 <h2 className="text-lg font-bold text-white font-inter">Hubungi Kami</h2>
                     <div className="space-y-3 text-sm text-white">
-                    <div className="flex items-start md:text-left">
+                    <div className="flex items-start sm:text-left">
                         <MapPin className="mr-2 h-5 w-5 shrink-0 text-secondary dark:text-primary" />
                         <Link href="https://maps.app.goo.gl/fR76vqUh6ESDNZ8Z6" target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
                         <span>
@@ -142,15 +142,15 @@ export function Footer() {
             </div>
 
         </div>
-        <div className="md:hidden mt-8 pt-8  justify-center items-center text-center text-sm text-white">
+        <div className="md  :hidden mt-8 pt-8  justify-items-center text-sm text-white grid gap-4 md:flex md:items-center md:justify-between">
              <Image
-                src="/logo/ramah.svg"
+                src="/logo/ramah-white.png"
                 alt="Kemendikdasmen Ramah"
                 width={120}
                 height={40}
                 />
             <Image
-                src="/logo/pendidikan-bermutu.svg"
+                src="/logo/pend-white.png"
                 alt="Pendidikan Bermutu"
                 width={120}
                 height={40}

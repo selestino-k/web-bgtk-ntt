@@ -13,10 +13,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
-export function NewsCarousel() {
+export default function NewsCarousel() {
   return (
-    <Carousel className="max-w-screen mt-5 sm:max-w-2/3xl mx-auto">
-      <CarouselContent className="flex -ml-1">
+    <Carousel className="md:max-w-screen sm:max-w-screen mt-5 mx-auto">
+      <CarouselContent className="flex gap-4">
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index} className="-pl-1 sm:md:basis-1/2 lg:basis-1/4 mb-4">
             <div className="p-1">
@@ -32,7 +32,7 @@ export function NewsCarousel() {
                             src="/images/news/fotbar-bgtk.jpg" 
                             alt="Foto Bareng BGTK" 
                             fill 
-                            className="rounded-t-lg object-cover" 
+                            className="object-cover mb-20 rounded-t-lg" 
                         />
                     </div>
 
@@ -64,7 +64,7 @@ export function NewsCarousel() {
         ))}
       </CarouselContent>
          
-      <CarouselPrevious />
+      <CarouselPrevious/>
       <CarouselNext />
     </Carousel>
   )

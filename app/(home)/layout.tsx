@@ -26,7 +26,7 @@ export default async function HomeLayout({
           >
         <main className="gap-3 w-full scroll-smooth">
         <NavBar/>
-            <div className="flex w-full min-h-screen items-center justify-center">
+            <div className="flex w-full xs:w-xs min-h-screen items-center justify-center overflow-hidden">
                 {children}
             </div>
         <Footer/>
