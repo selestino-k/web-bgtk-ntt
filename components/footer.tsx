@@ -18,7 +18,7 @@ export function Footer() {
                         <MapPin className="mr-2 h-5 w-5 shrink-0 text-secondary dark:text-primary" />
                         <Link href="https://maps.app.goo.gl/fR76vqUh6ESDNZ8Z6" target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
                         <span>
-                        Jl. Perintis Kemerdekaan I, Kayu Putih
+                        Jl. Perintis Kemerdekaan I, Kayu Putih kupang
                         <br />
                         Kec. Oebobo, Kota Kupang, Nusa Tenggara Timur
                         </span>
