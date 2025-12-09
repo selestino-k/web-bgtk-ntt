@@ -43,6 +43,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --xs: dvh 480px;
+  --sm: dvh 640px;
+  --md: dvh 768px;
+  --lg: dvh 1024px;
+
 }
 
 :root {

@@ -16,7 +16,7 @@ export function Footer() {
                     <div className="space-y-3 text-sm text-white">
                     <div className="flex items-start sm:text-left">
                         <MapPin className="mr-2 h-5 w-5 shrink-0 text-secondary dark:text-primary" />
-                        <Link href="https://maps.app.goo.gl/fR76vqUh6ESDNZ8Z6" target="_blank" rel="noopener noreferrer" className="hover:underline cursor-pointer">
+                        <Link href="https://maps.app.goo.gl/fR76vqUh6ESDNZ8Z6" target="_blank" rel="noopener noreferrer" className="text-left hover:underline cursor-pointer">
                         <span>
                         Jl. Perintis Kemerdekaan I, Kayu Putih
                         <br />

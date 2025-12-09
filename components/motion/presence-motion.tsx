@@ -10,7 +10,7 @@ interface PrescenceMotionProps {
 export function PrescenceMotion({ children }: PrescenceMotionProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}    
+      initial={{ opacity: 0, y: 20 }}     
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ 
@@ -20,8 +20,8 @@ export function PrescenceMotion({ children }: PrescenceMotionProps) {
       }}
       viewport={{ 
         once: false,
-        amount: 0.3,
-        margin: "0px 0px -100px 0px"
+        amount: 0.1, // Start animation when only 10% is visible
+        margin: "0px" // Keep the margin neutral
       }} 
     >
       {children}

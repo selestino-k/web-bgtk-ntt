@@ -10,7 +10,7 @@ interface FeatureCardProps {
 export function FeatureCard({imageurl }: FeatureCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -5 }}
+      whileHover={{ scale: 1.08 }}
       className="flex flex-col items-center p-6 rounded-lg backdrop-blur-sm text-center shadow-lg hover:shadow-xl/20 transition-shadow duration-300 h-full border border-primary/30 dark:border-gray-700">
         <Image src={imageurl} alt="program" width={200} height={100} />
     </motion.div>
