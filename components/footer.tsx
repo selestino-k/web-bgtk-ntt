@@ -5,15 +5,15 @@ import { scrollToElement } from "@/utils/scroll";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
-export function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-primary w-full dark:bg-gray-950/80">
       <div className="container mx-auto px-4 py-12 md:px-6 max-w-7xl font-inter">
-        <div className="grid sm:grid-cols-1 gap-8 md:grid-cols-4 place-items-center md:place-items-start">
+        <div className="grid sm:grid-cols-1 gap-8 md:grid-cols-3 place-items-center md:place-items-start">
    
             <div className="space-y-4 text-center md:text-left">
-                <h2 className="text-lg font-bold text-white font-inter">Hubungi Kami</h2>
-                    <div className="space-y-3 text-sm text-white">
+                <h2 className="lg:text-lg text-sm font-bold text-white font-inter">Hubungi Kami</h2>
+                    <div className="space-y-3 text-xs lg:text-sm text-white">
                     <div className="flex items-start sm:text-left">
                         <MapPin className="mr-2 h-5 w-5 shrink-0 text-secondary dark:text-primary" />
                         <Link href="https://maps.app.goo.gl/fR76vqUh6ESDNZ8Z6" target="_blank" rel="noopener noreferrer" className="text-left hover:underline cursor-pointer">
@@ -33,35 +33,35 @@ export function Footer() {
 
        
             <div className="space-y-4 text-center md:text-left">
-                <h3 className="text-lg font-semibold text-white">Tag Berita</h3>
-                    <div className="flex w-full flex-wrap gap-2 h-25">
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold font-geist text-lg">Kabar Kementerian</Link>                        
+                <h3 className="lg:text-lg text-sm font-semibold text-white">Tag Berita</h3>
+                    <div className="flex w-full flex-wrap gap-2 h-20">
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold font-geist lg:text-xs text-xs">Kabar Kementerian</Link>                        
                         </Badge>
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold text-base">Internasional</Link>                        
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Internasional</Link>                        
                         </Badge>    
-                        <Badge variant="secondary" asChild className="px-2 py-1"> 
-                            <Link href="/" className="font-semibold text-base">Teknologi</Link>
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2"> 
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Teknologi</Link>
                         </Badge>
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold text-base">Humas</Link>
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Humas</Link>
                         </Badge>
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold text-base">Rumah Pendidikan</Link>
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Rumah Pendidikan</Link>
                         </Badge>
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold text-base">Pendidikan</Link>
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Pendidikan</Link>
                         </Badge>
-                        <Badge variant="secondary" asChild className="px-2 py-1">
-                            <Link href="/" className="font-semibold text-base">Kabar Balai</Link>
+                        <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                            <Link href="/" className="font-semibold lg:text-xs text-xs">Kabar Balai</Link>
                         </Badge>
                     </div>
             </div>
 
             <div className="space-y-4 text-center md:text-left">
-                <h3 className="text-lg font-semibold text-white">Tautan Terkait</h3>
-                <ul className="space-y-2 text-sm text-white">
+                <h3 className="lg:text-lg text-sm font-semibold text-white">Tautan Terkait</h3>
+                <ul className="space-y-2 text-xs lg:text-sm text-white">
                     <li>
                         <Link href="/pinjam" className="hover:underline cursor-pointer">
                         Sistem Verifikasi Ijazah secara Elektronik (SIVIL)
@@ -97,47 +97,6 @@ export function Footer() {
                         Sinta (Science and Technology Index)
                         </Link>
                     </li>
-                </ul>
-            </div>
-
-            <div className="space-y-4 text-center md:text-left">
-                <h3 className="text-lg font-semibold text-white">Agenda</h3>
-                <ul className="space-y-2 text-sm text-white">
-                <li>
-                    <Link href="/pinjam" className="hover:underline cursor-pointer">
-                    Rapat Presentasi Laman Website BGTK NTT
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/daftar-alat" className="hover:underline cursor-pointer">
-                    Workshop Penyusunan Dokumen Prosedur Operasional Standar (POS)
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#tentang" className="hover:underline cursor-pointer" onClick={() => scrollToElement('tentang')}>
-                    Rapat Evaluasi Pelaksanaan Anggaran Tahun 2024
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                    Sosialisasi ISK dan IPEPA oleh BAN-PT
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                    Rapat Pleno PAK
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                    Rapat Tim EKA
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                    Rapat Evaluasi Tim Penilai Angka Kredit (PAK)
-                    </Link>
-                </li>
                 </ul>
             </div>
 

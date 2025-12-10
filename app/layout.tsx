@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,16 +34,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
-    
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <main className="gap-3 w-full">
-          <div className="flex w-full min-h-screen items-center justify-items-center">
-            {children}
-          </div>
-        </main>
-      </body>
+     
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <main className="gap-3 w-full">
+            <div className="flex w-full min-h-screen">
+              {children}
+            </div>
+          </main>
+        </body>
     </html>
+
   );
 }

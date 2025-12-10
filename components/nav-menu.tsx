@@ -18,125 +18,128 @@ export default function NavMenu() {
 
   return (
     <NavigationMenu viewport={isMobile} className="text-black">
-      <NavigationMenuList className="flex-wrap font-geist">
+      <NavigationMenuList className="flex-wrap font-geist gap-6">
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary">Profil</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Profil</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md ">
-                  <Link href="#">Profil Lembaga</Link>
+                  <Link href="/profil/sambutan-kata" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Sambutan Kata</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md ">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Profil Lembaga</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Sejarah</Link>
+                  <Link href="/profil/sejarah" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Sejarah</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Struktur Organisasi</Link>
+                  <Link href="/profil/struktur-organisasi" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Struktur Organisasi</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Sarana dan Prasana</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Sarana dan Prasana</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Wilayah Kerja</Link>
+                  <Link href="/profil/tupoksi" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Tugas Pokok dan Fungsi</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Visi Misi</Link>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg">ULT</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Permintaan Informasi</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Pengaduan</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">SP4N Lapor</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">WBS Itjen</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Aduan Itjen</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">SIPPN</Link>
+                  <Link href="/profil/visi-misi" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Visi Misi</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg">SAKIP</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">ULT</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Rencana Strategis</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Permintaan Informasi</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Laporan Kinerja</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Pengaduan</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Perjanjian Kinerja</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Penghargaan</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Wilayah Kerja</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Aduan Itjen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Visi Misi</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SIPPN</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">SAKIP</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">SINDE</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rencana Strategis</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">e-SKP</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Laporan Kinerja</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Dapodik</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Rumah Pendidikan</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Penghargaan</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Wilayah Kerja</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Visi Misi</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg">Lainnya</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Aplikasi</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">FAQ</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">ZI-WBK</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Survei</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="#">Rumah Pendidikan</Link>
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
+          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Lainnya</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">FAQ</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">ZI-WBK</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Survei</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="#" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
