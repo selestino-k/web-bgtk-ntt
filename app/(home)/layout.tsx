@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import NavBar from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   description: "Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  // Add custom properties as needed
+  // minimumScale: 1,
+  // maximumScale: 1,
+  // viewportFit: 'cover', 
+};
 export default async function HomeLayout({
   children,
 }: Readonly<{
@@ -26,7 +34,7 @@ export default async function HomeLayout({
           >
         <main className="gap-3 w-full scroll-smooth">
         <NavBar/>
-            <div className="flex w-full xs:w-xs min-h-screen items-center justify-center overflow-hidden">
+            <div className="flex w-full min-h-screen items-center justify-center">
                 {children}
             </div>
         <Footer/>

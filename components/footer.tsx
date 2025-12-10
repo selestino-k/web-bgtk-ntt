@@ -142,7 +142,7 @@ export function Footer() {
             </div>
 
         </div>
-        <div className="md  :hidden mt-8 pt-8  justify-items-center text-sm text-white grid gap-4 md:flex md:items-center md:justify-between">
+        <div className="md:hidden mt-8 pt-8  justify-items-center text-sm text-white grid grid-cols-2 gap-4 md:flex md:items-center md:justify-between">
              <Image
                 src="/logo/ramah-white.png"
                 alt="Kemendikdasmen Ramah"

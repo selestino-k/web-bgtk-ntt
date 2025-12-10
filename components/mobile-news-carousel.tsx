@@ -13,7 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
-export default function NewsCarousel() {
+export default function MobileNewsCarousel() {
   return (
     <Carousel className="w-full mt-5 mx-auto">
       <CarouselContent className="flex">
@@ -26,16 +26,7 @@ export default function NewsCarousel() {
                   className="h-full"
                 >
                 <CardContent className="flex aspect-square flex-col p-0 rounded-lg backdrop-blur-sm text-start font-geist">
-                    <div className="relative aspect-4/3 xs:aspect-square  rounded-t-md xs:hidden">
-                        <Image 
-                            src="/images/placeholder.svg" 
-                            alt="Placeholder Image" 
-                            fill
-                            sizes="(max-width: 320px) 50px, 50vw"
-                            className="object-cover rounded-t-md" 
-                        />
-                    </div>
-                    <div className="flex flex-col h-1/2 w-full p-4">
+                    <div className="flex flex-col w-full p-4">
                         <div className="flex space-x-2 text-xs text-gray-500 mb-2">
                             <span className="flex items-center space-x-1">
                                 <User className="h-4 w-4 mr-1"/>

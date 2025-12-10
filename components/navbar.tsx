@@ -1,6 +1,8 @@
 import Link from "next/link"
 import Image from "next/image";
 import NavDropdown from "./nav-dropdown";
+import NavMenu from "./nav-menu";
+import { NavSheet } from "./nav-sheet";
 
 export default async function NavBar() {
   
@@ -16,8 +18,13 @@ export default async function NavBar() {
         </Link>
         
         <div className="grid justify-items-center py-1">
-          <NavDropdown />
+          <NavMenu />
         </div>
+
+        <div className="md:hidden sm:xs:flex">
+          <NavSheet />
+        </div>
+
 
         <div className="hidden md:flex items-center sm:xs:md:hidden">
           <Image

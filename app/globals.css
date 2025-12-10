@@ -18,6 +18,7 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-sheetbar: var(--sheetbar);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -43,11 +44,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --xs: dvh 480px;
-  --sm: dvh 640px;
-  --md: dvh 768px;
-  --lg: dvh 1024px;
-
 }
 
 :root {
@@ -78,6 +74,7 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
+  --sheetbar: oklch(32.684% 0.0644 236.315);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
   --sidebar-primary: oklch(0.546 0.245 262.881);
