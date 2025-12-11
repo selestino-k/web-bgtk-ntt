@@ -46,8 +46,6 @@ export default function Home() {
         </div>
       </PrescenceMotion>
 
-
-
       <PrescenceMotion>
         <div id="berita" className="hidden sm:flex items-center relative mb-10 max-w-7xl">
           <main className="relative z-10 flex flex-col gap-3 p-8 w-full justify-center">

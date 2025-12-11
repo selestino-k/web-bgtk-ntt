@@ -18,7 +18,7 @@ export const viewport: Viewport = {
   // maximumScale: 1,
   // viewportFit: 'cover', 
 };
-export default async function ProfilLayout({
+export default async function PublikasiLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
