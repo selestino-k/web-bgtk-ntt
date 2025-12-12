@@ -130,16 +130,16 @@ export default function NavMenu() {
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/aplikasi/sinde" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
+                  <Link href="https://sinde.kemdikbud.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/aplikasi/e-skp" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/aplikasi/dapodik" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
+                  <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/aplikasi/rumah-pendidikan" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
+                  <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
