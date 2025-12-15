@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
 
 import NavBar from "@/components/navbar";
-import  Footer  from "@/components/footer";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "BGTK NTT",
-  keywords: ["Balai GTK NTT","Balai GTK Provinsi NTT","BGTK NTT","Balai Guru dan Tenaga Kependidikan NTT"],
+  keywords: ["Balai GTK NTT", "Balai GTK Provinsi NTT", "BGTK NTT", "Balai Guru dan Tenaga Kependidikan NTT"],
   description: "Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
 };
 
@@ -22,23 +21,16 @@ export default async function PublikasiLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>){
+}>) {
 
-  
+
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-          >
-        <main className="gap-3 w-full scroll-smooth">
-        <NavBar/>
-            <div className="flex w-full min-h-screen">
-                {children}
-            </div>
-        <Footer/>
-        </main>
-    </ThemeProvider>
+    <main className="gap-3 w-full scroll-smooth">
+      <NavBar />
+      <div className="flex w-full min-h-screen">
+        {children}
+      </div>
+      <Footer />
+    </main>
   );
 }

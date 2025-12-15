@@ -17,7 +17,7 @@ export default function NavMenu() {
   const isMobile = useIsMobile()
 
   return (
-    <NavigationMenu viewport={isMobile} className="text-black">
+    <NavigationMenu viewport={isMobile} className="text-black dark:text-white">
       <NavigationMenuList className="flex-wrap font-geist gap-6">
         <NavigationMenuItem className="hidden md:block ">
           <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Profil</NavigationMenuTrigger>
@@ -82,7 +82,7 @@ export default function NavMenu() {
                   <Link href="/ult/pengaduan" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Pengaduan</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/sp4n-lapor" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
+                  <Link href="https://prod.lapor.go.id/"  target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/ult/wbs-itjen" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
@@ -140,6 +140,12 @@ export default function NavMenu() {
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://gtk.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">GTK</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://raporpendidikan.kemendikdasmen.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rapor Pendidikan</Link>
                 </NavigationMenuLink>
               </li>
             </ul>

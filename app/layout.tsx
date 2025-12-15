@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 
 const geistSans = Geist({
@@ -35,14 +36,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-     
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+        >
           <main className="gap-3 w-full">
             <div className="flex w-full min-h-screen">
               {children}
             </div>
           </main>
-        </body>
+        </ThemeProvider>
+      </body>
     </html>
 
   );

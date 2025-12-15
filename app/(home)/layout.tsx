@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { ThemeProvider } from "@/components/ui/theme-provider";
 
 export const metadata: Metadata = {
   title: "BGTK NTT",
@@ -26,22 +25,13 @@ export default async function HomeLayout({
 
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <main className="gap-3 w-full scroll-smooth">
-        <NavBar />
-
-        <div className="flex w-full min-h-screen items-center justify-center">
-          {children}
-        </div>
-        <Footer />
-
-      </main>
-    </ThemeProvider>
+    <main className="gap-3 w-full scroll-smooth">
+      <NavBar />
+      <div className="flex w-full min-h-screen items-center justify-center">
+        {children}
+      </div>
+      <Footer />
+    </main>
 
   );
 }

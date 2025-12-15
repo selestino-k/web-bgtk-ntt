@@ -3,6 +3,7 @@ import { Card } from "./ui/card";
 import Image from "next/image";
 import { User, Calendar } from "lucide-react";
 import { Badge } from "./ui/badge";
+import Link from "next/link";
 
 export const berita = [
     {
@@ -37,7 +38,12 @@ export default function PengumumanCard() {
     return (
         <>
         {berita.map((newsItem: NewsCardProps, index: number) => (
-        <Card  key={index} className="w-full shadow-lg hover:shadow-xl/20 transition-shadow duration-300 border border-primary/30 dark:border-gray-700 p-4 mb-4">
+        <Card  
+        key={index} 
+        className="w-full shadow-lg hover:shadow-xl/20 transition-shadow duration-300 border border-primary/30 dark:border-gray-700 p-4 mb-4"
+        >
+        <Link href="/publikasi/pengumuman/detail">
+            
             <div className="flex h-full gap-4">  
                 <div className="relative aspect-video xs:aspect-square  rounded-t-md xs:hidden w-1/3">
                     <Image 
@@ -69,6 +75,7 @@ export default function PengumumanCard() {
 
                 </div>
             </div>
+            </Link>
         </Card>
         ))}
         </>

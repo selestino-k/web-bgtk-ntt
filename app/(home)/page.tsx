@@ -23,10 +23,10 @@ export default function Home() {
             <h1 className="lg:text-8xl text-5xl sm:text-wrap text-primary font-bold xs:text-xs font-geist">
               Selamat Datang
             </h1>
-            <p className="mt-3 lg:text-2xl text-md font-medium font-inter">
+            <p className="mt-3 lg:text-2xl text-md font-medium font-inter dark:text-black">
               di Situs Web Resmi Balai Guru dan Tenaga Kependidikan
             </p>
-            <p className="text-md lg:text-xl font-medium font-inter">
+            <p className="text-md lg:text-xl font-medium font-inter dark:text-black">
               Provinsi Nusa Tenggara Timur
             </p>
           </main>
