@@ -18,7 +18,7 @@ export function ThemeProvider({
   }
 
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider forcedTheme="light" {...props}>
       <style>{`
         * {
           transition: background-color 0.1s ease, color 0.2s ease, border-color 0.1s ease !important;
