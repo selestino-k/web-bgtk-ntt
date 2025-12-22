@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   // maximumScale: 1,
   // viewportFit: 'cover', 
 };
-export default async function HomeLayout({
+export default async function PublikasiLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -27,12 +27,10 @@ export default async function HomeLayout({
   return (
     <main className="gap-3 w-full scroll-smooth">
       <NavBar />
-      <div className="flex w-full min-h-screen items-center justify-center">
+      <div className="flex w-full min-h-screen">
         {children}
       </div>
       <Footer />
     </main>
-
   );
 }
-
