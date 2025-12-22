@@ -15,6 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Link from "next/link"
+import { ModeToggle } from "./dark-switch"
 
 export function NavSheet() {
   return (
@@ -24,7 +25,7 @@ export function NavSheet() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle className="text-2xl font-bold font-geist text-primary">Menu</SheetTitle>
+          <SheetTitle className="text-2xl font-bold font-geist text-primary mb-5">Menu</SheetTitle> <ModeToggle />
         </SheetHeader>
         <div className="mx-5 font-geist text-primary" >
         <Accordion
@@ -37,15 +38,15 @@ export function NavSheet() {
             <AccordionTrigger className="text-lg font-bold">Profil</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/profil/sambutan-kata"
                     className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
                     >
-                        Profil Lembaga
+                        Sambutan Kata
                 </Link>
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/profil/sejarah"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Sejarah
@@ -53,7 +54,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/profil/struktur-organisasi"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Struktur Organisasi
@@ -61,23 +62,15 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/profil/tupoksi"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
-                        Sarana dan Prasana
+                        Tugas Pokok dan Fungsi
                 </Link>
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        Wilayah Kerja
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/profil/visi-misi"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Visi Misi
@@ -85,18 +78,54 @@ export function NavSheet() {
             </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">    
-            <AccordionTrigger className="text-lg font-bold">ULT</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-bold">Publikasi</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/publikasi/berita-terkini"
                     className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
                     >
-                        Permintaan Informasi
+                        Berita Terkini
                 </Link>
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/publikasi/pengumuman"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Pengumuman
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/publikasi/peraturan-juknis"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Peraturan dan Juknis
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/publikasi/unduh"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Unduh
+                </Link>
+            </AccordionContent>
+            
+        </AccordionItem>
+        <AccordionItem value="item-3">
+            <AccordionTrigger className="text-lg font-bold">ULT</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/ult/permintaan-informasi"
+                    className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                    >
+                        Permintaan Informasi 
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/ult/pengaduan"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Pengaduan
@@ -104,58 +133,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        SP4N Lapor
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        WBS Itjen
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        Aduan Itjen
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        SIPPN
-                </Link>
-            </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
-            <AccordionTrigger className="text-lg font-bold">SAKIP</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
-                    >
-                    Rencana Strategis 
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        Laporan Kinerja
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/ult/perjanjian-kinerja"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Perjanjian Kinerja
@@ -163,18 +141,90 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="https://prod.lapor.go.id"
+                    target="_blank" 
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        SP4N Lapor
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/ult/wbs-itjen" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        WBS Itjen
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/ult/aduan-itjen"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Aduan Itjen
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/ult/sippn"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        SIPPN
+                </Link>
+            </AccordionContent>
+            <AccordionItem value="item-4">
+
+            <AccordionTrigger className="text-lg font-bold">SAKIP</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/sakip/rencana-strategis"
+                    className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                    >
+                        Rencana Strategis
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/sakip/laporan-kinerja"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Laporan Kinerja
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/sakip/perjanjian-kinerja"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Perjanjian Kinerja
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/sakip/penghargaan"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Penghargaan
                 </Link>
             </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="/sakip/wilayah-kerja"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Wilayah Kerja
+                </Link>
+            </AccordionContent>
+            
+            
+        </AccordionItem>
+            
         </AccordionItem>
         <AccordionItem value="item-4">
             <AccordionTrigger className="text-lg font-bold">Aplikasi</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="https://sinde.kemdikbud.go.id/"
+                    target="_blank"
                     className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
                     >
                         SINDE
@@ -182,7 +232,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/sakip/e-skp"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         e-SKP
@@ -190,7 +240,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="https://dapo.kemendikdasmen.go.id/"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Dapodik
@@ -198,12 +248,21 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="https://rumah.pendidikan.go.id/"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Rumah Pendidikan
                 </Link>
             </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="https://raporpendidikan.kemendikdasmen.go.id/"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Rapor Pendidikan 
+                </Link>
+            </AccordionContent>
+            
             
         </AccordionItem>
         
@@ -211,7 +270,7 @@ export function NavSheet() {
             <AccordionTrigger className="text-lg font-bold">Lainnya</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/lainnya/faq"
                     className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
                     >
                         FAQ
@@ -219,7 +278,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/lainnya/zi-wbk"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         ZI-WBK
@@ -227,7 +286,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/profil/tugas-dan-fungsi"
+                    href="/lainnya/survei"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         Survei

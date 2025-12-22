@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport} from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -28,7 +28,6 @@ export const viewport: Viewport = {
   // viewportFit: 'cover', 
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,6 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="theme-color" content="#297bbf" />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"

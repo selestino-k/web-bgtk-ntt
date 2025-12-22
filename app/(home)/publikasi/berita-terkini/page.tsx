@@ -10,7 +10,7 @@ export default function BeritaTerkini() {
                         <h2 className="text-md md:text-xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
                             Tag Berita
                         </h2>
-                        <div className="md:flex md:flex-col md:gap-2 inline-grid grid-cols-1 gap-5 w-full">
+                        <div className="md:flex md:flex-col md:gap-2 inline-grid grid-cols-2 gap-5 w-full">
                             <Button variant="default" size="sm">Semua</Button>
                             <Button variant="default" size="sm">Kabar Kementerian</Button>
                             <Button variant="default" size="sm">Internasional</Button>

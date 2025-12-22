@@ -117,9 +117,6 @@ export default function NavMenu() {
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/sakip/wilayah-kerja" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Wilayah Kerja</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/sakip/visi-misi" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Visi Misi</Link>
-                </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>

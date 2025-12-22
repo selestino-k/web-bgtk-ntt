@@ -37,9 +37,9 @@ export default function Footer() {
                     </div>
 
 
-                    <div className="space-y-4 text-center md:text-left">
+                    <div className="space-y-4 text-center md:text-left mb-10 md:mb-0">
                         <h3 className="lg:text-lg text-sm font-semibold text-white">Tag Berita</h3>
-                        <div className="flex w-full flex-wrap gap-2 h-20">
+                        <div className="flex w-full flex-wrap gap-2 h-5 md:h-20 px-3">
                             <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
                                 <Link href="/" className="font-semibold font-geist lg:text-xs text-xs">Kabar Kementerian</Link>
                             </Badge>
