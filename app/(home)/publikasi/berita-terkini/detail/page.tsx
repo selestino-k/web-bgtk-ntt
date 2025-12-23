@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { User, Calendar } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function BeritaTerkiniDetail() {
     return (
@@ -32,6 +33,7 @@ export default function BeritaTerkiniDetail() {
                     <p className="text-md md:text-base font-inter text-justify">
                         Ini adalah contoh konten untuk halaman detail berita terkini. Di sini Anda dapat menampilkan informasi lengkap tentang berita, termasuk teks, gambar, dan elemen multimedia lainnya yang relevan dengan topik berita tersebut.
                     </p>
+                    <p className="text-xs md:text-sm font-inter text-justify mt-10">Tag: <span className="space-x-1"><Badge className="font-semibold">Kabar Balai</Badge > <Badge className="font-semibold">Pendidikan</Badge> <Badge className="font-semibold">Humas</Badge></span> </p>
                 </div>
             </main>
         </div>
