@@ -2,6 +2,8 @@ import type { Metadata, Viewport} from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 
 const geistSans = Geist({
@@ -45,6 +47,7 @@ export default function RootLayout({
           <main className="gap-3 w-full">
             <div className="flex w-full min-h-screen">
               {children}
+              <SpeedInsights />
             </div>
           </main>
         </ThemeProvider>
