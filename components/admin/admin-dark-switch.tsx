@@ -5,7 +5,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Switch } from "@/components/ui/switch"
 
-export function ModeToggle() {
+export function AdminModeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
@@ -19,13 +19,13 @@ export function ModeToggle() {
 
   return (
     <div className="flex items-center gap-2">
-      <Sun className={`h-4 w-4 ${!isDark ? "text-gray-100" : "text-gray-400"}`} />
+      <Sun className={`h-4 w-4 ${!isDark ? "text-primary" : "text-gray-400"}`} />
       <Switch
         checked={isDark}
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         className={isDark ? "bg-primary" : "bg-primary"}
       />
-      <Moon className={`h-4 w-4 ${isDark ? "text-primary" : "text-gray-100"}`} />
+      <Moon className={`h-4 w-4 ${isDark ? "text-primary" : "text-gray-500"}`} />
     </div>
   )
 }
