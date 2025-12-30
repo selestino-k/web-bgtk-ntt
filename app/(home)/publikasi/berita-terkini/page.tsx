@@ -1,7 +1,25 @@
 import { Button } from "@/components/ui/button";
 import NewsCard from "@/components/news-card";
+// import { prisma } from "@/lib/generated/prisma";
+import { Metadata } from "next";
 
-export default function BeritaTerkini() {
+export const metadata: Metadata = {
+    title: "Berita Terkini",
+    description: "Halaman Berita Terkini",
+};
+
+// async function fetchNews(page = 1, limit = 10) {
+//     return await prisma.post.findMany({
+//         orderBy: {
+//             createdAt: 'desc',
+//         },
+//         skip: (page - 1) * limit,
+//         take: limit,
+//     })
+// };
+
+export default async function BeritaTerkini() {
+    // const news = await fetchNews();
     return (
        
             <div id="berita-terkini" className="mt-20 flex place-items-start w-full px-10">
