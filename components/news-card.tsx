@@ -5,84 +5,76 @@ import { User, Calendar } from "lucide-react";
 import { Badge } from "./ui/badge";
 import Link from "next/link";
 
-export const berita = [
-    {
-        title: "Judul Berita 1",
-        date: "25 November 2025",   
-        author: "Operator",
-        summary: "Ringkasan singkat berita atau deskripsi konten yang menarik perhatian pembaca untuk mengklik dan membaca lebih lanjut.",
-        category: ["Kabar Balai","Kabar Kementerian","Humas"]
-    },
-    {
-        title: "Judul Berita 2",
-        date: "24 November 2025",
-        author: "Admin",
-        summary: "Ringkasan singkat berita atau deskripsi konten yang menarik perhatian pembaca untuk mengklik dan membaca lebih lanjut.",
-        category: ["Kabar Kementerian", "Teknologi", "Internasional"]
-    },
-    {
-        title: "Judul Berita 3",
-        date: "23 November 2025",
-        author: "Editor",
-        summary: "Ringkasan singkat berita atau deskripsi konten yang menarik perhatian pembaca untuk mengklik dan membaca lebih lanjut.",
-        category: ["Humas", "Pendidikan", "Rumah Pendidikan"]
-    }
-];
-
 interface NewsCardProps {
+    id: string;
     title: string;
-    date: string;
+    slug: string;
+    thumbnail: string | null;
+    excerpt: string;
+    createdAt: Date;
     author: string;
-    summary: string;
-    category: string[];
-
+    tags: Array<{
+        id: number;
+        name: string;
+        slug: string;
+    }>;
 }
 
-export default function NewsCard() {    
-    return (
-        <>
-        {berita.map((newsItem: NewsCardProps, index: number) => (
-        <Card  
-        key={index} 
-        className="w-full shadow-lg hover:shadow-xl/20 transition-shadow duration-300 border border-primary/30 dark:border-gray-700 p-4 mb-4"
-        >
-        <Link href="/publikasi/berita-terkini/detail">
-            <div className="flex h-full gap-4">  
-                <div className="relative aspect-video xs:aspect-square  rounded-t-md xs:hidden w-1/3">
-                    <Image 
-                        src="/images/placeholder.svg"   
-                        alt="Placeholder Image"
-                        fill
-                        sizes="(max-width: 320px) 50px, 50vw"
-                        className="object-cover rounded-t-md"
-                    />
-                </div>
-                <div className="flex flex-col w-full gap-2">
-                    <div className="flex space-x-2 text-xs text-gray-500 mb-2">
-                        <span className="flex items-center space-x-1">
-                            <User className="h-4 w-4 mr-1"/>
-                            <span>{newsItem.author}</span>
-                        </span>
-                        <span className="flex items-center space-x-1">
-                            <Calendar className="h-4 w-4 mr-1"/>
-                            <span>{newsItem.date}</span>
-                        </span>
-                    </div>  
-                    <h3 className="text-xl font-bold mb-1">{newsItem.title}</h3>
-                    <div className="flex flex-wrap">
-                    {newsItem.category.map((cat, idx) => (
-                        <Badge key={idx} className="self-start mr-1 mb-2 md:mb-0">{cat}</Badge>
-                    ))}
-                    </div>
-                    <p className="mt-2 text-xs text-gray-600 flex-grow mb-10">
-                        {newsItem.summary}
-                    </p>
+export default function NewsCard({
+  id,
+  title,
+  slug,
+  thumbnail,
+  excerpt,
+  createdAt,
+  author,
+  tags,
+}: NewsCardProps) {
+  const formattedDate = new Date(createdAt).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
-                </div>
-            </div>
-            </Link>
-        </Card>
-        ))}
-        </>
-    );
+  return (
+    <Link href={`/publikasi/berita-terkini/detail/${slug}`} className="w-full">
+      <div className="group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer h-full flex flex-col w-full">
+        {thumbnail && (
+          <div className="relative w-full h-48 overflow-hidden">
+            <Image
+              src={thumbnail}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        )}
+        <div className="p-4 w-full flex-1 flex flex-col">
+          <div className="flex flex-wrap gap-1 mb-2">
+            {tags.slice(0, 2).map((tag) => (
+              <Badge key={tag.id} variant="secondary" className="text-xs">
+                {tag.name}
+              </Badge>
+            ))}
+          </div>
+          <h3 className="text-lg font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            {title}
+          </h3>
+          <p className="text-sm text-gray-600 mb-4 line-clamp-3 flex-1">
+            {excerpt}
+          </p>
+          <div className="flex items-center justify-between text-xs text-gray-500 mt-auto">
+            <span className="flex items-center gap-1">
+              <User className="h-3 w-3" />
+              {author}
+            </span>
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {formattedDate}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
 }

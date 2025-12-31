@@ -15,7 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Link from "next/link"
-import { ModeToggle } from "./dark-switch"
+import { AdminModeToggle } from "./admin/admin-dark-switch"
 
 export function NavSheet() {
   return (
@@ -25,7 +25,7 @@ export function NavSheet() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle className="text-2xl font-bold font-geist text-primary mb-5">Menu</SheetTitle> <ModeToggle />
+          <SheetTitle className="text-2xl font-bold font-geist text-primary mb-5">Menu</SheetTitle> <AdminModeToggle />
         </SheetHeader>
         <div className="mx-5 font-geist text-primary" >
         <Accordion

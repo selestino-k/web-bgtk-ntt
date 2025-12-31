@@ -3,9 +3,50 @@ import { PrescenceMotion } from "@/components/motion/presence-motion";
 import NewsCarousel from "@/components/news-carousel";
 import ProgramCardList from "@/components/program-card";
 import Image from "next/image";
+import prisma from "@/lib/prisma";
 
+async function getLatestPosts() {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        published: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 6,
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
 
-export default function Home() {
+    return posts.map(post => ({
+      ...post,
+      id: post.id.toString(),
+      tags: post.tags.map(tagRelation => ({
+        ...tagRelation,
+        postId: tagRelation.postId.toString(),
+        tag: tagRelation.tag,
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const latestPosts = await getLatestPosts();
+
   return (
     <div className="grid w-full justify-items-center min-h-dvh overflow-hidden">
       <PrescenceMotion>
@@ -16,7 +57,7 @@ export default function Home() {
               alt="Banner Balai GTK NTT"
               fill
               className="object-cover opacity-70 xs:opacity-90"
-              preload
+              priority
             />
           </div>
           <main className="z-10 flex flex-1 flex-col content-around mt-30 text-center px-4">
@@ -47,14 +88,14 @@ export default function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="berita" className="hidden sm:flex items-center relative mb-10 max-w-7xl">
-          <main className="relative z-10 flex flex-col gap-3 p-8 w-full justify-center">
+        <div id="berita" className="hidden sm:flex items-center relative mb-10w-full">
+          <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
                 Berita Terkini
               </h2>
             </div>
-            <NewsCarousel />
+            <NewsCarousel initialPosts={latestPosts} />
           </main>
         </div>
       </PrescenceMotion>
@@ -67,15 +108,10 @@ export default function Home() {
                 Berita Terkini
               </h2>
             </div>
-            <MobileNewsCarousel />
+            <MobileNewsCarousel initialPosts={latestPosts} />
           </main>
         </div>
       </PrescenceMotion>
-
-
-
-
     </div>
   );
-
 }
