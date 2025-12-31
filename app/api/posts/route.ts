@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, slug, content, thumbnail, tags, published } = body
+    const { title, slug, content, thumbnail, tags, published, authorId } = body
 
     // Check if slug already exists
     const existingPost = await prisma.post.findUnique({
@@ -28,7 +28,8 @@ export async function POST(request: NextRequest) {
         thumbnail,
         tags,
         published,
-        publishedAt: published ? new Date() : null,
+        createdAt: published ? new Date() : undefined,
+        authorId,
       }
     })
 
