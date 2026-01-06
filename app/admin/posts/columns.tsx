@@ -204,8 +204,8 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
         {contentObj.root.children.map((child, index) => renderNode(child, index))}
       </div>
     )
-  } catch (error) {
-    return <p className="text-red-400">Error rendering content</p>
+  } catch {
+    return <p className="text-red-400">Gagal memuat konten</p>
   }
 }
 
@@ -217,8 +217,14 @@ export const columns: ColumnDef<Post>[] = [
       const photo = row.getValue("thumbnail") as string
       if (!photo) {
         return (
-          <div className="flex items-center justify-center w-20 h-14">
-            <span className="text-xs text-gray-400">No image</span>
+          <div className="flex items-center justify-center p-0 mr-5 h-auto hover:opacity-80">
+            <Image 
+              src="/images/placeholder.svg"
+              alt="No image available"
+              width={80}
+              height={56}
+              className="rounded-md object-cover"
+            />
           </div>
         )
       }
@@ -283,7 +289,7 @@ export const columns: ColumnDef<Post>[] = [
           <DialogTrigger asChild>
             <Button variant="ghost" className="h-auto p-2 justify-start">
               <div className="max-w-[250px] text-left">
-                <p className="text-sm text-gray-600 truncate">{truncatedPreview}</p>
+                <p className="text-sm truncate">{truncatedPreview}</p>
               </div>
             </Button>
           </DialogTrigger>

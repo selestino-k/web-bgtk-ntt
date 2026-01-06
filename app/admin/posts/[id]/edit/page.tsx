@@ -22,17 +22,21 @@ async function getPost(id: string) {
     }
 
     // Convert bigint to string for JSON serialization
+    // Also ensure content is serializable
     return {
       ...post,
       id: post.id.toString(),
+      content: post.content, // Keep as-is, should already be JSON
       tags: post.tags.map((tagRelation) => ({
         ...tagRelation,
         postId: tagRelation.postId.toString(),
         tag: tagRelation.tag,
       })),
+      createdAt: post.createdAt?.toISOString(), // Convert dates to strings
+      updatedAt: post.updatedAt?.toISOString(),
     };
   } catch (error) {
-    console.error("Error fetching post:", error);
+    console.error("Gagal mengambil postingan:", error);
     return null;
   }
 }
