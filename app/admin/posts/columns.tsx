@@ -3,12 +3,26 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle, 
+  AlertDialogTrigger 
+} from "@/components/ui/alert-dialog"
 import { Edit, Trash2, Eye } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Prisma } from "@/lib/generated/prisma/client"
 import { Badge } from "@/components/ui/badge"
-import { JSX } from "react"
+import { JSX, useState } from "react"
+import { deletePost } from "@/lib/admin/actions/post-action"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 // Update your Post type to allow null thumbnails
 export type Post = {
@@ -209,6 +223,64 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
+// Delete button component with confirmation dialog
+function DeleteButton({ postId, postTitle }: { postId: string; postTitle: string }) {
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      const result = await deletePost(postId)
+      
+      if (!result.success) {
+        throw new Error(result.error || "Failed to delete post")
+      }
+      
+      toast.success(result.message || "Post deleted successfully")
+      setOpen(false)
+      router.refresh()
+    } catch (error) {
+      console.error("Delete error:", error)
+      toast.error(error instanceof Error ? error.message : "Failed to delete post")
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" size="sm">
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Tindakan ini tidak dapat dibatalkan. Ini akan menghapus postingan &quot;{postTitle}&quot; secara permanen dari server.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isDeleting}>Batal</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={(e) => {
+              e.preventDefault()
+              handleDelete()
+            }}
+            disabled={isDeleting}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            {isDeleting ? "Menghapus..." : "Hapus"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
 export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "thumbnail",
@@ -358,6 +430,7 @@ export const columns: ColumnDef<Post>[] = [
     header: "Aksi",
     cell: ({ row }) => {
       const postId = row.original.id.toString()
+      const postTitle = row.original.title
       
       return (
         <div className="flex items-center gap-2">
@@ -366,16 +439,7 @@ export const columns: ColumnDef<Post>[] = [
               <Edit className="h-4 w-4" />
             </Button>
           </Link>
-          <Button 
-            variant="destructive" 
-            size="sm"
-            onClick={() => {
-              // TODO: Implement delete functionality
-              console.log("Delete post:", postId)
-            }}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <DeleteButton postId={postId} postTitle={postTitle} />
         </div>
       )
     },
