@@ -20,26 +20,33 @@ export default function NewPostPage() {
       formData.append("content", JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "false")
-      formData.append("authorId", DEFAULT_AUTHOR_ID) // Use valid UUID
+      formData.append("authorId", DEFAULT_AUTHOR_ID)
       
       if (data.thumbnailFile) {
         formData.append("thumbnail", data.thumbnailFile)
+      } else if (data.thumbnail) {
+        formData.append("thumbnailUrl", data.thumbnail)
+      }
+
+      // Add single document URL
+      if (data.document) {
+        formData.append("document", data.document)
       }
 
       const result = await createPost(formData)
 
       if (!result.success) {
-        throw new Error(result.error || 'Failed to save draft')
+        throw new Error(result.error || 'Gagal menyimpan draft')
       }
 
-      toast.success(result.message || 'Draft saved successfully')
+      toast.success(result.message || 'Draft berhasil disimpan')
       
       if (result.post?.id) {
         router.push(`/admin/posts/edit/${result.post.id}`)
       }
     } catch (error) {
       console.error('Error saving draft:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to save draft')
+      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan draft')
       throw error
     }
   }
@@ -52,23 +59,31 @@ export default function NewPostPage() {
       formData.append("content", JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "true")
-      formData.append("authorId", DEFAULT_AUTHOR_ID) // Use valid UUID
+      formData.append("authorId", DEFAULT_AUTHOR_ID)
       
       if (data.thumbnailFile) {
         formData.append("thumbnail", data.thumbnailFile)
+      } else if (data.thumbnail) {
+        formData.append("thumbnailUrl", data.thumbnail)
+      }
+
+      // Add single document URL
+      if (data.document) {
+        formData.append("document", data.document)
       }
 
       const result = await createPost(formData)
 
       if (!result.success) {
-        throw new Error(result.error || 'Failed to publish post')
+        throw new Error(result.error || 'Gagal menerbitkan postingan')
       }
 
-      toast.success(result.message || 'Post published successfully')
+      toast.success(result.message || 'Postingan berhasil diterbitkan')
+      
       router.push('/admin/posts')
     } catch (error) {
       console.error('Error publishing post:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to publish post')
+      toast.error(error instanceof Error ? error.message : 'Gagal menerbitkan postingan')
       throw error
     }
   }

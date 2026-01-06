@@ -3,12 +3,13 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Edit, Trash2, Eye } from "lucide-react"
+import { Edit } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Prisma } from "@/lib/generated/prisma/client"
 import { Badge } from "@/components/ui/badge"
 import { JSX } from "react"
+import { DeletePostDialog } from "./delete-post-dialog"
 
 // Update your Post type to allow null thumbnails
 export type Post = {
@@ -364,6 +365,7 @@ export const columns: ColumnDef<Post>[] = [
     header: "Aksi",
     cell: ({ row }) => {
       const postId = row.original.id.toString()
+      const postTitle = row.original.title
       
       return (
         <div className="flex items-center gap-2">
@@ -372,16 +374,7 @@ export const columns: ColumnDef<Post>[] = [
               <Edit className="h-4 w-4" />
             </Button>
           </Link>
-          <Button 
-            variant="destructive" 
-            size="sm"
-            onClick={() => {
-              // TODO: Implement delete functionality
-              console.log("Delete post:", postId)
-            }}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <DeletePostDialog postId={postId} postTitle={postTitle} />
         </div>
       )
     },

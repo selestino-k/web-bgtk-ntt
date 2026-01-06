@@ -14,6 +14,7 @@ export async function createPost(formData: FormData) {
     const tags = formData.get("tags") as string
     const published = formData.get("published") === "true"
     const authorId = formData.get("authorId") as string
+    const document = formData.get("document") as string
     const thumbnailFile = formData.get("thumbnail") as File | null
 
     // Validate required fields
@@ -72,6 +73,7 @@ export async function createPost(formData: FormData) {
         slug,
         content: contentJson,
         thumbnail: thumbnailUrl,
+        document: document || null,
         tags: {
           create: tagsArray.map(tag => ({ 
             tag: { 
@@ -119,6 +121,7 @@ export async function updatePost(postId: string, formData: FormData) {
     const slug = formData.get("slug") as string
     const content = formData.get("content") as string
     const tags = formData.get("tags") as string
+    const document = formData.get("document") as string
     const published = formData.get("published") === "true"
     const thumbnailFile = formData.get("thumbnail") as File | null
     const existingThumbnail = formData.get("existingThumbnail") as string
@@ -188,6 +191,7 @@ export async function updatePost(postId: string, formData: FormData) {
         slug,
         content: contentJson,
         thumbnail: thumbnailUrl,
+        document: document || null,
         tags: {
           deleteMany: {},
           create: tagsArray.map(tag => ({ 

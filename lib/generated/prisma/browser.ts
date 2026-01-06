@@ -37,8 +37,3 @@ export type Tag = Prisma.TagModel
  * 
  */
 export type PostTag = Prisma.PostTagModel
-/**
- * Model Document
- * 
- */
-export type Document = Prisma.DocumentModel

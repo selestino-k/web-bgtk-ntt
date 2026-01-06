@@ -26,11 +26,11 @@ model Post {
   slug      String     @unique @db.VarChar(500)
   content   Json
   thumbnail String?    @db.VarChar(500)
+  document  String?    @db.VarChar(500)
   published Boolean    @default(false)
   createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
   authorId  String     @map("author_id") @db.Uuid
-  documents Document[]
   author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags      PostTag[]
 
@@ -59,23 +59,6 @@ model PostTag {
 
   @@id([postId, tagId])
   @@map("post_tag")
-}
-
-model Document {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(500)
-  description String?
-  fileUrl     String   @map("file_url") @db.VarChar(500)
-  fileName    String   @map("file_name") @db.VarChar(255)
-  fileSize    Int      @map("file_size")
-  fileType    String   @map("file_type") @db.VarChar(100)
-  postId      BigInt?  @map("post_id")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
-  post        Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@index([postId])
-  @@map("document")
 }
 
 enum Role {

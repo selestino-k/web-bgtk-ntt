@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { SerializedEditorState } from "lexical"
-import Image from "next/image"
 import { Editor } from "@/components/blocks/editor-00/editor"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,8 +9,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { X, Upload, Image as ImageIcon, Loader2 } from "lucide-react"
-import { uploadImageToS3 } from "@/lib/admin/actions/s3-actions"
+import { X, Loader2 } from "lucide-react"
+import { ImageUploader } from "@/components/cms/image-uploader"
+import { DocumentCard } from "@/components/cms/document-card"
+import { DocumentDialog } from "@/components/cms/document-dialog"
 import { toast } from "sonner"
 
 export interface PostData {
@@ -21,6 +22,7 @@ export interface PostData {
   thumbnail: string
   thumbnailFile?: File
   tags: string[]
+  document: string | null
   published: boolean
 }
 
@@ -32,6 +34,7 @@ interface PostEditorProps {
     content?: SerializedEditorState
     thumbnail?: string
     tags?: string[]
+    document?: string | null
   }
   onSave?: (data: PostData) => Promise<void>
   onPublish?: (data: PostData) => Promise<void>
@@ -40,14 +43,14 @@ interface PostEditorProps {
 export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) {
   const [title, setTitle] = useState(initialData?.title || "")
   const [slug, setSlug] = useState(initialData?.slug || "")
-  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false)
+  const [isSlugManuallyEdited] = useState(false)
   const [thumbnail, setThumbnail] = useState(initialData?.thumbnail || "")
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || [])
-  const [isDragging, setIsDragging] = useState(false)
-  const [isUploading, setIsUploading] = useState(false)
+  const [documentUrl, setDocumentUrl] = useState<string | null>(initialData?.document || null)
   const [isSaving, setIsSaving] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
+  const [showDocumentDialog, setShowDocumentDialog] = useState(false)
   const [editorState, setEditorState] = useState<SerializedEditorState>(
     initialData?.content || {
       root: {
@@ -93,7 +96,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     }
   }
 
-
   const addTag = (tag: string) => {
     if (!selectedTags.includes(tag)) {
       setSelectedTags([...selectedTags, tag])
@@ -104,64 +106,26 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     setSelectedTags(selectedTags.filter(t => t !== tag))
   }
 
-  const handleFileUpload = async (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      toast.error('Harap unggah file gambar')
-      return
-    }
-
-    // Check file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Ukuran file harus kurang dari 10MB')
-      return
-    }
-
-    setIsUploading(true)
-    
-    try {
-      // Upload to S3 using server action
-      const result = await uploadImageToS3(file, "posts/thumbnails")
-      
-      if (!result.success || !result.url) {
-        throw new Error(result.error || 'Gagal mengunggah gambar')
-      }
-      
-      setThumbnail(result.url)
+  const handleThumbnailChange = (url: string, file?: File) => {
+    setThumbnail(url)
+    if (file) {
       setThumbnailFile(file)
-      toast.success('Gambar berhasil diunggah')
-    } catch (error) {
-      console.error('Upload error:', error)
-      toast.error(error instanceof Error ? error.message : 'Gagal mengunggah gambar')
-    } finally {
-      setIsUploading(false)
     }
   }
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
+  const handleThumbnailDelete = () => {
+    setThumbnail('')
+    setThumbnailFile(null)
   }
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
+  const handleAddDocument = (driveUrl: string) => {
+    setDocumentUrl(driveUrl)
+    toast.success(documentUrl ? 'Dokumen berhasil diubah' : 'Dokumen berhasil ditambahkan')
   }
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    
-    const file = e.dataTransfer.files[0]
-    if (file) {
-      handleFileUpload(file)
-    }
-  }
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      handleFileUpload(file)
-    }
+  const handleRemoveDocument = () => {
+    setDocumentUrl(null)
+    toast.success('Dokumen dihapus dari daftar')
   }
 
   const handleSave = async (publish: boolean = false) => {
@@ -188,6 +152,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       thumbnail,
       thumbnailFile: thumbnailFile || undefined,
       tags: selectedTags,
+      document: documentUrl,
       published: publish,
     }
 
@@ -213,19 +178,19 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   return (
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex justify-between items-center">
-          <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+        <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
           {initialData?.id ? 'Edit Berita' : 'Buat Berita Baru'}
         </h2>
         <div className="space-x-2">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => handleSave(false)}
             disabled={isLoading}
           >
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Simpan Draft
           </Button>
-          <Button 
+          <Button
             onClick={() => handleSave(true)}
             disabled={isLoading}
           >
@@ -260,7 +225,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
               <div>
                 <Label htmlFor="slug">Slug URL (Otomatis) *</Label>
-                
                 <p className="text-xs text-muted-foreground mt-1">
                   Preview: /posts/{slug}
                 </p>
@@ -279,6 +243,14 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
               />
             </CardContent>
           </Card>
+
+          {/* Document Attachment */}
+          <DocumentCard
+            documentUrl={documentUrl}
+            onAdd={() => setShowDocumentDialog(true)}
+            onRemove={handleRemoveDocument}
+            disabled={isLoading}
+          />
         </div>
 
         {/* Sidebar */}
@@ -287,120 +259,16 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
             <CardHeader>
               <CardTitle>Thumbnail</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {!thumbnail ? (
-                <div
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                    isDragging 
-                      ? 'border-primary bg-primary/5' 
-                      : 'border-gray-300 hover:border-primary/50'
-                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <input
-                    id="file-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                    disabled={isLoading || isUploading}
-                  />
-                  <div className="space-y-4">
-                    <div className="flex justify-center">
-                      {isUploading ? (
-                        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                      ) : (
-                        <Upload className="h-12 w-12 text-gray-400" />
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm text-gray-600">
-                        {isUploading ? 'Uploading...' : 'Drag and drop gambar atau'}
-                      </p>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={isLoading || isUploading}
-                        onClick={() => document.getElementById('file-upload')?.click()}
-                      >
-                        <ImageIcon className="h-4 w-4 mr-2" />
-                        Pilih Gambar
-                      </Button>
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, GIF hingga 10MB
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative aspect-video rounded-md overflow-hidden border">
-                    <Image
-                      src={thumbnail}
-                      alt="Thumbnail preview"
-                      fill
-                      className="object-cover"
-                    />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      className="absolute top-2 right-2"
-                      onClick={() => {
-                        setThumbnail('')
-                        setThumbnailFile(null)
-                      }}
-                      disabled={isLoading}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => document.getElementById('file-upload')?.click()}
-                    disabled={isLoading || isUploading}
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Ganti Gambar
-                  </Button>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                    disabled={isLoading || isUploading}
-                  />
-                </div>
-              )}
-              
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Atau
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Label htmlFor="thumbnail-url">URL Gambar</Label>
-                <Input
-                  id="thumbnail-url"
-                  value={thumbnail}
-                  onChange={(e) => setThumbnail(e.target.value)}
-                  placeholder="https://..."
-                  disabled={isLoading}
-                />
-              </div>
+            <CardContent>
+              <ImageUploader
+                value={thumbnail}
+                onChange={handleThumbnailChange}
+                onDelete={handleThumbnailDelete}
+                folder="posts/thumbnails"
+                disabled={isLoading}
+                label="Gambar Thumbnail *"
+                aspectRatio="video"
+              />
             </CardContent>
           </Card>
 
@@ -434,12 +302,17 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {selectedTags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="gap-1">
+                    <Badge
+                      key={tag}
+                      variant="default"
+                      className="gap-1 text-sm cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (!isLoading) removeTag(tag)
+                      }}
+                    >
                       {tag}
-                      <X
-                        className="h-3 w-3 cursor-pointer"
-                        onClick={() => !isLoading && removeTag(tag)}
-                      />
+                      <X className="h-3 w-3" />
                     </Badge>
                   ))}
                 </div>
@@ -448,6 +321,14 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
           </Card>
         </div>
       </div>
+
+      {/* Document Dialog */}
+      <DocumentDialog
+        open={showDocumentDialog}
+        onOpenChange={setShowDocumentDialog}
+        onConfirm={handleAddDocument}
+        initialValue={documentUrl}
+      />
     </div>
   )
 }

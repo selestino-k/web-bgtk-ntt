@@ -54,8 +54,7 @@ export const ModelName = {
   User: 'User',
   Post: 'Post',
   Tag: 'Tag',
-  PostTag: 'PostTag',
-  Document: 'Document'
+  PostTag: 'PostTag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -93,6 +92,7 @@ export const PostScalarFieldEnum = {
   slug: 'slug',
   content: 'content',
   thumbnail: 'thumbnail',
+  document: 'document',
   published: 'published',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -120,22 +120,6 @@ export const PostTagScalarFieldEnum = {
 } as const
 
 export type PostTagScalarFieldEnum = (typeof PostTagScalarFieldEnum)[keyof typeof PostTagScalarFieldEnum]
-
-
-export const DocumentScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  description: 'description',
-  fileUrl: 'fileUrl',
-  fileName: 'fileName',
-  fileSize: 'fileSize',
-  fileType: 'fileType',
-  postId: 'postId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
 
 
 export const SortOrder = {
