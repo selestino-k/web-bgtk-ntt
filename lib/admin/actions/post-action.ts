@@ -20,7 +20,7 @@ export async function createPost(formData: FormData) {
     if (!title || !slug || !content) {
       return { 
         success: false, 
-        error: "Title, slug, and content are required" 
+        error: "Judul, slug, and content are required" 
       }
     }
 
@@ -52,7 +52,7 @@ export async function createPost(formData: FormData) {
       if (!uploadResult.success) {
         return { 
           success: false, 
-          error: uploadResult.error || "Failed to upload thumbnail" 
+          error: uploadResult.error || "Gagal mengunggah thumbnail" 
         }
       }
       

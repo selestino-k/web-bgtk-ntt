@@ -54,13 +54,9 @@ export async function AdminAppSidebar() {
     return (
         <Sidebar side="left" className="bg-primary dark:bg-gray-950 text-white dark:text-white-700 border-r shadow-sm transition-all duration-300 ease-in-out">
             <SidebarHeader className="bg-primary dark:bg-gray-950">
-                <div className="pl-4 py-2">
+                <div className="pl-2 py-2">
                 <Link href="/" className="flex items-center gap-2" prefetch={false}>
-                    <Image src="/logo/kemendikdasmen-bordered.png" alt="Balai GTK Logo" width={48} height={48}/>
-                    <div className="grid grid-flow-col grid-rows-2 mt-2">
-                        <span className="lg:text-2xl font-geist font-extrabold font-inter mt-2 sm:text-md sm:text-[14px]">Balai GTK</span>
-                        <span className="lg:text-sm font-geist font-bold text-xs">Provinsi NTT</span>
-                    </div>
+                    <Image src="/logo/logo-admin-bgtk-ntt.png" alt="Balai GTK Logo" width={300} height={48}/>
                 </Link>
                 </div>
             </SidebarHeader>
@@ -69,7 +65,7 @@ export async function AdminAppSidebar() {
                     <SidebarGroupContent>
                         <DropdownMenu>
                         </DropdownMenu>
-                        <SidebarGroupLabel className="text-base items-center text-white dark:text-white-700 mb-5">PANEL ADMIN</SidebarGroupLabel>
+                        <SidebarGroupLabel className="text-base items-center text-white dark:text-white-700 mb-5">PANEL ADMIN CMS</SidebarGroupLabel>
                         <SidebarMenu className="space-y-3 font-semibold font-geist">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>

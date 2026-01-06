@@ -283,7 +283,7 @@ export const columns: ColumnDef<Post>[] = [
           <DialogTrigger asChild>
             <Button variant="ghost" className="h-auto p-2 justify-start">
               <div className="max-w-[250px] text-left">
-                <p className="text-sm text-gray-600 truncate">{truncatedPreview}</p>
+                <p className="text-sm truncate">{truncatedPreview}</p>
               </div>
             </Button>
           </DialogTrigger>

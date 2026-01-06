@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
+import { updatePost } from "@/lib/admin/actions/post-action";
 
 type Post = {
   id: string;
@@ -62,7 +63,7 @@ function LoadInitialContentPlugin({ content }: { content: string | null }) {
       editor.setEditorState(editor.parseEditorState(parsedContent));
       isInitialized.current = true;
     } catch (error) {
-      console.error("Error loading content:", error);
+      console.error("Gagal memuat konten:", error);
     }
   }, [editor, content]);
 
@@ -105,6 +106,16 @@ export default function EditPostForm({
     post.tags.map((t) => t.tag.id.toString())
   );
   
+  // Generate slug from title
+  const generateSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
   // Use ref to store editor state to avoid re-renders
   const editorStateRef = useRef<string | null>(
     post.content ? JSON.stringify(post.content) : null
@@ -147,56 +158,43 @@ export default function EditPostForm({
     setIsLoading(true);
 
     try {
-      let thumbnailUrl = thumbnail;
-
-      // Upload thumbnail if a new file is selected
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("slug", generateSlug(title));
+      formData.append("content", editorStateRef.current || "{}");
+      formData.append("published", published.toString());
+      formData.append("existingThumbnail", thumbnail);
+      
+      // Add thumbnail file if changed
       if (thumbnailFile) {
-        const formData = new FormData();
-        formData.append("file", thumbnailFile);
-
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-          throw new Error("Failed to upload thumbnail");
-        }
-
-        const uploadData = await uploadResponse.json();
-        thumbnailUrl = uploadData.url;
+        formData.append("thumbnail", thumbnailFile);
       }
+      
+      // Add tags as comma-separated string
+      const tagNames = selectedTags
+        .map((tagId) => availableTags.find((t) => t.id.toString() === tagId)?.name)
+        .filter(Boolean)
+        .join(",");
+      formData.append("tags", tagNames);
 
-      const response = await fetch(`/api/posts/${post.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content: editorStateRef.current ? JSON.parse(editorStateRef.current) : null,
-          thumbnail: thumbnailUrl,
-          published,
-          tagIds: selectedTags.map((id) => parseInt(id)),
-        }),
-      });
+      const result = await updatePost(post.id, formData);
 
-      if (!response.ok) {
-        throw new Error("Failed to update post");
+      if (!result.success) {
+        throw new Error(result.error || "Gagal memperbarui postingan");
       }
 
       toast({
-        title: "Success",
-        description: "Post updated successfully",
+        title: "Sukses",
+        description: result.message || "Postingan berhasil diperbarui",
       });
 
       router.push("/admin/posts");
       router.refresh();
     } catch (error) {
-      console.error("Error updating post:", error);
+      console.error("Gagal memperbarui postingan:", error);
       toast({
         title: "Error",
-        description: "Failed to update post. Please try again.",
+        description: error instanceof Error ? error.message : "Gagal memperbarui postingan. Silakan coba lagi.",
         variant: "destructive",
       });
     } finally {

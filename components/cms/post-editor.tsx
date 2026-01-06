@@ -40,7 +40,7 @@ interface PostEditorProps {
 export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) {
   const [title, setTitle] = useState(initialData?.title || "")
   const [slug, setSlug] = useState(initialData?.slug || "")
-  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false)
+  const [isSlugManuallyEdited] = useState(false)
   const [thumbnail, setThumbnail] = useState(initialData?.thumbnail || "")
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || [])
@@ -70,11 +70,13 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
   // Available tags (fetch from API in production)
   const availableTags = [
-    "Berita Terkini",
-    "Pengumuman",
-    "Kegiatan",
+    "Rumah Pendidikan",
+    "Teknologi",
+    "Kabar Balai",
+    "Kabar Kementerian",
     "Pendidikan",
-    "Hari Guru Nasional",
+    "Humas",
+    "Pengumuman"
   ]
 
   const generateSlug = (text: string) => {
@@ -91,10 +93,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     }
   }
 
-  const handleSlugChange = (value: string) => {
-    setSlug(value)
-    setIsSlugManuallyEdited(true)
-  }
 
   const addTag = (tag: string) => {
     if (!selectedTags.includes(tag)) {
@@ -108,13 +106,13 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
   const handleFileUpload = async (file: File) => {
     if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
+      toast.error('Harap unggah file gambar')
       return
     }
 
     // Check file size (10MB limit)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('File size must be less than 10MB')
+      toast.error('Ukuran file harus kurang dari 10MB')
       return
     }
 
@@ -125,15 +123,15 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       const result = await uploadImageToS3(file, "posts/thumbnails")
       
       if (!result.success || !result.url) {
-        throw new Error(result.error || 'Upload failed')
+        throw new Error(result.error || 'Gagal mengunggah thumbnail')
       }
       
       setThumbnail(result.url)
       setThumbnailFile(file)
-      toast.success('Image uploaded successfully')
+      toast.success('Thumbnail berhasil diunggah')
     } catch (error) {
       console.error('Upload error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to upload image')
+      toast.error(error instanceof Error ? error.message : 'Gagal mengunggah thumbnail')
     } finally {
       setIsUploading(false)
     }
@@ -169,22 +167,18 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   const handleSave = async (publish: boolean = false) => {
     // Validation
     if (!title.trim()) {
-      toast.error('Title is required')
+      toast.error('Judul berita wajib diisi')
       return
     }
 
     if (!slug.trim()) {
-      toast.error('Slug is required')
+      toast.error('Slug wajib diisi')
       return
     }
 
-    if (!thumbnail) {
-      toast.error('Thumbnail is required')
-      return
-    }
 
     if (selectedTags.length === 0) {
-      toast.error('Please select at least one tag')
+      toast.error('Harap pilih setidaknya satu kategori/tag')
       return
     }
 
@@ -208,7 +202,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       }
     } catch (error) {
       console.error('Save error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to save post')
+      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
     } finally {
       setIsSaving(false)
       setIsPublishing(false)
@@ -240,6 +234,11 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
             Publikasikan
           </Button>
         </div>
+        
+        
+      </div>
+      <div className="text-sm text-muted-foreground">
+          <p>* : Wajib diisi</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -266,7 +265,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
                 <Label htmlFor="slug">Slug URL (Otomatis) *</Label>
                 
                 <p className="text-xs text-muted-foreground mt-1">
-                  Preview: /posts/{slug}
+                  Pratinjau: /posts/{slug}
                 </p>
               </div>
             </CardContent>
@@ -289,7 +288,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Thumbnail *</CardTitle>
+              <CardTitle>Thumbnail</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {!thumbnail ? (

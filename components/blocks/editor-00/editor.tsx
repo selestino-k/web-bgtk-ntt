@@ -2,7 +2,7 @@
 
 import {
   InitialConfigType,
-  LexicalComposer,
+  LexicalComposer
 } from "@lexical/react/LexicalComposer"
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import { EditorState, SerializedEditorState } from "lexical"
