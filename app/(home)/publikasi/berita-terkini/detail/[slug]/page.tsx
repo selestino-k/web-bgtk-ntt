@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { User, Calendar, Download, FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
+import ImagePreviewDialog from "./image-preview-dialog";
 
 
 type LexicalNode = {
@@ -253,16 +253,12 @@ export default async function BeritaTerkiniDetail({
             </span>
           </div>
           {post.thumbnail && (
-            <div className="relative max-w-2xl h-auto items-center mx-auto">
-              <Image
-                src={post.thumbnail}
-                alt={post.title}
-                width={800}
-                height={450}
-                className="rounded-lg mb-6 aspect-video object-cover w-full h-auto"
-                priority
-              />
-            </div>
+            <ImagePreviewDialog
+              src={post.thumbnail}
+              alt={post.title}
+              width={800}
+              height={450}
+            />
           )}
           
           {/* Document Attachment Section */}

@@ -21,11 +21,11 @@ interface PengumumanCardProps {
 }
 
 export default function PengumumanCard({
-  id,
+  
   title,
   slug,
   thumbnail,
-  excerpt,
+  
   createdAt,
   author,
   tags,

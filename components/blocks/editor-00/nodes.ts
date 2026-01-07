@@ -7,7 +7,7 @@ import {
   LexicalNode,
   LexicalNodeReplacement,
   ParagraphNode,
-  TextNode,
+  TextNode
 } from "lexical"
 import { LinkNode, AutoLinkNode } from '@lexical/link';
 

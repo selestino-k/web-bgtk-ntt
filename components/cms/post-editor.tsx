@@ -79,6 +79,8 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     "Teknologi",
     "Humas",
     "Internasional",
+    "Ramah",
+    "Pendidikan Bermutu Untuk Semua", 
     "Pengumuman",
   ]
 

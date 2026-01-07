@@ -9,7 +9,7 @@ import Link from "next/link"
 import { Prisma } from "@/lib/generated/prisma/client"
 import { Badge } from "@/components/ui/badge"
 import { JSX } from "react"
-import { DeletePostDialog } from "./delete-post-dialog"
+import { DeletePostDialog } from "@/app/admin/posts/delete-post-dialog";
 
 // Update your Post type to allow null thumbnails
 export type Post = {

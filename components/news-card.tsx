@@ -1,5 +1,4 @@
 "use client"
-import { Card } from "./ui/card";
 import Image from "next/image";
 import { User, Calendar } from "lucide-react";
 import { Badge } from "./ui/badge";
@@ -21,7 +20,7 @@ interface NewsCardProps {
 }
 
 export default function NewsCard({
-  id,
+  
   title,
   slug,
   thumbnail,

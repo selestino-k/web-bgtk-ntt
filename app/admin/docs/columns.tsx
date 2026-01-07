@@ -2,7 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
+import { Download, ExternalLink } from "lucide-react"
+import Link from "next/link"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -19,46 +20,76 @@ export type DocsPage = {
 export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: "Judul",
   },
-  
   {
     accessorKey: "description",
-    header: "Description",
+    header: "Status",
   },
-    {
+  {
     accessorKey: "fileName",
-    header: "File Name",
+    header: "Nama File",
   },
-    {
+  {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: "Dibuat Pada",
     cell: ({ row }) => {
-        const date = new Date(row.original.createdAt)
-        return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
-      },
+      const date = new Date(row.original.createdAt)
+      return date.toLocaleDateString('id-ID', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })
     },
-    {
-    accessorKey: "fileUrl",
-    header: "Download",
+  },
+  {
+    id: "actions",
+    header: "Aksi",
     cell: ({ row }) => {
-        const fileUrl = row.original.fileUrl
-        return (
+      const fileUrl = row.original.fileUrl
+      
+      // Extract Google Drive download URL
+      const getGoogleDriveDownloadUrl = (url: string) => {
+        const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
+        const match = url.match(driveRegex);
+        
+        if (match && match[1]) {
+          return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+        }
+        
+        return url;
+      };
+
+      const downloadUrl = getGoogleDriveDownloadUrl(fileUrl);
+
+      return (
+        <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
             size="sm" 
             asChild
           >
-            <a href={fileUrl} target="_blank" rel="noopener noreferrer" download>
+            <Link href={fileUrl} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Kunjungi
+            </Link>
+          </Button>
+          <Button 
+            variant="default" 
+            size="sm" 
+            asChild
+          >
+            <a href={downloadUrl} target="_blank" rel="noopener noreferrer" download>
               <Download className="mr-2 h-4 w-4" />
-              Download  
+              Unduh
             </a>
           </Button>
-        )
-      }
+        </div>
+      )
     },
-    {
+  },
+  {
     accessorKey: "postId",
-    header: "Associated Post ID",
-    },
+    header: "ID Post",
+  },
 ]

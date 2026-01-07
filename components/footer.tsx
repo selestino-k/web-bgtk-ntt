@@ -59,7 +59,10 @@ export default function Footer() {
                                 <Link href="/" className="font-semibold lg:text-xs text-xs">Pendidikan</Link>
                             </Badge>
                             <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Kabar Balai</Link>
+                                <Link href="/publikasi/berita-terkini?tag=3" className="font-semibold lg:text-xs text-xs">Kabar Balai</Link>
+                            </Badge>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
+                                <Link href="/publikasi/pengumuman" className="font-semibold lg:text-xs text-xs">Pengumuman</Link>
                             </Badge>
                         </div>
                     </div>
@@ -68,37 +71,37 @@ export default function Footer() {
                         <h3 className="lg:text-lg text-sm font-semibold text-white">Tautan Terkait</h3>
                         <ul className="space-y-2 text-xs lg:text-sm text-white">
                             <li>
-                                <Link href="/pinjam" className="hover:underline cursor-pointer">
-                                    Sistem Verifikasi Ijazah secara Elektronik (SIVIL)
+                                <Link href="https://ijazah.data.kemendikdasmen.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
+                                    Portal data Induk Ijazah
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/daftar-alat" className="hover:underline cursor-pointer">
-                                    Penomoran Ijazah Nasional (PIN)
+                                <Link href="https://pisn.kemdiktisaintek.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
+                                    Penomoran Ijazah dan Sertifikat Nasional (PISN)
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#tentang" className="hover:underline cursor-pointer" onClick={() => scrollToElement('tentang')}>
+                                <Link href="https://pddikti.kemdiktisaintek.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
                                     Pangkalan Data Pendidikan Tinggi (PDDikti)
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                                    Kementerian Riset dan Teknologi
+                                <Link href="https://kemdiktisaintek.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
+                                    Kemendiktisaintek
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
-                                    Kementerian Pendidikan Dasar dan Menengah Republik Indonesia
+                                <Link href="https://kemendikdasmen.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
+                                    Kemendikdasmen 
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                                <Link href="https://sapto.banpt.or.id/" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
                                     Sistem Akreditasi Perguruan Tinggi Online
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#stats" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
+                                <Link href="https://sinta.kemdiktisaintek.go.id/" className="hover:underline cursor-pointer" onClick={() => scrollToElement('stats')}>
                                     Sinta (Science and Technology Index)
                                 </Link>
                             </li>
@@ -124,7 +127,6 @@ export default function Footer() {
                 <div className="mt-8 pt-8  text-start text-sm text-white flex items-end justify-between space-between">
                     <div>
                         <p>© {new Date().getFullYear()} BGTK NTT</p>
-
                     </div>
                     <div className="ml-4 justify-center flex gap-4">
                         <Link href="https://www.facebook.com/balaigurupenggerakntt/" target="_blank" rel="noopener noreferrer">
@@ -135,6 +137,15 @@ export default function Footer() {
                         </Link>
                         <Link href="https://www.instagram.com/bgtkntt/" target="_blank" rel="noopener noreferrer">
                             <Instagram className="inline-block hover:cursor-pointer" />
+                        </Link>
+                        <Link href="https://www.tiktok.com/@bgtkntt" target="_blank" rel="noopener noreferrer">
+                           <Image 
+                            src="/logo/tiktok-outline-svgrepo-com.svg"
+                            alt="TikTok BGTK NTT"
+                            width={25}
+                            height={25}
+                            className="inline-block hover:cursor-pointer"
+                           />
                         </Link>
                         <Link href="https://www.youtube.com/@bgtkntt/" target="_blank" rel="noopener noreferrer">
                             <Youtube className="inline-block hover:cursor-pointer" />
