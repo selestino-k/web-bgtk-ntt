@@ -8,7 +8,6 @@ import { notFound } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
-import BeritaSidebar from "./berita-sidebar";
 
 
 type LexicalNode = {
@@ -197,12 +196,12 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
         {contentObj.root.children.map((child, index) => renderNode(child, index))}
       </div>
     )
-  } catch { 
+  } catch {
     return <p className="text-red-400">Error rendering content</p>
   }
 }
 
-export default async function BeritaTerkiniDetail({
+export default async function PengumumanDetail({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -237,8 +236,8 @@ export default async function BeritaTerkiniDetail({
 
   return (
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
-      <main className="relative z-10 gap-8 p-8 md:flex w-full">
-        <div className="text-left w-full md:w-2/3">
+      <main className="relative z-10 gap-20 p-8 md:flex w-full block">
+        <div className="text-left w-full">
           <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
             {post.title}
           </h2>
@@ -319,11 +318,6 @@ export default async function BeritaTerkiniDetail({
             </p>
           )}
         </div>
-        
-        {/* Sidebar */}
-        <aside className="w-full md:w-1/3 mt-8 md:mt-0">
-          <BeritaSidebar currentSlug={slug} />
-        </aside>
       </main>
     </div>
   );

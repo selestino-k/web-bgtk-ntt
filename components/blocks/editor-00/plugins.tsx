@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary"
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
@@ -6,7 +5,7 @@ import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin"
 import { ListPlugin } from "@lexical/react/LexicalListPlugin"
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin"
-
+import { ToolbarPlugin } from "@/components/editor/plugins/toolbar/toolbar-plugin"
 import { ContentEditable } from "@/components/editor/editor-ui/content-editable"
 import { AutoLinkPlugin } from "@/components/editor/plugins/auto-link-plugin"
 
@@ -15,8 +14,10 @@ export function Plugins({ placeholder = "Ketik di sini..." }: { placeholder?: st
   return (
     <div className="relative">
       {/* toolbar plugins */}
-      
-      <div className="relative">
+      <ToolbarPlugin>
+        {({ blockType }) => (
+          <>
+            <div className="relative">
         <RichTextPlugin
           contentEditable={
             <div className="">
@@ -29,6 +30,7 @@ export function Plugins({ placeholder = "Ketik di sini..." }: { placeholder?: st
         />
         
         {/* editor plugins */}
+        
         <HistoryPlugin />
         <AutoFocusPlugin />
         <ListPlugin />
@@ -37,8 +39,10 @@ export function Plugins({ placeholder = "Ketik di sini..." }: { placeholder?: st
         <AutoLinkPlugin />
         
         
-      </div>
-      
+            </div>
+          </>
+        )}
+      </ToolbarPlugin>
       {/* actions plugins */}
     </div>
   )

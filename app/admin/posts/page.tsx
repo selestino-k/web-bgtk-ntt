@@ -6,7 +6,19 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 
 async function getPostData() {
+  
   const posts = await prisma.post.findMany({
+    where: {
+      tags: {
+        none: {
+          tag: {
+            name: {equals: 'pengumuman',
+            mode: 'insensitive',
+            }
+          },
+        },
+      },
+    },
     orderBy: {
       createdAt: 'desc',
     },
@@ -37,12 +49,12 @@ export default async function PostsPage() {
           </h2>
         </div>
         <div className="mt-10 flex">
-          <Link href="/admin/posts/buat">
-            <Button variant="default" size="lg">
+          <Button variant="default" size="lg" asChild>
+            <Link href="/admin/posts/buat">
               <Plus className="mr-2 h-8 w-8" />
               Buat Postingan
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
         <div className="mt-6 w-full">
           <PostDataTable columns={columns} data={postData} />

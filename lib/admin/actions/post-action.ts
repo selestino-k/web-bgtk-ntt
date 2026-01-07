@@ -60,37 +60,53 @@ export async function createPost(formData: FormData) {
       thumbnailUrl = uploadResult.url || ""
     }
 
-    // Parse content as JSON
-    const contentJson = JSON.parse(content) as Prisma.InputJsonValue
+    // Process tags
+    const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean);
+    const tagConnections = [];
 
-    // Parse tags
-    const tagsArray = tags ? tags.split(",").map(t => t.trim()) : []
+    for (const tagName of tagNames) {
+      // Determine tag type based on tag name
+      const tagType = tagName.toLowerCase() === 'pengumuman' ? 'ANNOUNCEMENT' : 'CATEGORY';
+      
+      // Find or create tag with appropriate type
+      const tag = await prisma.tag.upsert({
+        where: { name: tagName },
+        update: {
+          type: tagType, // Update type if tag exists
+        },
+        create: {
+          name: tagName,
+          slug: tagName.toLowerCase().replace(/\s+/g, '-'),
+          type: tagType,
+        },
+      });
 
-    // Create post
+      tagConnections.push({
+        tagId: tag.id,
+      });
+    }
+
+    // Create post with tags
     const post = await prisma.post.create({
       data: {
         title,
         slug,
-        content: contentJson,
+        content,
         thumbnail: thumbnailUrl,
         document: document || null,
-        tags: {
-          create: tagsArray.map(tag => ({ 
-            tag: { 
-              connectOrCreate: { 
-                where: { name: tag }, 
-                create: { 
-                  name: tag,
-                  slug: tag.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
-                } 
-              } 
-            } 
-          }))
-        },
         published,
         authorId,
-        createdAt: published ? new Date() : undefined,
-      }
+        tags: {
+          create: tagConnections,
+        },
+      },
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
     })
 
     // Revalidate pages

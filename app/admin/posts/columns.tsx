@@ -46,28 +46,28 @@ type LexicalContent = {
 // Helper function to extract plain text from Lexical JSON for preview
 function extractTextFromLexical(content: Prisma.JsonValue): string {
   if (!content || typeof content !== 'object') return "No content"
-  
+
   try {
     const contentObj = content as LexicalContent
     if (!contentObj.root || !contentObj.root.children) return "No content"
-    
+
     const extractText = (node: LexicalNode): string => {
       if (!node) return ""
-      
+
       if (node.text) return node.text
-      
+
       if (node.children && Array.isArray(node.children)) {
         return node.children.map((child: LexicalNode) => extractText(child)).join("")
       }
-      
+
       return ""
     }
-    
+
     const text = contentObj.root.children
       .map((child: LexicalNode) => extractText(child))
       .join(" ")
       .trim()
-    
+
     return text || "No content"
   } catch (error) {
     return "Invalid content"
@@ -79,20 +79,20 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
   if (!content || typeof content !== 'object') {
     return <p className="text-gray-400">No content</p>
   }
-  
+
   try {
     const contentObj = content as LexicalContent
     if (!contentObj.root || !contentObj.root.children) {
       return <p className="text-gray-400">No content</p>
     }
-    
+
     const renderNode = (node: LexicalNode, index: number): JSX.Element | string => {
       if (!node) return ""
-      
+
       // Text node
       if (node.type === "text" || node.text) {
         let text = node.text || ""
-        
+
         // Handle text formatting
         if (node.format) {
           const format = node.format as number
@@ -101,10 +101,10 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           if (format & 8) text = `<u>${text}</u>` // Underline
           if (format & 16) text = `<s>${text}</s>` // Strikethrough
         }
-        
+
         return <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
       }
-      
+
       // Paragraph node
       if (node.type === "paragraph") {
         return (
@@ -113,7 +113,7 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </p>
         )
       }
-      
+
       // Heading nodes
       if (node.type === "heading") {
         const HeadingTag = (node.tag || "h2") as keyof JSX.IntrinsicElements
@@ -125,27 +125,27 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           h5: "text-base font-bold mb-2 mt-2",
           h6: "text-sm font-bold mb-2 mt-2",
         }
-        
+
         return (
           <HeadingTag key={index} className={headingClasses[node.tag as keyof typeof headingClasses] || ""}>
             {node.children?.map((child, i) => renderNode(child, i))}
           </HeadingTag>
         )
       }
-      
+
       // List nodes
       if (node.type === "list") {
         const listTag = node.tag === "ol" ? "ol" : "ul"
         const ListTag = listTag as keyof JSX.IntrinsicElements
         const listClass = listTag === "ol" ? "list-decimal ml-6 mb-4" : "list-disc ml-6 mb-4"
-        
+
         return (
           <ListTag key={index} className={listClass}>
             {node.children?.map((child, i) => renderNode(child, i))}
           </ListTag>
         )
       }
-      
+
       // List item
       if (node.type === "listitem") {
         return (
@@ -154,7 +154,7 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </li>
         )
       }
-      
+
       // Quote node
       if (node.type === "quote") {
         return (
@@ -163,7 +163,7 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </blockquote>
         )
       }
-      
+
       // Code block
       if (node.type === "code") {
         return (
@@ -172,13 +172,13 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </pre>
         )
       }
-      
+
       // Link node
       if (node.type === "link") {
         return (
-          <a 
-            key={index} 
-            href={node.url || "#"} 
+          <a
+            key={index}
+            href={node.url || "#"}
             className="text-blue-600 hover:underline"
             target="_blank"
             rel="noopener noreferrer"
@@ -187,7 +187,7 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </a>
         )
       }
-      
+
       // Default: render children if available
       if (node.children && Array.isArray(node.children)) {
         return (
@@ -196,10 +196,10 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           </span>
         )
       }
-      
+
       return <span key={index}></span>
     }
-    
+
     return (
       <div className="prose prose-sm max-w-none">
         {contentObj.root.children.map((child, index) => renderNode(child, index))}
@@ -219,7 +219,7 @@ export const columns: ColumnDef<Post>[] = [
       if (!photo) {
         return (
           <div className="flex items-center justify-center p-0 mr-5 h-auto hover:opacity-80">
-            <Image 
+            <Image
               src="/images/placeholder.svg"
               alt="No image available"
               width={80}
@@ -229,7 +229,7 @@ export const columns: ColumnDef<Post>[] = [
           </div>
         )
       }
-      
+
       return (
         <div className="flex items-center justify-center">
           <Dialog>
@@ -281,10 +281,10 @@ export const columns: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const content = row.getValue("content") as Prisma.JsonValue
       const preview = extractTextFromLexical(content)
-      const truncatedPreview = preview.length > 100 
-        ? preview.substring(0, 100) + "..." 
+      const truncatedPreview = preview.length > 100
+        ? preview.substring(0, 100) + "..."
         : preview
-      
+
       return (
         <Dialog>
           <DialogTrigger asChild>
@@ -311,11 +311,11 @@ export const columns: ColumnDef<Post>[] = [
     header: "Kategori",
     cell: ({ row }) => {
       const tags = row.original.tags
-      
+
       if (!tags || tags.length === 0) {
         return <span className="text-sm text-gray-400">No tags</span>
       }
-      
+
       return (
         <div className="flex flex-wrap gap-1">
           {tags.slice(0, 3).map((tagRelation, index) => (
@@ -366,14 +366,14 @@ export const columns: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const postId = row.original.id.toString()
       const postTitle = row.original.title
-      
+
       return (
         <div className="flex items-center gap-2">
-          <Link href={`/admin/posts/${postId}/edit`}>
-            <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/admin/posts/${postId}/edit`}>
               <Edit className="h-4 w-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <DeletePostDialog postId={postId} postTitle={postTitle} />
         </div>
       )

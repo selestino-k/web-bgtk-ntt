@@ -266,7 +266,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
                 onDelete={handleThumbnailDelete}
                 folder="posts/thumbnails"
                 disabled={isLoading}
-                label="Gambar Thumbnail *"
+                label="Gambar Thumbnail"
                 aspectRatio="video"
               />
             </CardContent>
