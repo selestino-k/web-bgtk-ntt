@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { deleteUser } from "@/lib/admin/actions/user-action"
 
 interface DeleteUserDialogProps {
   userId: string
@@ -32,17 +33,15 @@ export function DeleteUserDialog({ userId, userName }: DeleteUserDialogProps) {
     setIsDeleting(true)
 
     try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-      })
+      const result = await deleteUser({ userId })
 
-      if (!response.ok) {
-        throw new Error("Gagal menghapus pengguna")
+      if (!result.success) {
+        throw new Error(result.error || "Gagal menghapus pengguna")
       }
 
       toast({
         title: "Sukses",
-        description: "Pengguna berhasil dihapus",
+        description: result.message || "Pengguna berhasil dihapus",
       })
 
       setOpen(false)
@@ -51,7 +50,7 @@ export function DeleteUserDialog({ userId, userName }: DeleteUserDialogProps) {
       console.error("Gagal menghapus pengguna:", error)
       toast({
         title: "Error",
-        description: "Gagal menghapus pengguna",
+        description: error instanceof Error ? error.message : "Gagal menghapus pengguna",
         variant: "destructive",
       })
     } finally {

@@ -38,7 +38,6 @@ export function Plugins() {
           <>
           <div className="flex justify-items-stretch items-center px-2 space-x-1 border-b bg-secondary/50 border-border/50">
             <FontFormatToolbarPlugin />
-            
             <Separator orientation="vertical" className="mx-1 h-6" />
             <HistoryToolbarPlugin />
             <Separator orientation="vertical" className="mx-1 h-6" />

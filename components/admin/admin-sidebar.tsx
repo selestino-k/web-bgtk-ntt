@@ -42,7 +42,7 @@ const items = [
         icon: Book,
     },
     {
-        title: "Daftar Admin",
+        title: "Daftar Pengguna",
         url: "/admin/users",
         icon: User,
     }
