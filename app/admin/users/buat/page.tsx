@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { ArrowLeft, Loader2 } from "lucide-react"
-import Link from "next/link"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -104,7 +103,7 @@ export default function CreateUserPage() {
   return (
     <div className="container mx-10 py-8 space-y-6">
       <div className="grid justify-between items-center gap-6 px-2">
-         <h2 className="pb-8 text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+         <h2 className="pb-8 text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
           Buat Pengguna Baru
         </h2>
         <p className="text-muted-foreground">

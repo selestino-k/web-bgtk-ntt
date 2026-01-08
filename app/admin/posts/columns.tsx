@@ -69,7 +69,7 @@ function extractTextFromLexical(content: Prisma.JsonValue): string {
       .trim()
 
     return text || "No content"
-  } catch (error) {
+  } catch  {
     return "Invalid content"
   }
 }
@@ -276,10 +276,28 @@ export const columns: ColumnDef<Post>[] = [
     header: "Judul",
     cell: ({ row }) => {
       const title = row.getValue("title") as string
+      const truncatedTitle = title.length > 50 
+        ? title.substring(0, 50) + "..." 
+        : title
+
       return (
-        <div className="max-w-[300px]">
-          <p className="font-medium truncate">{title}</p>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" className="h-auto p-2 justify-start">
+              <div className="max-w-[300px] text-left">
+                <p className="font-medium truncate">{truncatedTitle}</p>
+              </div>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold mb-4">Judul Lengkap</DialogTitle>
+            </DialogHeader>
+            <div className="p-4">
+              <p className="text-lg font-medium leading-relaxed">{title}</p>
+            </div>
+          </DialogContent>
+        </Dialog>
       )
     },
   },
@@ -325,18 +343,36 @@ export const columns: ColumnDef<Post>[] = [
       }
 
       return (
-        <div className="flex flex-wrap gap-1">
-          {tags.slice(0, 3).map((tagRelation, index) => (
-            <Badge key={index} variant="secondary" className="text-xs">
-              {tagRelation.tag.name}
-            </Badge>
-          ))}
-          {tags.length > 3 && (
-            <Badge variant="outline" className="text-xs">
-              +{tags.length - 3}
-            </Badge>
-          )}
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" className="h-auto p-2 justify-start">
+              <div className="flex flex-wrap gap-1">
+                {tags.slice(0, 2).map((tagRelation, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {tagRelation.tag.name}
+                  </Badge>
+                ))}
+                {tags.length > 2 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{tags.length - 2}
+                  </Badge>
+                )}
+              </div>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold mb-4">Semua Kategori</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-wrap gap-2 p-4">
+              {tags.map((tagRelation, index) => (
+                <Badge key={index} variant="secondary" className="text-sm">
+                  {tagRelation.tag.name}
+                </Badge>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
       )
     },
   },
