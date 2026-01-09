@@ -15,11 +15,9 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu"
 import { SidebarUser } from "./sidebar-user"
 import Image from "next/image"
 import Link from "next/link"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/admin/actions/auth"
 
-const userData = {
-    name: "Admin BGTK NTT",
-    email: "bgtkntt@kemendikasmen.go.id"
-}
 const items = [
     {
         title: "Dashboard",
@@ -50,6 +48,13 @@ const items = [
 
 // Sidebar component with explicit background styling
 export async function AdminAppSidebar() {
+    const session = await getServerSession(authOptions);
+    
+    const userData = {
+        name: session?.user?.name || "Admin BGTK NTT",
+        email: session?.user?.email || "bgtkntt@kemendikasmen.go.id",
+        role: session?.user?.role || "Admin"
+    }
 
     return (
         <Sidebar side="left" className="bg-primary dark:bg-gray-950 text-white dark:text-white-700 border-r shadow-sm transition-all duration-300 ease-in-out">

@@ -30,6 +30,7 @@ export function SidebarUser({
   user: {
     name: string;
     email: string;
+    role?: string;
   }
 }) {
   const { isMobile } = useSidebar()
@@ -53,9 +54,10 @@ export function SidebarUser({
               <Avatar className="h-8 w-8 rounded-lg">
                 <User/>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid my-3 flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
+                {user.role && <span className="truncate text-xs opacity-70">{user.role}</span>}
               </div>
               <EllipsisVertical className="ml-auto size-4" />
             </SidebarMenuButton>

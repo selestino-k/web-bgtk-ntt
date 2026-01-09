@@ -4,13 +4,28 @@ import { PostEditor, PostData } from "@/components/cms/post-editor"
 import { createPost } from "@/lib/admin/actions/post-action"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useSession } from "next-auth/react"
+import { useEffect } from "react"
+
+
 
 export default function NewPostPage() {
   const router = useRouter()
+  const { data: session, status } = useSession()
 
-  // TODO: Get actual user ID from authentication
-  // For now, use a default UUID or create a default user
-  const DEFAULT_AUTHOR_ID = "07f15db1-8acd-4249-b72f-5fadc05c2b15" // Placeholder UUID
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in")
+    }
+  }, [status, router])
+
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
+  if (!session?.user?.id) {
+    return null
+  }
 
   const handleSave = async (data: PostData) => {
     try {
@@ -20,7 +35,7 @@ export default function NewPostPage() {
       formData.append("content", JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "false")
-      formData.append("authorId", DEFAULT_AUTHOR_ID)
+      formData.append("authorId", session.user!.id)
       
       if (data.thumbnailFile) {
         formData.append("thumbnail", data.thumbnailFile)
@@ -59,7 +74,7 @@ export default function NewPostPage() {
       formData.append("content", JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "true")
-      formData.append("authorId", DEFAULT_AUTHOR_ID)
+      formData.append("authorId", session.user!.id)
       
       if (data.thumbnailFile) {
         formData.append("thumbnail", data.thumbnailFile)

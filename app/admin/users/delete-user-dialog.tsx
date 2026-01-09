@@ -21,9 +21,14 @@ import { deleteUser } from "@/lib/admin/actions/user-action"
 interface DeleteUserDialogProps {
   userId: string
   userName: string
+  disabled?: boolean
 }
 
-export function DeleteUserDialog({ userId, userName }: DeleteUserDialogProps) {
+export function DeleteUserDialog({ 
+  userId, 
+  userName,
+  disabled = false
+}: DeleteUserDialogProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
@@ -61,7 +66,11 @@ export function DeleteUserDialog({ userId, userName }: DeleteUserDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
+        <Button 
+          variant="destructive" 
+          size="sm"
+          disabled={disabled}
+        >
           <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
@@ -78,7 +87,7 @@ export function DeleteUserDialog({ userId, userName }: DeleteUserDialogProps) {
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isDeleting}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className="bg-destructive text-white hover:bg-destructive/90"
           >
             {isDeleting ? "Menghapus..." : "Hapus"}
           </AlertDialogAction>

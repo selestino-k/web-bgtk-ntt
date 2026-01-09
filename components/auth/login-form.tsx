@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -45,15 +44,17 @@ export function LoginForm() {
         return;
       }
 
-      // Fetch user role after successful login
-      const userResponse = await fetch('/api/user/me');
-      const userData = await userResponse.json();
+      // Get session to check user role
+      const response = await fetch('/api/auth/session');
+
+      const session = await response.json();
+      console.log("User session:", session);
       
       // Refresh to get updated session
       router.refresh();
       
       // Redirect based on role
-      if (userData.role === "ADMIN") {
+      if (session?.user?.role === "Admin" || session?.user?.role === "Operator") {
         router.push("/admin");
       } else {
         router.push("/");
@@ -93,7 +94,7 @@ export function LoginForm() {
               <Input
                 id="email"
                 name="email"
-                placeholder="nama@example.com"
+                placeholder="Alamat email anda"
                 type="email"
                 required
                 autoComplete="email"
@@ -118,7 +119,7 @@ export function LoginForm() {
               <Input
                 id="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder="Password anda"
                 type="password"
                 required
                 autoComplete="current-password"
@@ -145,17 +146,7 @@ export function LoginForm() {
         </form>
       </CardContent>
 
-      <CardFooter className="flex flex-col space-y-2">
-        <div className="text-sm text-center text-muted-foreground">
-          Belum punya akun?{" "}
-          <Link 
-            href="/sign-up" 
-            className="text-primary font-medium hover:underline"
-          >
-            Daftar di sini
-          </Link>
-        </div>
-      </CardFooter>
+      
     </Card>
   );
 }

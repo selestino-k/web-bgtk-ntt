@@ -24,11 +24,10 @@ export function SignOut() {
     try {
       // Keep the dialog open while signing out
       await signOut({ 
-        callbackUrl: "/",
+        callbackUrl: "/sign-in",
         redirect: true
       })
-    } catch (error) {
-      console.error("Sign out failed:", error)
+    } catch  {
       setIsLoggingOut(false)
       setOpen(false)
     }

@@ -4,6 +4,8 @@ import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { authOptions } from "@/lib/admin/actions/auth";
+import { getServerSession } from "next-auth";
 
 async function getPostData() {
   
@@ -28,6 +30,12 @@ async function getPostData() {
           tag: true,
         },
       },
+      author: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
   });
 
@@ -39,6 +47,21 @@ async function getPostData() {
 
 export default async function PostsPage() {
   const postData = await getPostData();
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || (session.user.role !== "Admin" && session.user.role !== "Operator")) {
+    return (
+      <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+        <main className="flex flex-col gap-3 w-full">
+          <div className="flex items-center justify-center">
+            <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+              Akses Ditolak
+            </h2>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">

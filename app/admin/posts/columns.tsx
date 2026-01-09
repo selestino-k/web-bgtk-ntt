@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { JSX } from "react"
 import { DeletePostDialog } from "./delete-post-dialog"
 
-// Update your Post type to allow null thumbnails
+// Update your Post type to include author information
 export type Post = {
   id: bigint
   title: string
@@ -20,6 +20,10 @@ export type Post = {
   published: boolean
   tags: Array<{ tag: { name: string } }>
   authorId: string
+  author?: {
+    name: string | null
+    email: string | null
+  }
   createdAt: Date
   updatedAt: Date
 }
@@ -320,7 +324,7 @@ export const columns: ColumnDef<Post>[] = [
               </div>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="w-full max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold mb-4">Pratinjau Konten</DialogTitle>
             </DialogHeader>
@@ -373,6 +377,26 @@ export const columns: ColumnDef<Post>[] = [
             </div>
           </DialogContent>
         </Dialog>
+      )
+    },
+  },
+  {
+    accessorKey: "author",
+    header: "Penulis",
+    cell: ({ row }) => {
+      const author = row.original.author
+      
+      if (!author || !author.name) {
+        return <span className="text-sm text-gray-400">Unknown</span>
+      }
+
+      return (
+        <div className="flex flex-col">
+          <span className="text-sm font-medium">{author.name}</span>
+          {author.email && (
+            <span className="text-xs text-gray-500">{author.email}</span>
+          )}
+        </div>
       )
     },
   },

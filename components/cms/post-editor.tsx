@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SerializedEditorState } from "lexical"
 import { Editor } from "@/components/blocks/editor-00/editor"
 import { Button } from "@/components/ui/button"
@@ -9,11 +9,12 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { X, Loader2 } from "lucide-react"
+import { X, Loader2, ArrowLeft } from "lucide-react"
 import { ImageUploader } from "@/components/cms/image-uploader"
 import { DocumentCard } from "@/components/cms/document-card"
 import { DocumentDialog } from "@/components/cms/document-dialog"
 import { toast } from "sonner"
+import Link from "next/link"
 
 export interface PostData {
   title: string
@@ -71,6 +72,13 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     } as unknown as SerializedEditorState
   )
 
+  const isEditMode = !!initialData?.id
+
+  // Debug: Log editor state changes
+  useEffect(() => {
+    console.log('Editor state updated:', editorState)
+  }, [editorState])
+
   const availableTags = [
     "Kabar Balai",
     "Kabar Kementerian",
@@ -93,7 +101,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
   const handleTitleChange = (value: string) => {
     setTitle(value)
-    if (!isSlugManuallyEdited) {
+    if (!isSlugManuallyEdited && !isEditMode) {
       setSlug(generateSlug(value))
     }
   }
@@ -130,6 +138,27 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     toast.success('Dokumen dihapus dari daftar')
   }
 
+  const hasContent = (state: SerializedEditorState): boolean => {
+    try {
+      if (!state.root || !state.root.children) return false
+      
+      // Check if there's any non-empty content
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return state.root.children.some((child: any) => {
+        if (child.children && Array.isArray(child.children) && child.children.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return child.children.some((node: any) => {
+            return node.text && typeof node.text === 'string' && node.text.trim().length > 0
+          })
+        }
+        return false
+      })
+    } catch (error) {
+      console.error('Error validating content:', error)
+      return false
+    }
+  }
+
   const handleSave = async (publish: boolean = false) => {
     // Validation
     if (!title.trim()) {
@@ -146,6 +175,14 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       toast.error('Harap pilih setidaknya satu kategori/tag')
       return
     }
+
+    // Validate content
+    if (!hasContent(editorState)) {
+      toast.error('Konten berita wajib diisi')
+      return
+    }
+
+    console.log('Saving with content:', JSON.stringify(editorState, null, 2))
 
     const postData: PostData = {
       title,
@@ -166,6 +203,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         setIsSaving(true)
         await onSave?.(postData)
       }
+      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil disimpan')
     } catch (error) {
       console.error('Save error:', error)
       toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
@@ -180,24 +218,36 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   return (
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
-          {initialData?.id ? 'Edit Berita' : 'Buat Berita Baru'}
-        </h2>
+        <div className="flex items-center gap-4">
+          <Link href="/admin/posts">
+            <Button type="button" variant="outline" size="icon">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <h2 className="text-2xl/7 font-semibold sm:text-5xl sm:tracking-tight text-primary">
+            {isEditMode ? 'Edit Berita' : 'Buat Berita Baru'}
+          </h2>
+        </div>
         <div className="space-x-2">
+          <Link href="/admin/posts">
+            <Button type="button" variant="outline" disabled={isLoading}>
+              Batal
+            </Button>
+          </Link>
           <Button
             variant="outline"
             onClick={() => handleSave(false)}
             disabled={isLoading}
           >
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Simpan Draft
+            {isEditMode ? 'Simpan Perubahan' : 'Simpan Draft'}
           </Button>
           <Button
             onClick={() => handleSave(true)}
             disabled={isLoading}
           >
             {isPublishing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Publikasikan
+            {isEditMode ? 'Update & Publikasikan' : 'Publikasikan'}
           </Button>
         </div>
       </div>
@@ -226,9 +276,9 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
               </div>
 
               <div>
-                <Label htmlFor="slug">Slug URL (Otomatis) *</Label>
+                <Label htmlFor="slug">Slug URL {!isEditMode && '(Otomatis)'} *</Label>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Preview: /posts/{slug}
+                  Pratinjau: /posts/{slug}
                 </p>
               </div>
             </CardContent>
@@ -241,7 +291,9 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
             <CardContent>
               <Editor
                 editorSerializedState={editorState}
-                onSerializedChange={(value) => setEditorState(value)}
+                onSerializedChange={(value) => {
+                  setEditorState(value)
+                }}
               />
             </CardContent>
           </Card>
