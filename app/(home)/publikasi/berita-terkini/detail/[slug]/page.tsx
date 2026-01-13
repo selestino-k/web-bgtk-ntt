@@ -7,7 +7,6 @@ import { notFound } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
 
@@ -70,13 +69,25 @@ async function getPostBySlug(slug: string) {
 function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   console.log('Rendering content:', JSON.stringify(content, null, 2))
   
-  if (!content || typeof content !== 'object') {
-    console.log('Content is null or not an object')
+  if (!content) {
+    console.log('Content is null or undefined')
     return <p className="text-gray-400">No content</p>
   }
   
   try {
-    const contentObj = content as TipTapContent
+    // Parse content if it's a string
+    let contentObj: TipTapContent
+    
+    if (typeof content === 'string') {
+      console.log('Content is a string, parsing...')
+      contentObj = JSON.parse(content) as TipTapContent
+    } else if (typeof content === 'object' && content !== null) {
+      contentObj = content as TipTapContent
+    } else {
+      console.log('Content is neither string nor object:', typeof content)
+      return <p className="text-gray-400">Invalid content format</p>
+    }
+    
     console.log('Content object:', contentObj)
     console.log('Content type:', contentObj.type)
     console.log('Content nodes:', contentObj.content)
@@ -91,6 +102,69 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         return <span>{text}</span>
       }
 
+      // Check if there's a link mark first
+      const linkMark = marks.find(mark => mark.type === "link")
+      if (linkMark) {
+        const href = linkMark.attrs?.href as string || "#"
+        const target = linkMark.attrs?.target as string || "_blank"
+        
+        // Apply other marks to the link text
+        const otherMarks = marks.filter(mark => mark.type !== "link")
+        let className = "text-blue-600 hover:text-blue-800 hover:underline underline-offset-2 transition-colors"
+        const style: React.CSSProperties = {}
+        let styledText = text
+
+        otherMarks.forEach(mark => {
+          switch (mark.type) {
+            case "bold":
+              className += " font-bold"
+              break
+            case "italic":
+              className += " italic"
+              break
+            case "underline":
+              className += " underline"
+              break
+            case "strike":
+              styledText = `<s>${styledText}</s>`
+              break
+            case "code":
+              className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
+              break
+            case "highlight":
+              if (mark.attrs?.color) {
+                style.backgroundColor = mark.attrs.color as string
+              }
+              break
+            case "textStyle":
+              if (mark.attrs?.color) {
+                style.color = mark.attrs.color as string
+              }
+              break
+            case "subscript":
+              styledText = `<sub>${styledText}</sub>`
+              break
+            case "superscript":
+              styledText = `<sup>${styledText}</sup>`
+              break
+          }
+        })
+
+        return (
+          <a 
+            href={href}
+            className={className}
+            style={style}
+            target={target}
+            rel="noopener noreferrer"
+            dangerouslySetInnerHTML={styledText !== text ? { __html: styledText } : undefined}
+          >
+            {styledText === text ? text : undefined}
+          </a>
+        )
+      }
+
+      // Original code for non-link marks
       let styledText = text
       let className = ""
       const style: React.CSSProperties = {}
@@ -122,17 +196,6 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
               style.color = mark.attrs.color as string
             }
             break
-          case "link":
-            return (
-              <a 
-                href={mark.attrs?.href as string || "#"} 
-                className="text-blue-600 hover:underline"
-                target={mark.attrs?.target as string || "_blank"}
-                rel="noopener noreferrer"
-              >
-                {text}
-              </a>
-            )
           case "subscript":
             styledText = `<sub>${styledText}</sub>`
             break
@@ -285,49 +348,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         return <hr key={index} className="my-6 border-gray-300" />
       }
       
-      // Image
-      if (node.type === "image") {
-        const src = node.attrs?.src as string
-        const alt = node.attrs?.alt as string || ""
-        const title = node.attrs?.title as string
-        
-        if (!src) return null
-        
-        return (
-          <div key={index} className="relative w-full my-4">
-            <Image 
-              src={src}
-              alt={alt}
-              title={title}
-              width={800}
-              height={600}
-              className="max-w-full h-auto rounded-lg"
-              style={{ width: '100%', height: 'auto' }}
-            />
-          </div>
-        )
-      }
       
-      // Image upload node (custom)
-      if (node.type === "imageUpload") {
-        const src = node.attrs?.src as string
-        const alt = node.attrs?.alt as string || ""
-        
-        if (!src) return null
-        
-        return (
-          <div key={index} className="relative w-full my-4">
-            <Image 
-              src={src}
-              alt={alt}
-              width={800}
-              height={600}
-              className="max-w-full h-auto rounded-lg"
-              style={{ width: '100%', height: 'auto' }}
-            />
-          </div>
-        )
-      }
       
       // Fallback: log unhandled node types for debugging
       console.log('Unhandled node type:', node.type, node)
@@ -339,7 +360,6 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
       <div className="prose prose-sm max-w-none">
         {contentObj.content.map((child, index) => {
           const rendered = renderNode(child, index)
-          console.log('Rendered node:', child.type, rendered)
           return rendered
         })}
       </div>
