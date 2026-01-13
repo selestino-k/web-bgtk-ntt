@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useState, useEffect } from "react"
-import { SerializedEditorState } from "lexical"
-import { Editor } from "@/components/blocks/editor-00/editor"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,11 +14,17 @@ import { DocumentCard } from "@/components/cms/document-card"
 import { DocumentDialog } from "@/components/cms/document-dialog"
 import { toast } from "sonner"
 import Link from "next/link"
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
+import { Prisma } from "@/lib/generated/prisma/client"
+import { JSONContent } from "@tiptap/core"
+
+// TipTap content type
+type TipTapContent = JSONContent
 
 export interface PostData {
   title: string
   slug: string
-  content: SerializedEditorState
+  content: Prisma.JsonValue
   thumbnail: string
   thumbnailFile?: File
   tags: string[]
@@ -32,7 +37,7 @@ interface PostEditorProps {
     id?: string
     title?: string
     slug?: string
-    content?: SerializedEditorState
+    content?: Prisma.JsonValue
     thumbnail?: string
     tags?: string[]
     document?: string | null
@@ -52,32 +57,19 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   const [isSaving, setIsSaving] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const [showDocumentDialog, setShowDocumentDialog] = useState(false)
-  const [editorState, setEditorState] = useState<SerializedEditorState>(
-    initialData?.content || {
-      root: {
-        children: [{
-          children: [],
-          direction: "ltr",
-          format: "",
-          indent: 0,
-          type: "paragraph",
-          version: 1,
-        }],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    } as unknown as SerializedEditorState
+  const [editorContent, setEditorContent] = useState<TipTapContent>(
+    (initialData?.content as TipTapContent) || {
+      type: "doc",
+      content: [],
+    }
   )
 
   const isEditMode = !!initialData?.id
 
-  // Debug: Log editor state changes
+  // Debug: Log editor content changes
   useEffect(() => {
-    console.log('Editor state updated:', editorState)
-  }, [editorState])
+    console.log('Editor content updated:', editorContent)
+  }, [editorContent])
 
   const availableTags = [
     "Kabar Balai",
@@ -138,20 +130,20 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     toast.success('Dokumen dihapus dari daftar')
   }
 
-  const hasContent = (state: SerializedEditorState): boolean => {
+  const hasContent = (content: TipTapContent): boolean => {
     try {
-      if (!state.root || !state.root.children) return false
+      if (!content || !content.content || !Array.isArray(content.content)) {
+        return false
+      }
       
       // Check if there's any non-empty content
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return state.root.children.some((child: any) => {
-        if (child.children && Array.isArray(child.children) && child.children.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return child.children.some((node: any) => {
-            return node.text && typeof node.text === 'string' && node.text.trim().length > 0
-          })
+      return content.content.some((node: any) => {
+        if (node.type === "paragraph" && node.content && Array.isArray(node.content)) {
+          return node.content.some((child: any) => 
+            child.type === "text" && child.text && child.text.trim().length > 0
+          )
         }
-        return false
+        return node.content && Array.isArray(node.content) && node.content.length > 0
       })
     } catch (error) {
       console.error('Error validating content:', error)
@@ -177,17 +169,17 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     }
 
     // Validate content
-    if (!hasContent(editorState)) {
+    if (!hasContent(editorContent)) {
       toast.error('Konten berita wajib diisi')
       return
     }
 
-    console.log('Saving with content:', JSON.stringify(editorState, null, 2))
+    console.log('Saving with content:', JSON.stringify(editorContent, null, 2))
 
     const postData: PostData = {
       title,
       slug,
-      content: editorState,
+      content: editorContent as Prisma.JsonValue,
       thumbnail,
       thumbnailFile: thumbnailFile || undefined,
       tags: selectedTags,
@@ -284,16 +276,16 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
+
+          {/* Content Editor */}
+          <Card className="flex flex-col" style={{ height: '600px' }}>
+            <CardHeader className="flex-shrink-0">
               <CardTitle>Konten Berita *</CardTitle>
             </CardHeader>
-            <CardContent>
-              <Editor
-                editorSerializedState={editorState}
-                onSerializedChange={(value) => {
-                  setEditorState(value)
-                }}
+            <CardContent className="flex-1 overflow-hidden p-0">
+              <SimpleEditor 
+                initialContent={editorContent}
+                onChange={setEditorContent}
               />
             </CardContent>
           </Card>

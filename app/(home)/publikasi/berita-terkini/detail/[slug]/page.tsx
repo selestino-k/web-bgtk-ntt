@@ -7,26 +7,27 @@ import { notFound } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
 
-
-type LexicalNode = {
-  type?: string
-  text?: string
-  format?: number
-  children?: LexicalNode[]
-  tag?: string
-  url?: string
-  [key: string]: unknown
+// TipTap JSON structure types
+type TipTapMark = {
+  type: string
+  attrs?: Record<string, unknown>
 }
 
-type LexicalContent = {
-  root?: {
-    children?: LexicalNode[]
-    [key: string]: unknown
-  }
-  [key: string]: unknown
+type TipTapNode = {
+  type: string
+  attrs?: Record<string, unknown>
+  content?: TipTapNode[]
+  marks?: TipTapMark[]
+  text?: string
+}
+
+type TipTapContent = {
+  type: "doc"
+  content: TipTapNode[]
 }
 
 async function getPostBySlug(slug: string) {
@@ -65,51 +66,118 @@ async function getPostBySlug(slug: string) {
   }
 }
 
-// Helper function to render Lexical JSON as HTML
-function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
+// Helper function to render TipTap JSON as HTML
+function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
+  console.log('Rendering content:', JSON.stringify(content, null, 2))
+  
   if (!content || typeof content !== 'object') {
+    console.log('Content is null or not an object')
     return <p className="text-gray-400">No content</p>
   }
   
   try {
-    const contentObj = content as LexicalContent
-    if (!contentObj.root || !contentObj.root.children) {
+    const contentObj = content as TipTapContent
+    console.log('Content object:', contentObj)
+    console.log('Content type:', contentObj.type)
+    console.log('Content nodes:', contentObj.content)
+    
+    if (!contentObj.content || !Array.isArray(contentObj.content)) {
+      console.log('Content.content is not an array')
       return <p className="text-gray-400">No content</p>
     }
     
-    const renderNode = (node: LexicalNode, index: number): JSX.Element | string => {
-      if (!node) return ""
+    const applyMarks = (text: string, marks?: TipTapMark[]): JSX.Element => {
+      if (!marks || marks.length === 0) {
+        return <span>{text}</span>
+      }
+
+      let styledText = text
+      let className = ""
+      const style: React.CSSProperties = {}
+
+      marks.forEach(mark => {
+        switch (mark.type) {
+          case "bold":
+            styledText = `<strong>${styledText}</strong>`
+            break
+          case "italic":
+            styledText = `<em>${styledText}</em>`
+            break
+          case "underline":
+            styledText = `<u>${styledText}</u>`
+            break
+          case "strike":
+            styledText = `<s>${styledText}</s>`
+            break
+          case "code":
+            className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
+            break
+          case "highlight":
+            if (mark.attrs?.color) {
+              style.backgroundColor = mark.attrs.color as string
+            }
+            break
+          case "textStyle":
+            if (mark.attrs?.color) {
+              style.color = mark.attrs.color as string
+            }
+            break
+          case "link":
+            return (
+              <a 
+                href={mark.attrs?.href as string || "#"} 
+                className="text-blue-600 hover:underline"
+                target={mark.attrs?.target as string || "_blank"}
+                rel="noopener noreferrer"
+              >
+                {text}
+              </a>
+            )
+          case "subscript":
+            styledText = `<sub>${styledText}</sub>`
+            break
+          case "superscript":
+            styledText = `<sup>${styledText}</sup>`
+            break
+        }
+      })
+
+      return (
+        <span 
+          className={className} 
+          style={style}
+          dangerouslySetInnerHTML={{ __html: styledText }} 
+        />
+      )
+    }
+    
+    const renderNode = (node: TipTapNode, index: number): JSX.Element | null => {
+      if (!node) return null
       
       // Text node
-      if (node.type === "text" || node.text) {
-        let text = node.text || ""
-        
-        // Handle text formatting
-        if (node.format) {
-          const format = node.format as number
-          if (format & 1) text = `<strong>${text}</strong>` // Bold
-          if (format & 2) text = `<em>${text}</em>` // Italic
-          if (format & 8) text = `<u>${text}</u>` // Underline
-          if (format & 16) text = `<s>${text}</s>` // Strikethrough
-        }
-        
-        return <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
+      if (node.type === "text" && node.text) {
+        return <span key={index}>{applyMarks(node.text, node.marks)}</span>
       }
       
       // Paragraph node
       if (node.type === "paragraph") {
+        const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
         return (
-          <p key={index} className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify">
-            {node.children?.map((child, i) => renderNode(child, i))}
+          <p 
+            key={index} 
+            className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify"
+            style={{ textAlign: textAlign || "left" }}
+          >
+            {node.content?.map((child, i) => renderNode(child, i))}
           </p>
         )
       }
       
       // Heading nodes
       if (node.type === "heading") {
-        const validTags = ["h1", "h2", "h3", "h4", "h5", "h6"] as const
-        const tag = validTags.includes(node.tag as typeof validTags[number]) ? node.tag as typeof validTags[number] : "h2"
-        const HeadingTag = tag as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+        const level = (node.attrs?.level as number) || 2
+        const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
+        const HeadingTag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
         const headingClasses = {
           h1: "text-3xl font-bold mb-4 mt-6",
           h2: "text-2xl font-bold mb-3 mt-5",
@@ -120,84 +188,164 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
         }
         
         return (
-          <HeadingTag key={index} className={headingClasses[HeadingTag] || ""}>
-            {node.children?.map((child, i) => renderNode(child, i))}
+          <HeadingTag 
+            key={index} 
+            className={headingClasses[HeadingTag] || ""}
+            style={{ textAlign: textAlign || "left" }}
+          >
+            {node.content?.map((child, i) => renderNode(child, i))}
           </HeadingTag>
         )
       }
       
-      // List nodes
-      if (node.type === "list") {
-        const ListTag = (node.tag === "ol" ? "ol" : "ul") as "ol" | "ul"
-        const listClass = ListTag === "ol" ? "list-decimal ml-6 mb-4" : "list-disc ml-6 mb-4"
-        
+      // Bullet list
+      if (node.type === "bulletList") {
         return (
-          <ListTag key={index} className={listClass}>
-            {node.children?.map((child, i) => renderNode(child, i))}
-          </ListTag>
+          <ul key={index} className="list-disc ml-6 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ul>
+        )
+      }
+      
+      // Ordered list
+      if (node.type === "orderedList") {
+        return (
+          <ol key={index} className="list-decimal ml-6 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ol>
         )
       }
       
       // List item
-      if (node.type === "listitem") {
+      if (node.type === "listItem") {
         return (
           <li key={index} className="mb-1">
-            {node.children?.map((child, i) => renderNode(child, i))}
+            {node.content?.map((child, i) => renderNode(child, i))}
           </li>
         )
       }
       
-      // Quote node
-      if (node.type === "quote") {
+      // Task list
+      if (node.type === "taskList") {
+        return (
+          <ul key={index} className="space-y-2 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ul>
+        )
+      }
+      
+      // Task item
+      if (node.type === "taskItem") {
+        const checked = node.attrs?.checked as boolean || false
+        return (
+          <li key={index} className="flex items-start gap-2">
+            <input 
+              type="checkbox" 
+              checked={checked} 
+              disabled 
+              className="mt-1"
+            />
+            <div className="flex-1">
+              {node.content?.map((child, i) => renderNode(child, i))}
+            </div>
+          </li>
+        )
+      }
+      
+      // Blockquote
+      if (node.type === "blockquote") {
         return (
           <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700">
-            {node.children?.map((child, i) => renderNode(child, i))}
+            {node.content?.map((child, i) => renderNode(child, i))}
           </blockquote>
         )
       }
       
       // Code block
-      if (node.type === "code") {
+      if (node.type === "codeBlock") {
+        const language = node.attrs?.language as string | undefined
         return (
           <pre key={index} className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
-            <code>{node.children?.map((child, i) => renderNode(child, i))}</code>
+            <code className={language ? `language-${language}` : ""}>
+              {node.content?.map((child, i) => 
+                child.type === "text" ? child.text : ""
+              ).join("")}
+            </code>
           </pre>
         )
       }
       
-      // Link node
-      if (node.type === "link") {
+      // Hard break
+      if (node.type === "hardBreak") {
+        return <br key={index} />
+      }
+      
+      // Horizontal rule
+      if (node.type === "horizontalRule") {
+        return <hr key={index} className="my-6 border-gray-300" />
+      }
+      
+      // Image
+      if (node.type === "image") {
+        const src = node.attrs?.src as string
+        const alt = node.attrs?.alt as string || ""
+        const title = node.attrs?.title as string
+        
+        if (!src) return null
+        
         return (
-          <a 
-            key={index} 
-            href={(node.url as string) || "#"} 
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {node.children?.map((child, i) => renderNode(child, i))}
-          </a>
+          <div key={index} className="relative w-full my-4">
+            <Image 
+              src={src}
+              alt={alt}
+              title={title}
+              width={800}
+              height={600}
+              className="max-w-full h-auto rounded-lg"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
         )
       }
       
-      // Default: render children if available
-      if (node.children && Array.isArray(node.children)) {
+      // Image upload node (custom)
+      if (node.type === "imageUpload") {
+        const src = node.attrs?.src as string
+        const alt = node.attrs?.alt as string || ""
+        
+        if (!src) return null
+        
         return (
-          <span key={index}>
-            {node.children.map((child, i) => renderNode(child, i))}
-          </span>
+          <div key={index} className="relative w-full my-4">
+            <Image 
+              src={src}
+              alt={alt}
+              width={800}
+              height={600}
+              className="max-w-full h-auto rounded-lg"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
         )
       }
       
-      return <span key={index}></span>
+      // Fallback: log unhandled node types for debugging
+      console.log('Unhandled node type:', node.type, node)
+      
+      return null
     }
     
     return (
       <div className="prose prose-sm max-w-none">
-        {contentObj.root.children.map((child, index) => renderNode(child, index))}
+        {contentObj.content.map((child, index) => {
+          const rendered = renderNode(child, index)
+          console.log('Rendered node:', child.type, rendered)
+          return rendered
+        })}
       </div>
     )
-  } catch { 
+  } catch (error) {
+    console.error("Error rendering content:", error)
     return <p className="text-red-400">Error rendering content</p>
   }
 }
@@ -287,7 +435,7 @@ export default async function BeritaTerkiniDetail({
           )}
 
           <div className="mt-6">
-            {renderLexicalContent(post.content)}
+            {renderTipTapContent(post.content)}
           </div>
 
           {/* Download Button at Bottom */}
