@@ -9,6 +9,7 @@ import { JSX } from "react";
 import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
+import { toast } from "sonner";
 
 // TipTap JSON structure types
 type TipTapMark = {
@@ -59,44 +60,37 @@ async function getPostBySlug(slug: string) {
       ...post,
       id: post.id.toString(),
     };
-  } catch (error) {
-    console.error("Error fetching post:", error);
+  } catch {
+    toast.error("Error fetching post");
     return null;
   }
 }
 
 // Helper function to render TipTap JSON as HTML
 function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
-  console.log('Rendering content:', JSON.stringify(content, null, 2))
-  
+
   if (!content) {
-    console.log('Content is null or undefined')
     return <p className="text-gray-400">No content</p>
   }
-  
+
   try {
     // Parse content if it's a string
     let contentObj: TipTapContent
-    
+
     if (typeof content === 'string') {
-      console.log('Content is a string, parsing...')
       contentObj = JSON.parse(content) as TipTapContent
     } else if (typeof content === 'object' && content !== null) {
       contentObj = content as TipTapContent
     } else {
-      console.log('Content is neither string nor object:', typeof content)
       return <p className="text-gray-400">Invalid content format</p>
     }
-    
-    console.log('Content object:', contentObj)
-    console.log('Content type:', contentObj.type)
-    console.log('Content nodes:', contentObj.content)
-    
+
+
+
     if (!contentObj.content || !Array.isArray(contentObj.content)) {
-      console.log('Content.content is not an array')
       return <p className="text-gray-400">No content</p>
     }
-    
+
     const applyMarks = (text: string, marks?: TipTapMark[]): JSX.Element => {
       if (!marks || marks.length === 0) {
         return <span>{text}</span>
@@ -107,7 +101,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
       if (linkMark) {
         const href = linkMark.attrs?.href as string || "#"
         const target = linkMark.attrs?.target as string || "_blank"
-        
+
         // Apply other marks to the link text
         const otherMarks = marks.filter(mark => mark.type !== "link")
         let className = "text-blue-600 hover:text-blue-800 hover:underline underline-offset-2 transition-colors"
@@ -151,7 +145,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         })
 
         return (
-          <a 
+          <a
             href={href}
             className={className}
             style={style}
@@ -206,28 +200,28 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
       })
 
       return (
-        <span 
-          className={className} 
+        <span
+          className={className}
           style={style}
-          dangerouslySetInnerHTML={{ __html: styledText }} 
+          dangerouslySetInnerHTML={{ __html: styledText }}
         />
       )
     }
-    
+
     const renderNode = (node: TipTapNode, index: number): JSX.Element | null => {
       if (!node) return null
-      
+
       // Text node
       if (node.type === "text" && node.text) {
         return <span key={index}>{applyMarks(node.text, node.marks)}</span>
       }
-      
+
       // Paragraph node
       if (node.type === "paragraph") {
         const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
         return (
-          <p 
-            key={index} 
+          <p
+            key={index}
             className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify"
             style={{ textAlign: textAlign || "left" }}
           >
@@ -235,7 +229,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </p>
         )
       }
-      
+
       // Heading nodes
       if (node.type === "heading") {
         const level = (node.attrs?.level as number) || 2
@@ -249,10 +243,10 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           h5: "text-base font-bold mb-2 mt-2",
           h6: "text-sm font-bold mb-2 mt-2",
         }
-        
+
         return (
-          <HeadingTag 
-            key={index} 
+          <HeadingTag
+            key={index}
             className={headingClasses[HeadingTag] || ""}
             style={{ textAlign: textAlign || "left" }}
           >
@@ -260,7 +254,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </HeadingTag>
         )
       }
-      
+
       // Bullet list
       if (node.type === "bulletList") {
         return (
@@ -269,7 +263,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </ul>
         )
       }
-      
+
       // Ordered list
       if (node.type === "orderedList") {
         return (
@@ -278,7 +272,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </ol>
         )
       }
-      
+
       // List item
       if (node.type === "listItem") {
         return (
@@ -287,7 +281,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </li>
         )
       }
-      
+
       // Task list
       if (node.type === "taskList") {
         return (
@@ -296,16 +290,16 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </ul>
         )
       }
-      
+
       // Task item
       if (node.type === "taskItem") {
         const checked = node.attrs?.checked as boolean || false
         return (
           <li key={index} className="flex items-start gap-2">
-            <input 
-              type="checkbox" 
-              checked={checked} 
-              disabled 
+            <input
+              type="checkbox"
+              checked={checked}
+              disabled
               className="mt-1"
             />
             <div className="flex-1">
@@ -314,7 +308,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </li>
         )
       }
-      
+
       // Blockquote
       if (node.type === "blockquote") {
         return (
@@ -323,39 +317,35 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           </blockquote>
         )
       }
-      
+
       // Code block
       if (node.type === "codeBlock") {
         const language = node.attrs?.language as string | undefined
         return (
           <pre key={index} className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
             <code className={language ? `language-${language}` : ""}>
-              {node.content?.map((child, i) => 
+              {node.content?.map((child, i) =>
                 child.type === "text" ? child.text : ""
               ).join("")}
             </code>
           </pre>
         )
       }
-      
+
       // Hard break
       if (node.type === "hardBreak") {
         return <br key={index} />
       }
-      
+
       // Horizontal rule
       if (node.type === "horizontalRule") {
         return <hr key={index} className="my-6 border-gray-300" />
       }
-      
-      
-      
-      // Fallback: log unhandled node types for debugging
-      console.log('Unhandled node type:', node.type, node)
-      
+
+
       return null
     }
-    
+
     return (
       <div className="prose prose-sm max-w-none">
         {contentObj.content.map((child, index) => {
@@ -364,8 +354,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         })}
       </div>
     )
-  } catch (error) {
-    console.error("Error rendering content:", error)
+  } catch {
     return <p className="text-red-400">Error rendering content</p>
   }
 }
@@ -390,14 +379,14 @@ export default async function BeritaTerkiniDetail({
 
   const getGoogleDriveDownloadUrl = (url: string | null) => {
     if (!url) return null;
-    
+
     const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
     const match = url.match(driveRegex);
-    
+
     if (match && match[1]) {
       return `https://drive.google.com/uc?export=download&id=${match[1]}`;
     }
-    
+
     return url;
   };
 
@@ -428,7 +417,7 @@ export default async function BeritaTerkiniDetail({
               height={450}
             />
           )}
-          
+
           {/* Document Attachment Section */}
           {post.document && (
             <Card className="mb-6 border-primary/20">
@@ -483,7 +472,7 @@ export default async function BeritaTerkiniDetail({
             </p>
           )}
         </div>
-        
+
         {/* Sidebar */}
         <aside className="w-full md:w-1/3 mt-8 md:mt-0">
           <BeritaSidebar currentSlug={slug} />

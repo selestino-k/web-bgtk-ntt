@@ -51,6 +51,7 @@ export default async function EditPostPage({
     thumbnail: post.thumbnail || "",
     tags: post.tags.map((t) => t.tag.name),
     document: post.document,
+    published: post.published,
   };
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,23 +11,11 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { CodeNode } from "@lexical/code";
-import { LinkNode } from "@lexical/link";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getRoot, $insertNodes, SerializedEditorState } from "lexical";
-import { $generateNodesFromDOM } from "@lexical/html";
-import { useEffect } from "react";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { updatePost } from "@/lib/admin/actions/post-action";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { JSONContent } from "@tiptap/react";
 
 type Post = {
   id: string;
@@ -50,43 +38,6 @@ type Tag = {
   slug: string;
 };
 
-// Plugin to load initial content
-function LoadInitialContentPlugin({ content }: { content: string | null }) {
-  const [editor] = useLexicalComposerContext();
-  const isInitialized = useRef(false);
-
-  useEffect(() => {
-    if (!content || isInitialized.current) return;
-
-    try {
-      const parsedContent = JSON.parse(content);
-      editor.setEditorState(editor.parseEditorState(parsedContent));
-      isInitialized.current = true;
-    } catch (error) {
-      console.error("Gagal memuat konten:", error);
-    }
-  }, [editor, content]);
-
-  return null;
-}
-
-// Plugin to track editor changes
-function OnChangePlugin({
-  onChange,
-}: {
-  onChange: (editorState: SerializedEditorState) => void;
-}) {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      onChange(editorState.toJSON());
-    });
-  }, [editor, onChange]);
-
-  return null;
-}
-
 export default function EditPostForm({
   post,
   availableTags,
@@ -98,7 +49,7 @@ export default function EditPostForm({
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState(post.title);
-  const [thumbnail, setThumbnail] = useState(post.thumbnail || "");
+  const [thumbnail] = useState(post.thumbnail || "");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(post.thumbnail || "");
   const [published, setPublished] = useState(post.published);
@@ -106,6 +57,14 @@ export default function EditPostForm({
     post.tags.map((t) => t.tag.id.toString())
   );
   
+  // TipTap editor content state
+  const [editorContent, setEditorContent] = useState<JSONContent>(
+    (post.content as JSONContent) || {
+      type: "doc",
+      content: [],
+    }
+  );
+
   // Generate slug from title
   const generateSlug = (text: string) => {
     return text
@@ -114,27 +73,6 @@ export default function EditPostForm({
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim();
-  };
-
-  // Use ref to store editor state to avoid re-renders
-  const editorStateRef = useRef<string | null>(
-    post.content ? JSON.stringify(post.content) : null
-  );
-
-  const initialConfig = {
-    namespace: "EditPostEditor",
-    theme: {
-      paragraph: "mb-2",
-      text: {
-        bold: "font-bold",
-        italic: "italic",
-        underline: "underline",
-      },
-    },
-    onError: (error: Error) => {
-      console.error(error);
-    },
-    nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, CodeNode, LinkNode],
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,19 +87,60 @@ export default function EditPostForm({
     }
   };
 
-  const handleEditorChange = (editorState: SerializedEditorState) => {
-    editorStateRef.current = JSON.stringify(editorState);
+  const handleEditorChange = (content: JSONContent) => {
+    setEditorContent(content);
+  };
+
+  const hasContent = (content: JSONContent): boolean => {
+    try {
+      if (!content || !content.content || !Array.isArray(content.content)) {
+        return false;
+      }
+      
+      // Check if there's any non-empty content
+      return content.content.some((node) => {
+        if (node.type === "paragraph" && node.content && Array.isArray(node.content)) {
+          return node.content.some((child) => 
+            child.type === "text" && child.text && child.text.trim().length > 0
+          );
+        }
+        return node.content && Array.isArray(node.content) && node.content.length > 0;
+      });
+    } catch (error) {
+      console.error('Error validating content:', error);
+      return false;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation
+    if (!title.trim()) {
+      toast({
+        title: "Error",
+        description: "Judul wajib diisi",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!hasContent(editorContent)) {
+      toast({
+        title: "Error",
+        description: "Konten postingan wajib diisi",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("slug", generateSlug(title));
-      formData.append("content", editorStateRef.current || "{}");
+      formData.append("content", JSON.stringify(editorContent));
       formData.append("published", published.toString());
       formData.append("existingThumbnail", thumbnail);
       
@@ -210,6 +189,7 @@ export default function EditPostForm({
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
+        <h2 className="text-2xl font-semibold text-primary">Edit Postingan</h2>
       </div>
 
       <Card>
@@ -219,7 +199,7 @@ export default function EditPostForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Judul</Label>
+            <Label htmlFor="title">Judul *</Label>
             <Input
               id="title"
               value={title}
@@ -264,26 +244,15 @@ export default function EditPostForm({
           </div>
 
           <div className="space-y-2">
-            <Label>Konten</Label>
-            <LexicalComposer initialConfig={initialConfig}>
-              <div className="relative border rounded-md">
-                <RichTextPlugin
-                  contentEditable={
-                    <ContentEditable className="min-h-[300px] p-4 outline-none" />
-                  }
-                  placeholder={
-                    <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
-                      Tulis konten postingan...
-                    </div>
-                  }
-                  ErrorBoundary={LexicalErrorBoundary}
+            <Label>Konten *</Label>
+            <Card className="flex flex-col" style={{ height: '400px' }}>
+              <CardContent className="flex-1 overflow-hidden p-0">
+                <SimpleEditor 
+                  initialContent={editorContent}
+                  onChange={handleEditorChange}
                 />
-                <HistoryPlugin />
-                <AutoFocusPlugin />
-                <LoadInitialContentPlugin content={editorStateRef.current} />
-                <OnChangePlugin onChange={handleEditorChange} />
-              </div>
-            </LexicalComposer>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="flex items-center space-x-2">
