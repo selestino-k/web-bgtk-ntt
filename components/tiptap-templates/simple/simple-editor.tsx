@@ -72,7 +72,6 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -187,6 +186,7 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
   const [toolbarHeight, setToolbarHeight] = useState(0)
+  const isInitialMount = useRef(true)
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -195,7 +195,7 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
         autocomplete: "off",
         autocorrect: "off",
         autocapitalize: "off",
-        "aria-label": "Ketik isi berita di sini...",
+        "aria-label": "Main content area, start typing to enter text.",
         class: "simple-editor",
       },
     },
@@ -232,12 +232,20 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
       content: [],
     },
     onUpdate: ({ editor }) => {
-      if (onChange) {
+      if (onChange && !isInitialMount.current) {
         const json = editor.getJSON()
         onChange(json)
       }
     },
   })
+
+  // Update editor content only on initial mount
+  useEffect(() => {
+    if (editor && initialContent && isInitialMount.current) {
+      editor.commands.setContent(initialContent)
+      isInitialMount.current = false
+    }
+  }, [editor, initialContent])
 
   // Update editor content when initialContent changes
   useEffect(() => {
