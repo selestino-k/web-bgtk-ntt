@@ -60,6 +60,9 @@ export async function createPost(formData: FormData) {
       thumbnailUrl = uploadResult.url || ""
     }
 
+    // Parse content as JSON (same as updatePost)
+    const contentJson = JSON.parse(content) as Prisma.InputJsonValue
+
     // Process tags
     const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean);
     const tagConnections = [];
@@ -91,7 +94,7 @@ export async function createPost(formData: FormData) {
       data: {
         title,
         slug,
-        content,
+        content: contentJson, // Use parsed content instead of raw string
         thumbnail: thumbnailUrl,
         document: document || null,
         published,

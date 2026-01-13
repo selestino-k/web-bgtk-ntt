@@ -3,8 +3,8 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AdminModeToggle } from "@/components/admin/admin-dark-switch";
 
 export const metadata: Metadata = {
-  title: "Panel Admin CMS BGTK NTT",
-  description: "Panel Admin CMS BGTK NTT",
+  title: "Masuk | Panel Admin CMS BGTK Provinsi NTT",
+  description: "Masuk ke Panel Admin CMS BGTK Provinsi NTT",
 };
 
 export default function AuthLayout({

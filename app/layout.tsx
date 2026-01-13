@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Balai GTK NTT",
+  title: "Balai GTK Provinsi NTT",
   description: "Website Resmi Balai GTK Provinsi NTT",
 };
 

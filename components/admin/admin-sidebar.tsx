@@ -51,9 +51,9 @@ export async function AdminAppSidebar() {
     const session = await getServerSession(authOptions);
     
     const userData = {
-        name: session?.user?.name || "Admin BGTK NTT",
-        email: session?.user?.email || "bgtkntt@kemendikasmen.go.id",
-        role: session?.user?.role || "Admin"
+        name: session?.user?.name  || "Admin User",
+        email: session?.user?.email || "no-email",
+        role: session?.user?.role || "Not Assigned",
     }
 
     return (
@@ -71,7 +71,7 @@ export async function AdminAppSidebar() {
                     <SidebarGroupContent>
                         <DropdownMenu>
                         </DropdownMenu>
-                        <SidebarGroupLabel className="text-base items-center text-white dark:text-white-700 mb-5">PANEL ADMIN</SidebarGroupLabel>
+                        <SidebarGroupLabel className="text-base items-center text-white dark:text-white-700 mb-5">PANEL ADMIN CMS</SidebarGroupLabel>
                         <SidebarMenu className="space-y-3 font-semibold font-geist">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>

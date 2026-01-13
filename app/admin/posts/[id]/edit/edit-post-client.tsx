@@ -28,7 +28,7 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       const formData = new FormData()
       formData.append("title", data.title)
       formData.append("slug", data.slug)
-      formData.append("content", JSON.stringify(data.content))
+      formData.append("content", typeof data.content === 'string' ? data.content : JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "false") // Save as draft
 
@@ -54,7 +54,6 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       router.push("/admin/posts")
       router.refresh()
     } catch (error) {
-      console.error("Error saving post:", error)
       toast.error(error instanceof Error ? error.message : "Gagal menyimpan perubahan")
       throw error
     }
@@ -65,7 +64,7 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       const formData = new FormData()
       formData.append("title", data.title)
       formData.append("slug", data.slug)
-      formData.append("content", JSON.stringify(data.content))
+      formData.append("content", typeof data.content === 'string' ? data.content : JSON.stringify(data.content))
       formData.append("tags", data.tags.join(","))
       formData.append("published", "true") // Publish
 

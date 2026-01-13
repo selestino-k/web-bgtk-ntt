@@ -12,7 +12,8 @@ import { Typography } from "@tiptap/extension-typography"
 import { Highlight } from "@tiptap/extension-highlight"
 import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
-import { Selection } from "@tiptap/extensions"
+import { Link } from "@tiptap/extension-link"
+import { Underline } from "@tiptap/extension-underline"
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
@@ -140,8 +141,6 @@ const MainToolbarContent = ({
       <Spacer />
 
       {isMobile && <ToolbarSeparator />}
-
-      
     </>
   )
 }
@@ -196,18 +195,21 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
         autocomplete: "off",
         autocorrect: "off",
         autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
+        "aria-label": "Ketik isi berita di sini...",
         class: "simple-editor",
       },
     },
     extensions: [
       StarterKit.configure({
         horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
+      }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-blue-500 underline',
         },
       }),
+      Underline,
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TaskList,
@@ -217,7 +219,6 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
       Typography,
       Superscript,
       Subscript,
-      Selection,
       ImageUploadNode.configure({
         accept: "image/*",
         maxSize: MAX_FILE_SIZE,
@@ -226,7 +227,10 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content: initialContent || content,
+    content: initialContent || {
+      type: "doc",
+      content: [],
+    },
     onUpdate: ({ editor }) => {
       if (onChange) {
         const json = editor.getJSON()
@@ -234,6 +238,19 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
       }
     },
   })
+
+  // Update editor content when initialContent changes
+  useEffect(() => {
+    if (editor && initialContent) {
+      // Only update if content is different
+      const currentContent = JSON.stringify(editor.getJSON())
+      const newContent = JSON.stringify(initialContent)
+
+      if (currentContent !== newContent) {
+        editor.commands.setContent(initialContent)
+      }
+    }
+  }, [editor, initialContent])
 
   const rect = useCursorVisibility({
     editor,
@@ -245,8 +262,6 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
       setToolbarHeight(toolbarRef.current.getBoundingClientRect().height)
     }
   }, [mobileView])
-
-  
 
   return (
     <div className="simple-editor-wrapper" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

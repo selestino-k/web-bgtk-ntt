@@ -1,18 +1,21 @@
 "use client"
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 interface FeatureCardProps {
-  imageurl: string;
+  title?: string;
+  description?: string;
 }
 
-export function FeatureCard({imageurl }: FeatureCardProps) {
+export function FeatureCard({ title, description }: FeatureCardProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.08 }}
       className="flex flex-col items-center p-6 rounded-lg backdrop-blur-sm text-center shadow-lg hover:shadow-xl/20 transition-shadow duration-300 h-full border border-primary/30 dark:border-gray-700">
-        <Image src={imageurl} alt="program" width={200} height={100} />
+        <div className="mt-4">
+          <h3 className="text-2xl text-primary font-bold font-geist mb-2">{title}</h3>
+          <p className="text-gray-600 dark:text-gray-300">{description}</p>
+        </div>
     </motion.div>
   );
 }

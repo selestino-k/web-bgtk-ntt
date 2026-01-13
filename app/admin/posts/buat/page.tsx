@@ -60,7 +60,6 @@ export default function NewPostPage() {
         router.push(`/admin/posts/edit/${result.post.id}`)
       }
     } catch (error) {
-      console.error('Error saving draft:', error)
       toast.error(error instanceof Error ? error.message : 'Gagal menyimpan draft')
       throw error
     }
@@ -97,7 +96,6 @@ export default function NewPostPage() {
       
       router.push('/admin/posts')
     } catch (error) {
-      console.error('Error publishing post:', error)
       toast.error(error instanceof Error ? error.message : 'Gagal menerbitkan postingan')
       throw error
     }
