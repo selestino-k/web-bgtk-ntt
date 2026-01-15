@@ -48,8 +48,8 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
-          const carouselPhoto = await getCarouselPhotoById(resolvedParams.id)
-        
+        const carouselPhoto = await getCarouselPhotoById(resolvedParams.id)
+
         if (!carouselPhoto) {
           toast.error("Foto tidak ditemukan")
           router.push("/admin/carousel")
@@ -57,13 +57,13 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
         }
 
         setFormData({
-         caption: carouselPhoto.caption || "",
-         order: carouselPhoto.order.toString(),
-         imageUrl: carouselPhoto.imageUrl,
-         imageFile: null,
+          caption: carouselPhoto.caption || "",
+          order: carouselPhoto.order.toString(),
+          imageUrl: carouselPhoto.imageUrl,
+          imageFile: null,
         })
 
-        
+
         // Check if it's an external URL
         if (carouselPhoto.imageUrl.startsWith("http")) {
           setUseExternalUrl(true)
@@ -91,11 +91,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
   const validateImageUrl = async (url: string) => {
     setIsValidating(true)
     setImageError(false)
-    
+
     try {
       const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg']
       const hasValidExtension = validExtensions.some(ext => url.toLowerCase().includes(ext))
-      
+
       if (!hasValidExtension) {
         setImageError(true)
         toast.error("URL harus mengarah ke file gambar (jpg, png, gif, webp, dll)")
@@ -104,7 +104,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       }
 
       const response = await fetch(url, { method: 'HEAD' })
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch image')
       }
@@ -147,14 +147,14 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       toast.error("Masukkan URL terlebih dahulu")
       return
     }
-    
+
     await validateImageUrl(externalUrl)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!formData.caption || !date) {
+
+    if (!formData.order) {
       toast.error("Harap isi semua field yang wajib")
       return
     }
@@ -175,7 +175,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       const submitData = new FormData()
       submitData.append("id", resolvedParams.id)
       submitData.append("caption", formData.caption)
-      submitData.append("order", formData.order)      
+      submitData.append("order", formData.order)
 
       if (formData.imageFile) {
         submitData.append("file", formData.imageFile)
@@ -229,7 +229,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="photoName">
-                  Nama Foto <span className="text-red-500">*</span>
+                  Caption Foto (opsional)
                 </Label>
                 <Input
                   id="caption"
@@ -244,39 +244,22 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
               </div>
 
               <div className="space-y-2">
-                <Label>
-                  Tanggal Foto <span className="text-red-500">*</span>
+                <Label htmlFor="order">
+                  Urutan Tampil <span className="text-red-500">*</span>
                 </Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                      )}
-                      disabled={isSubmitting}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {date ? format(date, "PPP", { locale: id }) : "Pilih tanggal"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      defaultMonth={date}
-                      onSelect={setDate}
-                      locale={id}
-                      captionLayout={dropdown}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Input
+                  id="order"
+                  type="number"
+                  placeholder="Masukkan urutan tampil foto (angka)"
+                  value={formData.order}
+                  onChange={(e) =>
+                    setFormData(prev => ({ ...prev, order: e.target.value }))
+                  }
+                  disabled={isSubmitting}
+                  required
+                  min={1}
+                />
               </div>
-
-             
-
-             
 
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
@@ -349,7 +332,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                         <p className="text-sm text-red-700">URL gambar tidak valid atau tidak dapat diakses</p>
                       </div>
                     )}
-                    
+
                     {externalUrl && !imageError && !isValidating && (
                       <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <p className="text-xs font-medium text-gray-700 mb-2">Preview Gambar External:</p>

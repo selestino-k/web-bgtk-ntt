@@ -103,16 +103,14 @@ export default function CreateUserPage() {
   }
 
   return (
-    <div className="container mx-10 py-8 space-y-6">
-      <div className="grid justify-between items-center gap-6 px-2">
-         <h2 className="pb-8 text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
-          Buat Pengguna Baru
-        </h2>
-        <p className="text-muted-foreground">
-            Tambahkan pengguna baru ke sistem
-        </p>
-       
-      </div>
+    <div className="container mx-auto py-8 space-y-6">
+      <main className="flex flex-col gap-6 max-w-4xl mx-auto">
+        <div className="grid justify-between items-center gap-6 px-2">
+          <h2 className="text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+            Buat Pengguna Baru
+          </h2>
+        
+        </div>
       <Card>
         <CardHeader>
           <CardTitle>Informasi Pengguna</CardTitle>
@@ -299,6 +297,7 @@ export default function CreateUserPage() {
           </Form>
         </CardContent>
       </Card>
+      </main>
     </div>
   )
 }

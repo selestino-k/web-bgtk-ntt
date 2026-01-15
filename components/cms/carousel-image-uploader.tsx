@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from '@/lib/admin/actions/s3-actions'
-import { toast } from 'sonner'
-import { Upload, X, Loader2, Link2, Eye } from 'lucide-react'
-import Image from 'next/image'
+import { useState } from "react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Upload, Loader2, X, Link2, Eye } from "lucide-react"
+import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from "@/lib/admin/actions/s3-actions"
+import { toast } from "sonner"
 
 interface CarouselImageUploaderProps {
   value?: string
@@ -34,6 +34,8 @@ export function CarouselImageUploader({
 }: CarouselImageUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [uploadMode, setUploadMode] = useState<"file" | "url">("file")
+  const [externalUrl, setExternalUrl] = useState("")
   const [showUrlPreview, setShowUrlPreview] = useState(true)
 
   const handleFileUpload = async (file: File) => {
@@ -50,8 +52,8 @@ export function CarouselImageUploader({
     setIsUploading(true)
 
     try {
-      // Delete old image from S3 if exists
-      if (value) {
+      // Delete old image from S3 if exists and is S3 URL
+      if (value && value.includes('.amazonaws.com/')) {
         await deleteCarouselImageFromS3(value)
       }
 
@@ -71,17 +73,36 @@ export function CarouselImageUploader({
     }
   }
 
+  const handleExternalUrlSubmit = () => {
+    if (!externalUrl.trim()) {
+      toast.error('Harap masukkan URL gambar')
+      return
+    }
+
+    // Basic URL validation
+    try {
+      new URL(externalUrl)
+      onChange(externalUrl)
+      toast.success('URL gambar berhasil ditambahkan')
+    } catch {
+      toast.error('URL tidak valid')
+    }
+  }
+
   const handleDelete = async () => {
     if (!value) return
 
     try {
-      // Delete from S3
-      const deleteResult = await deleteCarouselImageFromS3(value)
-      if (!deleteResult.success) {
-        throw new Error(deleteResult.error || 'Gagal menghapus gambar')
+      // Delete from S3 only if it's an S3 URL
+      if (value.includes('.amazonaws.com/')) {
+        const deleteResult = await deleteCarouselImageFromS3(value)
+        if (!deleteResult.success) {
+          throw new Error(deleteResult.error || 'Gagal menghapus gambar')
+        }
       }
 
       onChange('')
+      setExternalUrl('')
       onDelete?.()
       toast.success('Gambar dihapus')
     } catch (error) {
@@ -92,7 +113,7 @@ export function CarouselImageUploader({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
-    if (!disabled) {
+    if (!disabled && uploadMode === "file") {
       setIsDragging(true)
     }
   }
@@ -106,7 +127,7 @@ export function CarouselImageUploader({
     e.preventDefault()
     setIsDragging(false)
 
-    if (disabled) return
+    if (disabled || uploadMode !== "file") return
 
     const file = e.dataTransfer.files[0]
     if (file) {
@@ -139,50 +160,108 @@ export function CarouselImageUploader({
     }
   }
 
+  const isS3Url = value?.includes('.amazonaws.com/')
+
   return (
     <div className="space-y-4">
       <Label>{label}</Label>
+
+      {/* Toggle Buttons */}
+      {!value && (
+        <div className="flex gap-2 p-1 bg-gray-100 rounded-lg w-fit">
+          <Button
+            type="button"
+            variant={uploadMode === "file" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setUploadMode("file")}
+            disabled={disabled}
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            Upload File
+          </Button>
+          <Button
+            type="button"
+            variant={uploadMode === "url" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setUploadMode("url")}
+            disabled={disabled}
+          >
+            <Link2 className="h-4 w-4 mr-2" />
+            URL Eksternal
+          </Button>
+        </div>
+      )}
       
       {!value ? (
-        <div
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-            isDragging
-              ? 'border-primary bg-primary/5'
-              : 'border-gray-300 hover:border-primary/50'
-          } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-        >
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleFileSelect}
-            className="hidden"
-            disabled={disabled || isUploading}
-          />
-          
-          <label
-            htmlFor="image-upload"
-            className="flex flex-col items-center justify-center cursor-pointer"
-          >
-            {isUploading ? (
-              <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
-            ) : (
-              <Upload className="h-12 w-12 text-gray-400 mb-4" />
-            )}
-            <p className="text-sm font-medium text-gray-700 mb-1">
-              {isUploading ? 'Mengunggah...' : 'Klik untuk unggah atau seret gambar ke sini'}
-            </p>
-            <p className="text-xs text-gray-500">
-              Maksimal {maxSizeMB}MB - Format: JPG, PNG, GIF, WebP
-            </p>
-            <p className="text-xs text-gray-500">
-              Foto wajib dalam bentuk landscape (horizontal)
-            </p>
-          </label>
-        </div>
+        <>
+          {uploadMode === "file" ? (
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                isDragging
+                  ? 'border-primary bg-primary/5'
+                  : 'border-gray-300 hover:border-primary/50'
+              } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            >
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={disabled || isUploading}
+              />
+              
+              <label
+                htmlFor="image-upload"
+                className="flex flex-col items-center justify-center cursor-pointer"
+              >
+                {isUploading ? (
+                  <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
+                ) : (
+                  <Upload className="h-12 w-12 text-gray-400 mb-4" />
+                )}
+                <p className="text-sm font-medium text-gray-700 mb-1">
+                  {isUploading ? 'Mengunggah...' : 'Klik untuk unggah atau seret gambar ke sini'}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Maksimal {maxSizeMB}MB - Format: JPG, PNG, GIF, WebP
+                </p>
+              </label>
+            </div>
+          ) : (
+            <div className="space-y-3 border-2 border-dashed rounded-lg p-6">
+              <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                <Link2 className="h-4 w-4" />
+                <span>Masukkan URL gambar eksternal</span>
+              </div>
+              <div className="space-y-2">
+                <Input
+                  value={externalUrl}
+                  onChange={(e) => setExternalUrl(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                  disabled={disabled}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleExternalUrlSubmit()
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={handleExternalUrlSubmit}
+                  disabled={disabled || !externalUrl.trim()}
+                  className="w-full"
+                >
+                  Gunakan URL Ini
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="space-y-4">
           <div className={`relative rounded-lg overflow-hidden border border-gray-200 ${getAspectClass()}`}>
@@ -207,7 +286,9 @@ export function CarouselImageUploader({
           {showUrlInput && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Label className="text-sm font-medium">URL Gambar S3</Label>
+                <Label className="text-sm font-medium">
+                  {isS3Url ? 'URL Gambar S3' : 'URL Gambar Eksternal'}
+                </Label>
                 <Button
                   type="button"
                   variant="ghost"
@@ -268,6 +349,14 @@ export function CarouselImageUploader({
             <Upload className="h-4 w-4 mr-2" />
             Ganti Gambar
           </Button>
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            className="hidden"
+            disabled={disabled || isUploading}
+          />
         </div>
       )}
     </div>

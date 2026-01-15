@@ -32,12 +32,12 @@ export async function getCarouselPhotoById(id: string) {
 
 export async function createCarouselPhoto(formData: FormData) {
   try {
-    const file = formData.get('file') as File | null;
-    const caption = formData.get('caption') as string;
+    const file = formData.get('file') as File;
+    const caption = formData.get('caption') as string | null
     const order = parseInt(formData.get('order') as string);
     const externalUrl = formData.get('externalUrl') as string | null;
 
-    if (!caption || isNaN(order)) {
+    if ((!file && !externalUrl) || isNaN(order)) {
       return { success: false, error: 'Missing required fields' };
     }
 

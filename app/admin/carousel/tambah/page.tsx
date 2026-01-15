@@ -13,9 +13,21 @@ import Link from "next/link"
 import Image from "next/image"
 import { CarouselImageUploader } from "@/components/cms/carousel-image-uploader"
 
-export default function AddPhotoPage() {
+interface AddCarouselPhotoPageProps {
+  caption : string | null
+  imageUrl : string 
+  imageFile : File | null
+  order : number 
+
+}
+
+
+
+export default function AddCarouselPhotoPage() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [imageUrl, setImageUrl] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const [useExternalUrl, setUseExternalUrl] = useState(false)
   const [externalUrl, setExternalUrl] = useState("")
   const [imageError, setImageError] = useState(false)
@@ -40,6 +52,14 @@ export default function AddPhotoPage() {
     if (useExternalUrl && url) {
       setExternalUrl(url)
     }
+  }
+
+  const handleDeleteChange = () => {
+    setFormData(prev => ({
+      ...prev,
+      imageUrl: "",
+      imageFile: null,
+    }))
   }
 
   const validateImageUrl = async (url: string) => {
@@ -159,16 +179,11 @@ export default function AddPhotoPage() {
   return (
     <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" asChild>
-            <Link href="/admin/daftar-foto">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Tambah Foto Carousel Baru</h1>
-            <p className="text-muted-foreground">Unggah foto baru untuk slideshow halaman depan</p>
-          </div>
+        <div className="grid justify-between items-center gap-6 px-2">
+         <h2 className="text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+          Tambah Carousel Photo
+        </h2>
+    
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -192,7 +207,6 @@ export default function AddPhotoPage() {
                     setFormData(prev => ({ ...prev, caption: e.target.value }))
                   }
                   disabled={isSubmitting}
-                  required
                 />
               </div>
 
@@ -220,97 +234,14 @@ export default function AddPhotoPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Label>Sumber Gambar Carousel <span className="text-red-500">*</span></Label>
-                  <Button
-                    type="button"
-                    variant={useExternalUrl ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => {
-                      setUseExternalUrl(!useExternalUrl)
-                      setExternalUrl("")
-                      setImageError(false)
-                      setFormData(prev => ({ ...prev, imageUrl: "", imageFile: null }))
-                    }}
-                    disabled={isSubmitting}
-                  >
-                    {useExternalUrl ? <ImageIcon className="h-4 w-4 mr-2" /> : <Link2 className="h-4 w-4 mr-2" />}
-                    {useExternalUrl ? "Gunakan Upload" : "Gunakan URL Eksternal"}
-                  </Button>
+                
                 </div>
-                {!useExternalUrl ? (
-                  <CarouselImageUploader
-                    value={formData.imageUrl}
-                    onChange={handleImageChange}
-                    folder="slideshow"
-                    maxSizeMB={10}
-                    disabled={isSubmitting}
-                    showUrlInput={false}
-                    label="Upload Foto"
-                    aspectRatio="auto"
-                  />
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <Link2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                        <Input
-                          placeholder="https://example.com/image.jpg"
-                          value={externalUrl}
-                          onChange={(e) => handleExternalUrlChange(e.target.value)}
-                          className={`pl-9 ${imageError ? 'border-red-500' : ''}`}
-                          disabled={isSubmitting || isValidating}
-                        />
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleValidateUrl}
-                        disabled={!externalUrl || isSubmitting || isValidating}
-                      >
-                        {isValidating ? (
-                          <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            Validasi...
-                          </>
-                        ) : (
-                          <>
-                            <ImageIcon className="h-4 w-4 mr-2" />
-                            Validasi
-                          </>
-                        )}
-                      </Button>
-                    </div>
-
-                    {imageError && (
-                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-md">
-                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
-                        <p className="text-sm text-red-700">URL gambar tidak valid atau tidak dapat diakses</p>
-                      </div>
-                    )}
-                    
-                    {externalUrl && !imageError && !isValidating && (
-                      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <p className="text-xs font-medium text-gray-700 mb-2">Preview Gambar External:</p>
-                        <div className="relative w-full h-64 rounded-md overflow-hidden bg-white">
-                          <Image
-                            src={externalUrl}
-                            alt="External URL Preview"
-                            fill
-                            className="object-contain"
-                            unoptimized
-                            onError={() => {
-                              setImageError(true)
-                              toast.error("Gagal memuat gambar dari URL")
-                            }}
-                            onLoad={() => {
-                              setImageError(false)
-                            }}
-                          />
-                        </div>
-                        <p className="text-xs text-gray-500 mt-2 break-all">{externalUrl}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                <CarouselImageUploader
+                  value={formData.imageUrl}
+                  onChange={handleImageChange}
+                  onDelete={handleDeleteChange}
+                  aspectRatio="video"
+                />
               </div>
 
               <div className="flex items-center gap-4 pt-4">

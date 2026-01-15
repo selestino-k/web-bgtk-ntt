@@ -92,7 +92,13 @@ export const columns: ColumnDef<CarouselPhoto>[] = [
     accessorKey: "caption",
     header: "Caption",
     cell: ({ row }) => {
-      const title = row.getValue("caption") as string
+      const title = row.getValue("caption") as string | null
+      
+      // Handle null or empty caption
+      if (!title) {
+        return <span className="text-sm text-muted-foreground italic">Tidak ada caption</span>
+      }
+      
       const truncatedTitle = title.length > 50 
         ? title.substring(0, 50) + "..." 
         : title
