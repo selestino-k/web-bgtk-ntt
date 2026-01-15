@@ -62,7 +62,7 @@ export async function AdminAppSidebar() {
     }
 
     return (
-        <Sidebar side="left" className="bg-primary dark:bg-gray-950 text-white dark:text-white-700 border-r shadow-sm transition-all duration-300 ease-in-out">
+        <Sidebar side="left" className="bg-primary dark:bg-gray-950 text-white dark:text-white-700 font-montserrat border-r shadow-sm transition-all duration-300 ease-in-out">
             <SidebarHeader className="bg-primary dark:bg-gray-950">
                 <div className="pl-2 py-2">
                 <Link href="/" className="flex items-center gap-2" prefetch={false}>
@@ -76,8 +76,8 @@ export async function AdminAppSidebar() {
                     <SidebarGroupContent>
                         <DropdownMenu>
                         </DropdownMenu>
-                        <SidebarGroupLabel className="text-base items-center text-white dark:text-white-700 mb-5">PANEL ADMIN CMS</SidebarGroupLabel>
-                        <SidebarMenu className="space-y-3 font-semibold font-geist">
+                        <SidebarGroupLabel className="text-base font-bold items-center text-white dark:text-white-700 mb-5">PANEL ADMIN CMS</SidebarGroupLabel>
+                        <SidebarMenu className="space-y-3 font-medium ">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>

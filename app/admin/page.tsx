@@ -55,28 +55,28 @@ export default async function AdminPage() {
                     <div className="mt-5 flex ">
                         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Total Postingan</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Postingan</h4>
                                 <h2 className="text-3xl font-bold">
                                     <Newspaper className="inline-block mr-2 h-6 w-6 text-primary" />
                                     {dashboardData.totalPosts}
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Jumlah Media</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Media</h4>
                                 <h2 className="text-3xl font-bold">
                                     <ImagePlay className="inline-block mr-2 h-6 w-6 text-primary" />
                                     {dashboardData.totalMedia}
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Jumlah Dokumen</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Dokumen</h4>
                                 <h2 className="text-3xl font-bold">
                                     <Book className="inline-block mr-2 h-6 w-6 text-primary" />
                                     {dashboardData.totalDocuments}
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Total Admin</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Admin</h4>
                                 <h2 className="text-3xl font-bold">
                                     <User className="inline-block mr-2 h-6 w-6 text-primary" />
                                     {dashboardData.totalAdmins}
@@ -90,25 +90,25 @@ export default async function AdminPage() {
                     <div className="mt-5 flex ">
                         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Kunjungan Hari Ini</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Hari Ini</h4>
                                 <h2 className="text-3xl font-bold">
                                     150
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Kunjungan Bulan Ini</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Bulan Ini</h4>
                                 <h2 className="text-3xl font-bold">
                                     4.500
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Kunjungan Tahun Ini</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Tahun Ini</h4>
                                 <h2 className="text-3xl font-bold">
                                     54.000
                                 </h2>
                             </div>
                             <div>
-                                <h4 className="text-lg text-muted-foreground">Total Kunjungan</h4>
+                                <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Kunjungan</h4>
                                 <h2 className="text-3xl font-bold">
                                     1.200.000
                                 </h2>

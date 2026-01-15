@@ -96,7 +96,7 @@ export default async function Home() {
         <div id="program" className="flex relative w-full max-w-7xl items-center mb-10">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
+              <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
                 Program Prioritas
               </h2>
             </div>
@@ -109,7 +109,7 @@ export default async function Home() {
         <div id="berita" className="hidden sm:flex items-center relative mb-10w-full">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
+              <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
                 Berita Terkini
               </h2>
             </div>

@@ -43,7 +43,7 @@ export default async function BeritaSidebar({ currentSlug }: { currentSlug: stri
   return (
     <Card className="sticky top-24">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-primary">
+        <CardTitle className="text-2xl font-semibold font-montserrat text-primary">
           Berita Terbaru
         </CardTitle>
       </CardHeader>

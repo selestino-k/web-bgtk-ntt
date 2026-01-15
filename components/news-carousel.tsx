@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import Image from "next/image"
 import { User, Calendar } from "lucide-react"
@@ -14,11 +15,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { Prisma } from "@/lib/generated/prisma/browser"
 
 type NewsPost = {
   id: string;
   title: string;
   slug: string;
+  content : Prisma.JsonValue;
   thumbnail: string | null;
   createdAt: Date;
   author?: {
@@ -34,6 +37,43 @@ type NewsPost = {
 
 interface NewsCarouselProps {
   initialPosts?: NewsPost[];
+}
+
+function extractTextFromContent(content: Prisma.JsonValue): string {
+  if (!content) return "No content"
+  
+  try {
+    let contentObj: any
+    
+    if (typeof content === 'string') {
+      contentObj = JSON.parse(content)
+    } else {
+      contentObj = content
+    }
+    
+    if (!contentObj.content || !Array.isArray(contentObj.content)) {
+      return "No content"
+    }
+    
+    const extractText = (node: any): string => {
+      if (node.type === 'text' && node.text) {
+        return node.text
+      }
+      
+      if (node.content && Array.isArray(node.content)) {
+        return node.content.map(extractText).join(' ')
+      }
+      
+      return ''
+    }
+    
+    const fullText = contentObj.content.map(extractText).join(' ').trim()
+
+    return fullText || "No content"
+  } catch (error) {
+    console.error('Error extracting text:', error)
+    return "Error reading content"
+  }
 }
 
 export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
@@ -158,9 +198,12 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                             </span>
                           </div>
 
-                          <h3 className="text-base font-bold mb-3 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
+                          <h3 className="text-base font-montserrat font-bold mb-3 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
                             {post.title}
                           </h3>
+                          <p className="text-sm text-gray-600 flex-1 font-inter mb-4 line-clamp-3">
+                            {extractTextFromContent(post.content)}...
+                          </p>
                           
                           <div className="flex flex-wrap gap-1 mt-auto">
                             {post.tags.slice(0, 2).map((tagRelation) => (

@@ -9,11 +9,11 @@ import { ModeToggle } from "./dark-switch";
 export default function Footer() {
     return (
         <footer className="bg-primary w-full dark:bg-gray-950/80">
-            <div className="container mx-auto px-4 py-12 md:px-6 max-w-7xl font-inter">
+            <div className="container mx-auto px-4 py-12 md:px-6 max-w-7xl font-montserrat">
                 <div className="grid sm:grid-cols-1 gap-8 md:grid-cols-3 place-items-center md:place-items-start">
 
                     <div className="space-y-4 text-center md:text-left">
-                        <h2 className="lg:text-lg text-sm font-bold text-white font-inter">Hubungi Kami</h2>
+                        <h2 className="lg:text-xl text-sm font-bold text-white">Hubungi Kami</h2>
                         <div className="space-y-3 text-xs lg:text-sm text-white">
                             <div className="flex items-start sm:text-left">
                                 <MapPin className="mr-2 h-5 w-5 shrink-0 text-secondary dark:text-primary" />
@@ -38,7 +38,7 @@ export default function Footer() {
 
 
                     <div className="space-y-4 text-center md:text-left mb-10 md:mb-0">
-                        <h3 className="lg:text-lg text-sm font-semibold text-white">Tag Berita</h3>
+                        <h3 className="lg:text-xl text-sm font-bold text-white">Tag Berita</h3>
                         <div className="flex w-full flex-wrap gap-2 h-5 md:h-20 px-3">
                             <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
                                 <Link href="/" className="font-semibold font-geist lg:text-xs text-xs">Kabar Kementerian</Link>
@@ -68,7 +68,7 @@ export default function Footer() {
                     </div>
 
                     <div className="space-y-4 text-center md:text-left">
-                        <h3 className="lg:text-lg text-sm font-semibold text-white">Tautan Terkait</h3>
+                        <h3 className="lg:text-xl text-sm font-bold text-white">Tautan Terkait</h3>
                         <ul className="space-y-2 text-xs lg:text-sm text-white">
                             <li>
                                 <Link href="https://ijazah.data.kemendikdasmen.go.id/" className="hover:underline cursor-pointer" target="_blank" rel="noopener noreferrer">
