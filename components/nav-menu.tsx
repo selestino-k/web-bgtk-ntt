@@ -18,9 +18,9 @@ export default function NavMenu() {
 
   return (
     <NavigationMenu viewport={isMobile} className="text-black dark:text-white">
-      <NavigationMenuList className="flex-wrap font-geist gap-6">
+      <NavigationMenuList className="flex-wrap font-montserrat gap-6">
         <NavigationMenuItem className="hidden md:block ">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Profil</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Profil</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -50,7 +50,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Publikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Publikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -71,7 +71,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">ULT</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">ULT</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -116,7 +116,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem> */}
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -143,7 +143,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Lainnya</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Lainnya</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>

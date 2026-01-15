@@ -2,8 +2,8 @@ import MobileNewsCarousel from "@/components/mobile-news-carousel";
 import { PrescenceMotion } from "@/components/motion/presence-motion";
 import NewsCarousel from "@/components/news-carousel";
 import ProgramCardList from "@/components/program-card";
-import Image from "next/image";
 import prisma from "@/lib/prisma";
+import { HomeCarousel } from "@/components/home-carousel";
 
 async function getLatestPosts() {
   try {
@@ -44,30 +44,48 @@ async function getLatestPosts() {
   }
 }
 
+async function getCarouselPhotos() {
+  try {
+    const photos = await prisma.carouselPhoto.findMany({
+      orderBy: {
+        order: 'asc',
+      },
+    });
+
+    return photos;
+  } catch (error) {
+    console.error("Error fetching carousel photos:", error);
+    return [];
+  }
+}
+
 export default async function Home() {
   const latestPosts = await getLatestPosts();
+  const carouselPhotos = await getCarouselPhotos();
 
   return (
-    <div className="grid w-full justify-items-center min-h-dvh overflow-hidden">
+    <div className="grid w-full min-h-dvh overflow-hidden gap-10 justify-items-center">
       <PrescenceMotion>
         <div id="home" className="relative z-10 flex justify-center h-screen w-screen">
           <div className="absolute inset-0 z-10">
-            <Image
-              src="/images/intro-web.png"
-              alt="Banner Balai GTK NTT"
-              fill
-              className="object-cover opacity-70 xs:opacity-90"
-              priority
-            />
+            <HomeCarousel photos={carouselPhotos} />
           </div>
-          <main className="z-10 flex flex-1 flex-col content-around mt-30 text-center px-4">
-            <h1 className="lg:text-8xl text-5xl sm:text-wrap text-primary font-bold xs:text-xs font-geist">
-              Selamat Datang
+          <main className="z-10 flex flex-col w-full justify-center text-justify justify-items-start items-start h-screen px-10 mt-35 pb-10">
+            <h1 className="lg:text-9xl text-5xl sm:text-wrap text-white font-semibold xs:text-xs font-geist">
+              Selamat 
             </h1>
-            <p className="mt-3 lg:text-2xl text-md font-medium font-inter dark:text-black">
-              di Situs Web Resmi Balai Guru dan Tenaga Kependidikan
+             <h1 className="lg:text-9xl text-5xl sm:text-wrap text-white font-semibold xs:text-xs font-geist">
+              Datang
+            </h1>
+
+           
+            <p className="mt-5 lg:text-4xl text-md font-semibold font-montserrat text-white">
+              di Situs Web Resmi
             </p>
-            <p className="text-md lg:text-xl font-medium font-inter dark:text-black">
+              <p className="mt-3 lg:text-4xl text-md font-semibold font-montserrat text-white">
+              Balai Guru dan Tenaga Kependidikan
+            </p>
+            <p className="text-md lg:text-4xl font-semibold font-montserrat text-white">
               Provinsi Nusa Tenggara Timur
             </p>
           </main>
@@ -75,7 +93,7 @@ export default async function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="program" className="flex relative w-full max-w-7xl">
+        <div id="program" className="flex relative w-full max-w-7xl items-center mb-10">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
               <h2 className="text-2xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">

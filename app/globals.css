@@ -21,6 +21,7 @@ html, body {
   --font-inter: Inter, sans-serif;
   --font-geist: Geist, sans-serif;
   --font-redhat-display: Red Hat Display, sans-serif;
+  --font-montserrat: Montserrat , sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -62,6 +63,7 @@ html, body {
   --font-inter: var(--font-inter);
   --font-geist: var(--font-geist-sans);
   --font-redhat-display: var(--font-redhat-display);
+  --font-montserrat : var(--font-montserrat);
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
