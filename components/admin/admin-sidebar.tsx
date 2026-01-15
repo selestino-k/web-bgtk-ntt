@@ -1,4 +1,4 @@
-import { Newspaper, ChartPie, Megaphone, Book, User } from "lucide-react"
+import { Newspaper, ChartPie, Megaphone, Book, User, ImagePlay } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -38,6 +38,11 @@ const items = [
         title: "Dokumen",
         url: "/admin/docs",
         icon: Book,
+    },
+    {
+        title: "Carousel",
+        url: "/admin/carousel",
+        icon: ImagePlay,
     },
     {
         title: "Daftar Pengguna",

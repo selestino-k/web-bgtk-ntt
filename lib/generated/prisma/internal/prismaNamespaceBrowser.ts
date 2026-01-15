@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Post: 'Post',
   Tag: 'Tag',
-  PostTag: 'PostTag'
+  PostTag: 'PostTag',
+  CarouselPhoto: 'CarouselPhoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -120,6 +121,17 @@ export const PostTagScalarFieldEnum = {
 } as const
 
 export type PostTagScalarFieldEnum = (typeof PostTagScalarFieldEnum)[keyof typeof PostTagScalarFieldEnum]
+
+
+export const CarouselPhotoScalarFieldEnum = {
+  id: 'id',
+  imageUrl: 'imageUrl',
+  caption: 'caption',
+  order: 'order',
+  createdAt: 'createdAt'
+} as const
+
+export type CarouselPhotoScalarFieldEnum = (typeof CarouselPhotoScalarFieldEnum)[keyof typeof CarouselPhotoScalarFieldEnum]
 
 
 export const SortOrder = {

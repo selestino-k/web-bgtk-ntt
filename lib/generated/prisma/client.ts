@@ -59,3 +59,8 @@ export type Tag = Prisma.TagModel
  * 
  */
 export type PostTag = Prisma.PostTagModel
+/**
+ * Model CarouselPhoto
+ * 
+ */
+export type CarouselPhoto = Prisma.CarouselPhotoModel

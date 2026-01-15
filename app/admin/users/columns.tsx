@@ -7,7 +7,6 @@ import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Role } from "@/lib/generated/prisma/client"
 import { DeleteUserDialog } from "./delete-user-dialog"
-import { RowData } from "@tanstack/react-table"
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData> {
@@ -36,8 +35,19 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: "Nama",
-    cell: ({ row }) => {
+
+    cell: ({ row, table }) => {
+      const currentUserId = table.options.meta?.currentUserId
+      // Add (Anda) if the name belongs to the current user
+      const userId = row.original.id
+      const isCurrentUser = userId === currentUserId
+      if (isCurrentUser) {
+        return <span className="font-medium">{row.getValue("name")} (Anda)</span>
+      }
+
+
       return <span className="font-medium">{row.getValue("name")}</span>
+
     },
   },
   {

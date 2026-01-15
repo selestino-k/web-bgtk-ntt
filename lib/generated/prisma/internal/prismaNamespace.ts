@@ -387,7 +387,8 @@ export const ModelName = {
   User: 'User',
   Post: 'Post',
   Tag: 'Tag',
-  PostTag: 'PostTag'
+  PostTag: 'PostTag',
+  CarouselPhoto: 'CarouselPhoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post" | "tag" | "postTag"
+    modelProps: "user" | "post" | "tag" | "postTag" | "carouselPhoto"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CarouselPhoto: {
+      payload: Prisma.$CarouselPhotoPayload<ExtArgs>
+      fields: Prisma.CarouselPhotoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CarouselPhotoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CarouselPhotoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        findFirst: {
+          args: Prisma.CarouselPhotoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CarouselPhotoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        findMany: {
+          args: Prisma.CarouselPhotoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>[]
+        }
+        create: {
+          args: Prisma.CarouselPhotoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        createMany: {
+          args: Prisma.CarouselPhotoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CarouselPhotoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>[]
+        }
+        delete: {
+          args: Prisma.CarouselPhotoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        update: {
+          args: Prisma.CarouselPhotoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        deleteMany: {
+          args: Prisma.CarouselPhotoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CarouselPhotoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CarouselPhotoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>[]
+        }
+        upsert: {
+          args: Prisma.CarouselPhotoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarouselPhotoPayload>
+        }
+        aggregate: {
+          args: Prisma.CarouselPhotoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCarouselPhoto>
+        }
+        groupBy: {
+          args: Prisma.CarouselPhotoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CarouselPhotoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CarouselPhotoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CarouselPhotoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -789,6 +864,17 @@ export const PostTagScalarFieldEnum = {
 } as const
 
 export type PostTagScalarFieldEnum = (typeof PostTagScalarFieldEnum)[keyof typeof PostTagScalarFieldEnum]
+
+
+export const CarouselPhotoScalarFieldEnum = {
+  id: 'id',
+  imageUrl: 'imageUrl',
+  caption: 'caption',
+  order: 'order',
+  createdAt: 'createdAt'
+} as const
+
+export type CarouselPhotoScalarFieldEnum = (typeof CarouselPhotoScalarFieldEnum)[keyof typeof CarouselPhotoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1054,6 +1140,7 @@ export type GlobalOmitConfig = {
   post?: Prisma.PostOmit
   tag?: Prisma.TagOmit
   postTag?: Prisma.PostTagOmit
+  carouselPhoto?: Prisma.CarouselPhotoOmit
 }
 
 /* Types for Logging */

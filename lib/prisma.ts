@@ -13,8 +13,8 @@ const globalForPool = globalThis as unknown as {
 const pool = globalForPool.pool ?? new Pool({ 
   connectionString,
   max: 10, // Maximum number of connections in the pool
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  // idleTimeoutMillis: 30000,
+  // connectionTimeoutMillis: 2000,
 })
 
 if (process.env.NODE_ENV !== 'production') globalForPool.pool = pool

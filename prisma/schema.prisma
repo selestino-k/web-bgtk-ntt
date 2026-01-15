@@ -61,6 +61,16 @@ model PostTag {
   @@map("post_tag")
 }
 
+model CarouselPhoto {
+  id        BigInt   @id @default(autoincrement())
+  imageUrl  String   @db.VarChar(500)
+  caption   String?  @db.VarChar(255)
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("carousel_photo")
+}
+
 enum Role {
   Admin
   Operator
