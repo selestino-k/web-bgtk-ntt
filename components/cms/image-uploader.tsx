@@ -169,10 +169,10 @@ export function ImageUploader({
 
       {/* Toggle Buttons */}
       {!value && (
-        <div className="flex gap-2 p-1 bg-gray-100 rounded-lg w-fit">
+        <div className="flex gap-2 p-1 rounded-lg w-fit">
           <Button
             type="button"
-            variant={uploadMode === "file" ? "default" : "ghost"}
+            variant={uploadMode === "file" ? "default" : "secondary"}
             size="sm"
             onClick={() => setUploadMode("file")}
             disabled={disabled}
@@ -182,7 +182,7 @@ export function ImageUploader({
           </Button>
           <Button
             type="button"
-            variant={uploadMode === "url" ? "default" : "ghost"}
+            variant={uploadMode === "url" ? "default" : "secondary"}
             size="sm"
             onClick={() => setUploadMode("url")}
             disabled={disabled}

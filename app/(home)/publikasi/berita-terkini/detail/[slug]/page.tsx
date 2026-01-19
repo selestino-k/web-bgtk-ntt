@@ -1,4 +1,4 @@
-import { User, Calendar, Download, FileText } from "lucide-react";
+import { User, Calendar, Download, FileText, Timer, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +10,9 @@ import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
 import { toast } from "sonner";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb";
+import { ReportView } from "@/components/view-counter";
+import { Redis } from "@upstash/redis";
 
 // TipTap JSON structure types
 type TipTapMark = {
@@ -392,14 +395,57 @@ export default async function BeritaTerkiniDetail({
 
   const downloadUrl = getGoogleDriveDownloadUrl(post.document);
 
+  const postTitleTruncated = post.title.length > 50 ? post.title.slice(0, 47) + "..." : post.title;
+
+
+  function calculateReadTime(content: string) {
+    const wordsPerMinute = 200;
+
+    // Remove HTML tags and split by whitespace
+    const text = content.replace(/<[^>]*>/g, '');
+    const wordCount = text.split(/\s+/).length;
+
+    const readingTime = Math.ceil(wordCount / wordsPerMinute);
+    return `${readingTime} menit baca`;
+  }
+
+  const redis = Redis.fromEnv();
+  const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
+  
+
+
+
   return (
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
-        <div className="text-left w-full md:w-2/3">
+        <div className="text-left w-full md:w-3/4 md:pr-8">
+          <Breadcrumb className="mb-4 font-geist text-gray-600">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Beranda</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/publikasi/berita-terkini">Berita Terkini</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{postTitleTruncated}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </Breadcrumb>
           <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
             {post.title}
           </h2>
-          <div className="mb-4 text-sm text-gray-500 flex space-x-4">
+          <div className="mb-6 text-sm text-gray-500 flex space-x-4">
             <span className="flex items-center space-x-1">
               <User className="h-4 w-4 mr-1" />
               <span>{post.author?.name || "Admin"}</span>
@@ -407,6 +453,15 @@ export default async function BeritaTerkiniDetail({
             <span className="flex items-center space-x-1">
               <Calendar className="h-4 w-4 mr-1" />
               <span>{formattedDate}</span>
+            </span>
+            <span className="flex items-center space-x-1">
+              <Timer className="h-4 w-4 mr-1" />
+              <span>{calculateReadTime(typeof post.content === 'string' ? post.content : JSON.stringify(post.content))}</span>
+            </span>
+            <span className="flex items-center space-x-1">
+              <Eye className="h-4 w-4 mr-1" />
+              <ReportView slug={post.slug} />
+              <span id="view-count">{viewCount}x dilihat</span>
             </span>
           </div>
           {post.thumbnail && (
@@ -474,7 +529,7 @@ export default async function BeritaTerkiniDetail({
         </div>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-1/3 mt-8 md:mt-0">
+        <aside className="w-full md:w-1/4 mt-8 md:mt-0">
           <BeritaSidebar currentSlug={slug} />
         </aside>
       </main>

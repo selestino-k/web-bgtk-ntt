@@ -40,8 +40,7 @@ async function getLatestPosts() {
         tag: tagRelation.tag,
       })),
     }));
-  } catch (error) {
-    console.error("Error fetching posts:", error);
+  } catch  {
     return [];
   }
 }
@@ -55,8 +54,7 @@ async function getCarouselPhotos() {
     });
 
     return photos;
-  } catch (error) {
-    console.error("Error fetching carousel photos:", error);
+  } catch  {
     return [];
   }
 }
@@ -72,7 +70,7 @@ export default async function Home() {
           <div className="absolute inset-0 z-10">
             <HomeCarousel photos={carouselPhotos} />
           </div>
-          <main className="z-10 flex flex-col w-full justify-center text-justify justify-items-center items-center h-screen px-10 pb-10">
+          <main className="z-10 flex flex-col w-full justify-center text-justify justify-items-center items-center h-screen mt-15 px-10 pb-10">
             <h1 className="lg:text-8xl text-4xl sm:text-wrap text-white font-semibold xs:text-xs font-geist">
               Selamat Datang
             </h1>
@@ -103,7 +101,7 @@ export default async function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="sambutan" className="flex relative w-full max-w-7xl items-center mb-5 min-h-dvh">
+        <div id="sambutan" className="flex relative w-full max-w-7xl items-center mb-10">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center"> 
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-10">
@@ -133,7 +131,7 @@ export default async function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="berita" className="hidden sm:flex items-center relative mb-10 w-full min-h-dvh max-w-7xl">
+        <div id="berita" className="hidden sm:flex items-center relative mb-10 w-full max-w-7xl">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center">
               <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
@@ -157,6 +155,7 @@ export default async function Home() {
           </main>
         </div>
       </PrescenceMotion>
+
     </div>
   );
 }
