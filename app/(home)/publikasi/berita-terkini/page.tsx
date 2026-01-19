@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import NewsCard from "@/components/news-card";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import Link from "next/link";
 import { TagType } from "@/lib/generated/prisma/client";
+import NewsListWithPagination from "@/components/news-card";
 
 export const metadata: Metadata = {
     title: "Berita Terkini",
@@ -110,7 +110,7 @@ export default async function BeritaTerkini({
                             <Button 
                                 variant={!tagId ? "default" : "outline"} 
                                 size="sm"
-                                className="w-full"
+                                className="w-full rounded-full font-montserrat font-semibold"
                             >
                                 Semua
                             </Button>
@@ -123,7 +123,7 @@ export default async function BeritaTerkini({
                                 <Button 
                                     variant={tagId === tag.id ? "default" : "outline"} 
                                     size="sm"
-                                    className="w-full"
+                                    className="w-full rounded-full font-montserrat font-semibold"
                                 >
                                     {tag.name}
                                 </Button>
@@ -142,19 +142,7 @@ export default async function BeritaTerkini({
                         </div>
                     ) : (
                         <div className="flex flex-wrap gap-6 w-full ">
-                            {serializedNews.map((post) => (
-                                <NewsCard 
-                                    key={post.id}
-                                    id={post.id}
-                                    title={post.title}
-                                    slug={post.slug}
-                                    thumbnail={post.thumbnail}
-                                    excerpt={post.title}
-                                    createdAt={post.createdAt}
-                                    author={post.author?.name || "Admin"}
-                                    tags={post.tags.map(t => t.tag)}
-                                />
-                            ))}
+                            <NewsListWithPagination key={page} news={serializedNews} itemsPerPage={10} />
                         </div>
                     )}
 

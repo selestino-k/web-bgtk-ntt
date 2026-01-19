@@ -1,9 +1,9 @@
-import PengumumanCard from "@/components/pengumuman-card";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import Link from "next/link";
 import { TagType } from "@/lib/generated/prisma/client";
+import PengumumanListWithPagination from "@/components/pengumuman-card";
 
 export const metadata: Metadata = {
     title: "Pengumuman",
@@ -105,15 +105,16 @@ export default async function Pengumuman({
         title: post.title,
         slug: post.slug,
         thumbnail: post.thumbnail,
-        excerpt: post.content ? 
-            (typeof post.content === 'string' ? post.content : JSON.stringify(post.content)).substring(0, 150) + '...' 
-            : '',
+        content: post.content,
         createdAt: post.createdAt,
-        author: post.author.name,
+        author: {
+            name: post.author.name,
+        },
         tags: post.tags.map((pt) => ({
-            id: pt.tag.id,
-            name: pt.tag.name,
-            slug: pt.tag.slug,
+            tag: {
+                id: pt.tag.id,
+                name: pt.tag.name,
+            },
         })),
     }));
 
@@ -131,9 +132,8 @@ export default async function Pengumuman({
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4 w-full">
-                            {serializedNews.map((announcement) => (
-                                <PengumumanCard key={announcement.id} {...announcement} />
-                            ))}
+                           <PengumumanListWithPagination key={page} pengumuman={serializedNews} itemsPerPage={10} />
+                           
                         </div>
                     )}
 

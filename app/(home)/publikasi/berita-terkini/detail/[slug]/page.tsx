@@ -324,7 +324,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         return (
           <pre key={index} className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
             <code className={language ? `language-${language}` : ""}>
-              {node.content?.map((child, i) =>
+              {node.content?.map((child) =>
                 child.type === "text" ? child.text : ""
               ).join("")}
             </code>
@@ -462,9 +462,9 @@ export default async function BeritaTerkiniDetail({
           {post.tags && post.tags.length > 0 && (
             <p className="text-xs md:text-sm font-inter text-justify mt-10">
               Tag:{" "}
-              <span className="space-x-1">
+              <span className="space-x-1 space-y-1">
                 {post.tags.map((tagRelation) => (
-                  <Badge key={tagRelation.tag.id} className="font-semibold">
+                  <Badge key={tagRelation.tag.id} className="font-montserrat font-semibold">
                     {tagRelation.tag.name}
                   </Badge>
                 ))}

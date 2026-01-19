@@ -162,7 +162,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                       whileHover={{ y: -5 }}
                       className="h-full"
                     >
-                      <CardContent className="flex flex-col p-0 h-full">
+                      <CardContent className="flex flex-col p-0 h-full max-w-7xl">
                         {post.thumbnail ? (
                           <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
                             <Image
@@ -198,7 +198,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                             </span>
                           </div>
 
-                          <h3 className="text-base font-montserrat font-bold mb-3 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
+                          <h3 className="text-base font-montserrat font-bold mb-1 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
                             {post.title}
                           </h3>
                           <p className="text-sm text-gray-600 flex-1 font-inter mb-4 line-clamp-3">
@@ -207,7 +207,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                           
                           <div className="flex flex-wrap gap-1 mt-auto">
                             {post.tags.slice(0, 2).map((tagRelation) => (
-                              <Badge key={tagRelation.tag.id} variant="secondary" className="text-xs">
+                              <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
                                 {tagRelation.tag.name}
                               </Badge>
                             ))}
