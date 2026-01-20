@@ -1,7 +1,6 @@
 "use server"
 
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { v4 as uuidv4 } from 'uuid';
 
 // Configure AWS S3 Client
 const s3Client = new S3Client({
@@ -90,18 +89,10 @@ export async function uploadCarouselImageToS3(
 
     // Generate unique filename
     const timestamp = Date.now()
-    const uuid = uuidv4();
-    const fileExtension = file.name.split('.').pop();
     const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     
     // Option 1: Use timestamp prefix
     const uniqueFileName = `${timestamp}_${sanitizedFileName}`;
-    
-    // Option 2: Use UUID prefix (more unique)
-    // const uniqueFileName = `${uuid}.${fileExtension}`;
-    
-    // Option 3: Combine both
-    // const uniqueFileName = `${timestamp}_${uuid}.${fileExtension}`;
     
     const key = `${folder}/${uniqueFileName}`
 
@@ -156,4 +147,76 @@ export async function deleteCarouselImageFromS3(
       error: error instanceof Error ? error.message : "Failed to delete image" 
     }
   }
+}
+
+// Upload document to S3
+export async function uploadDocumentToS3(
+  file: File,
+  folder: string = "documents"
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  try {
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
+    // Validate file type (common document types)
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'text/plain',
+    ]
+
+    if (!allowedTypes.includes(file.type)) {
+      return {
+        success: false,
+        error: "Tipe file tidak didukung. Harap unggah PDF, Word, Excel, PowerPoint, atau Text file."
+      }
+    }
+
+    // Check file size (50MB limit for documents)
+    if (file.size > 50 * 1024 * 1024) {
+      return {
+        success: false,
+        error: "Ukuran file harus kurang dari 50MB"
+      }
+    }
+
+    // Generate unique filename
+    const timestamp = Date.now()
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-")
+    const key = `${folder}/${timestamp}-${sanitizedName}`
+
+    // Upload to S3
+    const command = new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type,
+      ContentDisposition: `attachment; filename="${file.name}"`, // Force download
+    })
+
+    await s3Client.send(command)
+
+    // Construct public URL
+    const url = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`
+
+    return { success: true, url }
+  } catch (error) {
+    console.error("S3 document upload error:", error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Gagal mengunggah dokumen" 
+    }
+  }
+}
+
+// Delete document from S3 (reuse existing function)
+export async function deleteDocumentFromS3(
+  documentUrl: string
+): Promise<{ success: boolean; error?: string }> {
+  return deleteImageFromS3(documentUrl) // Same logic as image deletion
 }

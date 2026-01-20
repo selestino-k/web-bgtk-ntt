@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -54,7 +53,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@radix-ui/react-*"],
     serverActions: {
-      bodySizeLimit: "11mb",
+      bodySizeLimit: "51mb",
     },
   },
 };

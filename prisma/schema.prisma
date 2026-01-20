@@ -71,6 +71,20 @@ model CarouselPhoto {
   @@map("carousel_photo")
 }
 
+model Document {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(500)
+  description String?
+  fileUrl     String   @map("file_url") @db.VarChar(500)
+  fileName    String   @map("file_name") @db.VarChar(255)
+  fileSize    Int      @map("file_size")
+  fileType    String   @map("file_type") @db.VarChar(100)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("document")
+}
+
 enum Role {
   Admin
   Operator

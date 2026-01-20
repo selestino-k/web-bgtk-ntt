@@ -64,7 +64,7 @@ export default function NavMenu() {
                   <Link href="/publikasi/peraturan-juknis" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Peraturan dan Juknis</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/publikasi/unduh" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Unduh</Link>
+                  <Link href="/publikasi/dokumen" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dokumen</Link>
                 </NavigationMenuLink>
               </li>
             </ul>

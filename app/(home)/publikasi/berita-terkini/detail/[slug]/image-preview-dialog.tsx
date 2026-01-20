@@ -41,7 +41,7 @@ export default function ImagePreviewDialog({
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl w-full p-0 bg-black/95 border-none">
+      <DialogContent className="w-full p-0 bg-black/95 border-none">
         <div className="relative w-full h-[90vh] flex items-center justify-center">
           <Image
             src={src}

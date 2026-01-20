@@ -3,8 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
-import { DeleteDocumentDialog } from "./delete-document-dialog"
-import { EditDocumentDialog } from "./edit-document-dialog"
 import Link from "next/link"
 
 // This type is used to define the shape of our data.
@@ -75,23 +73,6 @@ export const columns: ColumnDef<DocsPage>[] = [
           </Link>
         </Button>
       )
-    }
+    },
   },
-  {
-    accessorKey: "actions",
-    header: "Aksi",
-    cell: ({ row }) => {
-      const docId = row.original.id
-      return (
-        <div className="flex items-center gap-2">
-          <EditDocumentDialog 
-            id={docId} 
-            title={row.original.title}
-            description={row.original.description}
-          />
-          <DeleteDocumentDialog id={docId} title={row.original.title} />
-        </div>
-      )
-    }
-  }
 ]

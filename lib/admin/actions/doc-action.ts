@@ -1,0 +1,141 @@
+"use server"
+
+import { revalidatePath } from "next/cache"
+import prisma from "@/lib/prisma"
+import { uploadDocumentToS3, deleteDocumentFromS3 } from "./s3-actions"
+
+// Upload document
+export async function uploadDocument(formData: FormData) {
+  try {
+    const file = formData.get("file") as File
+    const title = formData.get("title") as string
+    const description = formData.get("description") as string | null
+
+    if (!file || !title) {
+      return { success: false, error: "File dan judul harus diisi" }
+    }
+
+    // Upload to S3
+    const uploadResult = await uploadDocumentToS3(file, "documents")
+
+    if (!uploadResult.success || !uploadResult.url) {
+      return { success: false, error: uploadResult.error || "Gagal mengunggah dokumen" }
+    }
+
+    // Save to database with actual filename
+    const document = await prisma.document.create({
+      data: {
+        title,
+        description,
+        fileUrl: uploadResult.url,
+        fileName: file.name, // Store actual filename
+        fileSize: file.size,
+        fileType: file.type,
+      },
+    })
+
+    revalidatePath("/admin/documents")
+    return { success: true, document }
+  } catch (error) {
+    console.error("Document upload error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengunggah dokumen",
+    }
+  }
+}
+
+// Delete document
+export async function deleteDocument(id: number) {
+  try {
+    // Get document from database
+    const document = await prisma.document.findUnique({
+      where: { id },
+    })
+
+    if (!document) {
+      return { success: false, error: "Dokumen tidak ditemukan" }
+    }
+
+    // Delete from S3
+    const deleteResult = await deleteDocumentFromS3(document.fileUrl)
+
+    if (!deleteResult.success) {
+      console.error("S3 delete warning:", deleteResult.error)
+      // Continue with database deletion even if S3 deletion fails
+    }
+
+    // Delete from database
+    await prisma.document.delete({
+      where: { id },
+    })
+
+    revalidatePath("/admin/documents")
+    return { success: true }
+  } catch (error) {
+    console.error("Document delete error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal menghapus dokumen",
+    }
+  }
+}
+
+// Get all documents
+export async function getDocuments() {
+  try {
+    const documents = await prisma.document.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+
+    return { success: true, documents }
+  } catch (error) {
+    console.error("Get documents error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengambil dokumen",
+    }
+  }
+}
+
+// Get single document
+export async function getDocument(id: number) {
+  try {
+    const document = await prisma.document.findUnique({
+      where: { id },
+    })
+
+    if (!document) {
+      return { success: false, error: "Dokumen tidak ditemukan" }
+    }
+
+    return { success: true, document }
+  } catch (error) {
+    console.error("Get document error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengambil dokumen",
+    }
+  }
+}
+
+// Update document metadata (without changing file)
+export async function updateDocument(id: number, data: { title?: string; description?: string | null }) {
+  try {
+    const document = await prisma.document.update({
+      where: { id },
+      data,
+    })
+
+    revalidatePath("/admin/documents")
+    return { success: true, document }
+  } catch (error) {
+    console.error("Update document error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal memperbarui dokumen",
+    }
+  }
+}
