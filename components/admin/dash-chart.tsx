@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { LoaderCircle } from "lucide-react"
 
 const chartConfig = {
@@ -66,7 +66,7 @@ export function DashboardChart() {
         const response = await fetch(`/api/stats?type=${type}`)
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`),
+          throw new Error(`HTTP error! status: ${response.status}`);
           toast.error("Gagal memuat data grafik.")
         }
 

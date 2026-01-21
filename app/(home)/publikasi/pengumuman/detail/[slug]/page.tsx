@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { User, Calendar, Download, FileText } from "lucide-react";
+import { User, Calendar, Download, FileText, Timer, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,24 +7,29 @@ import { notFound } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
+import ImagePreviewDialog from "./image-preview-dialog";
+import { toast } from "sonner";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "@/components/ui/breadcrumb";
+import { ReportView } from "@/components/view-counter";
+import { Redis } from "@upstash/redis";
 
-
-type LexicalNode = {
-  type?: string
-  text?: string
-  format?: number
-  children?: LexicalNode[]
-  tag?: string
-  url?: string
-  [key: string]: unknown
+// TipTap JSON structure types
+type TipTapMark = {
+  type: string
+  attrs?: Record<string, unknown>
 }
 
-type LexicalContent = {
-  root?: {
-    children?: LexicalNode[]
-    [key: string]: unknown
-  }
-  [key: string]: unknown
+type TipTapNode = {
+  type: string
+  attrs?: Record<string, unknown>
+  content?: TipTapNode[]
+  marks?: TipTapMark[]
+  text?: string
+}
+
+type TipTapContent = {
+  type: "doc"
+  content: TipTapNode[]
 }
 
 async function getPostBySlug(slug: string) {
@@ -58,57 +62,179 @@ async function getPostBySlug(slug: string) {
       ...post,
       id: post.id.toString(),
     };
-  } catch (error) {
-    console.error("Error fetching post:", error);
+  } catch {
+    toast.error("Error fetching post");
     return null;
   }
 }
 
-// Helper function to render Lexical JSON as HTML
-function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
-  if (!content || typeof content !== 'object') {
+// Helper function to render TipTap JSON as HTML
+function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
+
+  if (!content) {
     return <p className="text-gray-400">No content</p>
   }
-  
+
   try {
-    const contentObj = content as LexicalContent
-    if (!contentObj.root || !contentObj.root.children) {
+    // Parse content if it's a string
+    let contentObj: TipTapContent
+
+    if (typeof content === 'string') {
+      contentObj = JSON.parse(content) as TipTapContent
+    } else if (typeof content === 'object' && content !== null) {
+      contentObj = content as TipTapContent
+    } else {
+      return <p className="text-gray-400">Invalid content format</p>
+    }
+
+    if (!contentObj.content || !Array.isArray(contentObj.content)) {
       return <p className="text-gray-400">No content</p>
     }
-    
-    const renderNode = (node: LexicalNode, index: number): JSX.Element | string => {
-      if (!node) return ""
-      
-      // Text node
-      if (node.type === "text" || node.text) {
-        let text = node.text || ""
-        
-        // Handle text formatting
-        if (node.format) {
-          const format = node.format as number
-          if (format & 1) text = `<strong>${text}</strong>` // Bold
-          if (format & 2) text = `<em>${text}</em>` // Italic
-          if (format & 8) text = `<u>${text}</u>` // Underline
-          if (format & 16) text = `<s>${text}</s>` // Strikethrough
-        }
-        
-        return <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
+
+    const applyMarks = (text: string, marks?: TipTapMark[]): JSX.Element => {
+      if (!marks || marks.length === 0) {
+        return <span>{text}</span>
       }
-      
+
+      // Check if there's a link mark first
+      const linkMark = marks.find(mark => mark.type === "link")
+      if (linkMark) {
+        const href = linkMark.attrs?.href as string || "#"
+        const target = linkMark.attrs?.target as string || "_blank"
+
+        // Apply other marks to the link text
+        const otherMarks = marks.filter(mark => mark.type !== "link")
+        let className = "text-blue-600 hover:text-blue-800 hover:underline underline-offset-2 transition-colors"
+        const style: React.CSSProperties = {}
+        let styledText = text
+
+        otherMarks.forEach(mark => {
+          switch (mark.type) {
+            case "bold":
+              className += " font-bold"
+              break
+            case "italic":
+              className += " italic"
+              break
+            case "underline":
+              className += " underline"
+              break
+            case "strike":
+              styledText = `<s>${styledText}</s>`
+              break
+            case "code":
+              className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
+              break
+            case "highlight":
+              if (mark.attrs?.color) {
+                style.backgroundColor = mark.attrs.color as string
+              }
+              break
+            case "textStyle":
+              if (mark.attrs?.color) {
+                style.color = mark.attrs.color as string
+              }
+              break
+            case "subscript":
+              styledText = `<sub>${styledText}</sub>`
+              break
+            case "superscript":
+              styledText = `<sup>${styledText}</sup>`
+              break
+          }
+        })
+
+        return (
+          <a
+            href={href}
+            className={className}
+            style={style}
+            target={target}
+            rel="noopener noreferrer"
+            dangerouslySetInnerHTML={styledText !== text ? { __html: styledText } : undefined}
+          >
+            {styledText === text ? text : undefined}
+          </a>
+        )
+      }
+
+      // Original code for non-link marks
+      let styledText = text
+      let className = ""
+      const style: React.CSSProperties = {}
+
+      marks.forEach(mark => {
+        switch (mark.type) {
+          case "bold":
+            styledText = `<strong>${styledText}</strong>`
+            break
+          case "italic":
+            styledText = `<em>${styledText}</em>`
+            break
+          case "underline":
+            styledText = `<u>${styledText}</u>`
+            break
+          case "strike":
+            styledText = `<s>${styledText}</s>`
+            break
+          case "code":
+            className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
+            break
+          case "highlight":
+            if (mark.attrs?.color) {
+              style.backgroundColor = mark.attrs.color as string
+            }
+            break
+          case "textStyle":
+            if (mark.attrs?.color) {
+              style.color = mark.attrs.color as string
+            }
+            break
+          case "subscript":
+            styledText = `<sub>${styledText}</sub>`
+            break
+          case "superscript":
+            styledText = `<sup>${styledText}</sup>`
+            break
+        }
+      })
+
+      return (
+        <span
+          className={className}
+          style={style}
+          dangerouslySetInnerHTML={{ __html: styledText }}
+        />
+      )
+    }
+
+    const renderNode = (node: TipTapNode, index: number): JSX.Element | null => {
+      if (!node) return null
+
+      // Text node
+      if (node.type === "text" && node.text) {
+        return <span key={index}>{applyMarks(node.text, node.marks)}</span>
+      }
+
       // Paragraph node
       if (node.type === "paragraph") {
+        const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
         return (
-          <p key={index} className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify">
-            {node.children?.map((child, i) => renderNode(child, i))}
+          <p
+            key={index}
+            className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify"
+            style={{ textAlign: textAlign || "left" }}
+          >
+            {node.content?.map((child, i) => renderNode(child, i))}
           </p>
         )
       }
-      
+
       // Heading nodes
       if (node.type === "heading") {
-        const validTags = ["h1", "h2", "h3", "h4", "h5", "h6"] as const
-        const tag = validTags.includes(node.tag as typeof validTags[number]) ? node.tag as typeof validTags[number] : "h2"
-        const HeadingTag = tag as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+        const level = (node.attrs?.level as number) || 2
+        const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
+        const HeadingTag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
         const headingClasses = {
           h1: "text-3xl font-bold mb-4 mt-6",
           h2: "text-2xl font-bold mb-3 mt-5",
@@ -117,83 +243,114 @@ function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
           h5: "text-base font-bold mb-2 mt-2",
           h6: "text-sm font-bold mb-2 mt-2",
         }
-        
+
         return (
-          <HeadingTag key={index} className={headingClasses[HeadingTag] || ""}>
-            {node.children?.map((child, i) => renderNode(child, i))}
+          <HeadingTag
+            key={index}
+            className={headingClasses[HeadingTag] || ""}
+            style={{ textAlign: textAlign || "left" }}
+          >
+            {node.content?.map((child, i) => renderNode(child, i))}
           </HeadingTag>
         )
       }
-      
-      // List nodes
-      if (node.type === "list") {
-        const ListTag = (node.tag === "ol" ? "ol" : "ul") as "ol" | "ul"
-        const listClass = ListTag === "ol" ? "list-decimal ml-6 mb-4" : "list-disc ml-6 mb-4"
-        
+
+      // Bullet list
+      if (node.type === "bulletList") {
         return (
-          <ListTag key={index} className={listClass}>
-            {node.children?.map((child, i) => renderNode(child, i))}
-          </ListTag>
+          <ul key={index} className="list-disc ml-6 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ul>
         )
       }
-      
+
+      // Ordered list
+      if (node.type === "orderedList") {
+        return (
+          <ol key={index} className="list-decimal ml-6 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ol>
+        )
+      }
+
       // List item
-      if (node.type === "listitem") {
+      if (node.type === "listItem") {
         return (
           <li key={index} className="mb-1">
-            {node.children?.map((child, i) => renderNode(child, i))}
+            {node.content?.map((child, i) => renderNode(child, i))}
           </li>
         )
       }
-      
-      // Quote node
-      if (node.type === "quote") {
+
+      // Task list
+      if (node.type === "taskList") {
+        return (
+          <ul key={index} className="space-y-2 mb-4">
+            {node.content?.map((child, i) => renderNode(child, i))}
+          </ul>
+        )
+      }
+
+      // Task item
+      if (node.type === "taskItem") {
+        const checked = node.attrs?.checked as boolean || false
+        return (
+          <li key={index} className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              checked={checked}
+              disabled
+              className="mt-1"
+            />
+            <div className="flex-1">
+              {node.content?.map((child, i) => renderNode(child, i))}
+            </div>
+          </li>
+        )
+      }
+
+      // Blockquote
+      if (node.type === "blockquote") {
         return (
           <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700">
-            {node.children?.map((child, i) => renderNode(child, i))}
+            {node.content?.map((child, i) => renderNode(child, i))}
           </blockquote>
         )
       }
-      
+
       // Code block
-      if (node.type === "code") {
+      if (node.type === "codeBlock") {
+        const language = node.attrs?.language as string | undefined
         return (
           <pre key={index} className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
-            <code>{node.children?.map((child, i) => renderNode(child, i))}</code>
+            <code className={language ? `language-${language}` : ""}>
+              {node.content?.map((child) =>
+                child.type === "text" ? child.text : ""
+              ).join("")}
+            </code>
           </pre>
         )
       }
-      
-      // Link node
-      if (node.type === "link") {
-        return (
-          <a 
-            key={index} 
-            href={(node.url as string) || "#"} 
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {node.children?.map((child, i) => renderNode(child, i))}
-          </a>
-        )
+
+      // Hard break
+      if (node.type === "hardBreak") {
+        return <br key={index} />
       }
-      
-      // Default: render children if available
-      if (node.children && Array.isArray(node.children)) {
-        return (
-          <span key={index}>
-            {node.children.map((child, i) => renderNode(child, i))}
-          </span>
-        )
+
+      // Horizontal rule
+      if (node.type === "horizontalRule") {
+        return <hr key={index} className="my-6 border-gray-300" />
       }
-      
-      return <span key={index}></span>
+
+      return null
     }
-    
+
     return (
       <div className="prose prose-sm max-w-none">
-        {contentObj.root.children.map((child, index) => renderNode(child, index))}
+        {contentObj.content.map((child, index) => {
+          const rendered = renderNode(child, index)
+          return rendered
+        })}
       </div>
     )
   } catch {
@@ -221,23 +378,70 @@ export default async function PengumumanDetail({
 
   const getGoogleDriveDownloadUrl = (url: string | null) => {
     if (!url) return null;
-    
+
     const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
     const match = url.match(driveRegex);
-    
+
     if (match && match[1]) {
       return `https://drive.google.com/uc?export=download&id=${match[1]}`;
     }
-    
+
     return url;
   };
 
   const downloadUrl = getGoogleDriveDownloadUrl(post.document);
 
+  const postTitleTruncated = post.title.length > 50 ? post.title.slice(0, 47) + "..." : post.title;
+
+  function calculateReadTime(content: string) {
+    const wordsPerMinute = 200;
+
+    // Remove HTML tags and split by whitespace
+    const text = content.replace(/<[^>]*>/g, '');
+    const wordCount = text.split(/\s+/).length;
+
+    const readingTime = Math.ceil(wordCount / wordsPerMinute);
+    return `${readingTime} menit baca`;
+  }
+
+  const redis = Redis.fromEnv();
+  const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
+
   return (
-    <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
-      <main className="relative z-10 gap-20 p-8 md:flex w-full block">
+    <div id="pengumuman-detail" className="mt-20 flex place-items-start w-full px-10">
+      <main className="relative z-10 gap-8 p-8 md:flex w-full">
         <div className="text-left w-full">
+          <Breadcrumb className="mb-4 font-geist text-gray-500" aria-label="Breadcrumb">
+            <BreadcrumbList className="flex flex-wrap gap-2">
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/" className="text-primary hover:underline">
+                    Beranda
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/publikasi" className="text-primary hover:underline">
+                    Publikasi
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/publikasi/berita-terkini" className="text-primary hover:underline">
+                    Berita Terkini
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink>
+                  {postTitleTruncated}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
           <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
             {post.title}
           </h2>
@@ -250,20 +454,27 @@ export default async function PengumumanDetail({
               <Calendar className="h-4 w-4 mr-1" />
               <span>{formattedDate}</span>
             </span>
+            <span className="flex items-center space-x-1">
+              <Timer className="h-4 w-4 mr-1" />
+              <span>{calculateReadTime(post.content as string)}</span>
+            </span>
+            <span className="flex items-center space-x-1">
+              <Eye className="h-4 w-4 mr-1" />
+              <ReportView slug={post.slug} />
+              <span>{viewCount} kali dilihat</span>
+            </span>
           </div>
           {post.thumbnail && (
             <div className="relative max-w-2xl h-auto items-center mx-auto">
-              <Image
+              <ImagePreviewDialog
                 src={post.thumbnail}
                 alt={post.title}
                 width={800}
                 height={450}
-                className="rounded-lg mb-6 aspect-video object-cover w-full h-auto"
-                priority
               />
             </div>
           )}
-          
+
           {/* Document Attachment Section */}
           {post.document && (
             <Card className="mb-6 border-primary/20">
@@ -290,7 +501,7 @@ export default async function PengumumanDetail({
           )}
 
           <div className="mt-6">
-            {renderLexicalContent(post.content)}
+            {renderTipTapContent(post.content)}
           </div>
 
           {/* Download Button at Bottom */}

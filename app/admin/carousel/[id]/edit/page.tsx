@@ -3,20 +3,16 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { updateCarouselPhoto, getCarouselPhotoById } from "@/lib/admin/actions/carousel-action"
-import { toast } from "sonner"
+import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CarouselImageUploader } from "@/components/cms/carousel-image-uploader"
-import { ArrowLeft, Save, Loader2, Link2, Image as ImageIcon, AlertCircle, CalendarIcon } from "lucide-react"
+import { ArrowLeft, Save, Loader2, Link2, Image as ImageIcon, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { format } from "date-fns"
-import { id } from "date-fns/locale"
-import { cn } from "@/lib/utils"
+
 import { use } from "react"
 
 interface EditPhotoPageProps {
@@ -28,16 +24,13 @@ interface EditPhotoPageProps {
 export default function EditPhotoPage({ params }: EditPhotoPageProps) {
   const resolvedParams = use(params)
   const router = useRouter()
+  const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [useExternalUrl, setUseExternalUrl] = useState(false)
   const [externalUrl, setExternalUrl] = useState("")
   const [imageError, setImageError] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
-  const [date, setDate] = useState<Date | undefined>()
-  const [dropdown] =
-    React.useState<React.ComponentProps<typeof Calendar>["captionLayout"]>(
-      "dropdown"
-    )
+
   const [formData, setFormData] = useState({
     caption: "",
     order: "",
@@ -51,7 +44,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
         const carouselPhoto = await getCarouselPhotoById(resolvedParams.id)
 
         if (!carouselPhoto) {
-          toast.error("Foto tidak ditemukan")
+          toast({
+            title: "Error",
+            description: "Foto tidak ditemukan",
+            variant: "destructive",
+          })
           router.push("/admin/carousel")
           return
         }
@@ -71,13 +68,17 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
         }
       } catch (error) {
         console.error("Error fetching photo:", error)
-        toast.error("Gagal memuat data foto")
+        toast({
+          title: "Error",
+          description: "Gagal memuat data foto",
+          variant: "destructive",
+        })
         router.push("/admin/carousel")
       }
     }
 
     fetchPhoto()
-  }, [resolvedParams.id, router])
+  }, [resolvedParams.id, router, toast])
 
   const handleImageChange = (url: string, file?: File) => {
     setFormData(prev => ({
@@ -98,7 +99,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
 
       if (!hasValidExtension) {
         setImageError(true)
-        toast.error("URL harus mengarah ke file gambar (jpg, png, gif, webp, dll)")
+        toast({
+          title: "Error",
+          description: "URL tidak memiliki ekstensi gambar yang valid",
+          variant: "destructive",
+        })
         setIsValidating(false)
         return false
       }
@@ -112,19 +117,30 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       const contentType = response.headers.get('content-type')
       if (!contentType || !contentType.startsWith('image/')) {
         setImageError(true)
-        toast.error("URL tidak mengarah ke gambar yang valid")
+        toast({
+          title: "Error",
+          description: "URL tidak mengarah ke sumber gambar",
+          variant: "destructive",
+        })
         setIsValidating(false)
         return false
       }
 
       setImageError(false)
-      toast.success("URL gambar valid")
+      toast({
+        title: "Sukses",
+        description: "URL gambar valid",
+      })
       setIsValidating(false)
       return true
     } catch (error) {
       console.error("Error validating image URL:", error)
       setImageError(true)
-      toast.error("Tidak dapat memvalidasi URL. Pastikan URL dapat diakses secara publik")
+      toast({
+        title: "Error",
+        description: "Tidak dapat memvalidasi URL. Pastikan URL dapat diakses secara publik",
+        variant: "destructive",
+      })
       setIsValidating(false)
       return false
     }
@@ -144,7 +160,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
 
   const handleValidateUrl = async () => {
     if (!externalUrl) {
-      toast.error("Masukkan URL terlebih dahulu")
+      toast({
+        title: "Error",
+        description: "Masukkan URL terlebih dahulu",
+        variant: "destructive",
+      })
       return
     }
 
@@ -155,17 +175,29 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
     e.preventDefault()
 
     if (!formData.order) {
-      toast.error("Harap isi semua field yang wajib")
+      toast({
+        title: "Error",
+        description: "Harap isi semua field yang wajib",
+        variant: "destructive",
+      })
       return
     }
 
     if (!formData.imageFile && !formData.imageUrl && !externalUrl) {
-      toast.error("Harap unggah gambar atau masukkan URL eksternal")
+      toast({
+        title: "Error",
+        description: "Harap unggah gambar atau masukkan URL eksternal",
+        variant: "destructive",
+      })
       return
     }
 
     if (useExternalUrl && imageError) {
-      toast.error("Harap gunakan URL gambar yang valid")
+      toast({
+        title: "Error",
+        description: "Harap gunakan URL gambar yang valid",
+        variant: "destructive",
+      })
       return
     }
 
@@ -191,12 +223,19 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
         throw new Error(result.error || "Gagal memperbarui foto")
       }
 
-      toast.success("Foto berhasil diperbarui")
+      toast({
+        title: "Sukses",
+        description: "Foto berhasil diperbarui",
+      })
       router.push("/admin/carousel")
       router.refresh()
     } catch (error) {
       console.error("Error updating photo:", error)
-      toast.error(error instanceof Error ? error.message : "Gagal memperbarui foto")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal memperbarui foto",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -345,7 +384,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                             unoptimized
                             onError={() => {
                               setImageError(true)
-                              toast.error("Gagal memuat gambar dari URL")
+                              toast({
+                                title: "Error",
+                                description: "Gagal memuat gambar dari URL",
+                                variant: "destructive",
+                              })
                             }}
                             onLoad={() => {
                               setImageError(false)

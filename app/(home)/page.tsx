@@ -136,12 +136,10 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center">
               <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
-
                 <Link
                   href="/publikasi/berita-terkini"
                   className="hover:text-primary/70 transition-colors"
                 >
-
                   Berita Terkini
                 </Link>
               </h2>

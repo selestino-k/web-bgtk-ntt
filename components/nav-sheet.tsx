@@ -199,14 +199,6 @@ export function NavSheet() {
                                     GTK
                                 </Link>
                             </AccordionContent>
-                            <AccordionContent className="flex flex-col gap-4 text-balance">
-                                <Link
-                                    href="https://raporpendidikan.kemendikdasmen.go.id/login"
-                                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                                >
-                                    Rapor Pendidikan
-                                </Link>
-                            </AccordionContent>
                         </AccordionItem>
 
                         <AccordionItem value="item-5">

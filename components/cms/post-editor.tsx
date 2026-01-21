@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -66,10 +66,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
   const isEditMode = !!initialData?.id
 
-  // Debug: Log editor content changes
-  useEffect(() => {
-    console.log('Editor content updated:', editorContent)
-  }, [editorContent])
 
   const availableTags = [
     "Kabar Balai",
@@ -145,8 +141,8 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         }
         return node.content && Array.isArray(node.content) && node.content.length > 0
       })
-    } catch (error) {
-      console.error('Error validating content:', error)
+    } catch  {
+      toast.error('Gagal memeriksa konten editor')
       return false
     }
   }
@@ -174,8 +170,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       return
     }
 
-    console.log('Saving with content:', JSON.stringify(editorContent, null, 2))
-
     const postData: PostData = {
       title,
       slug,
@@ -197,7 +191,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       }
       toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil disimpan')
     } catch (error) {
-      console.error('Save error:', error)
       toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
     } finally {
       setIsSaving(false)

@@ -103,12 +103,10 @@ export default async function AdminPage() {
                     </div>
                 </div>
 
-                {/* Chart */}
                 <div className="mt-6">
                     <DashboardChart />
                 </div>
 
-                {/* Visit Stats */}
                 <div className="mt-6">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">Statistik Kunjungan</h3>
                     <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

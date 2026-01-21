@@ -3,7 +3,7 @@
 import { PostEditor, PostData } from "@/components/cms/post-editor"
 import { createPost } from "@/lib/admin/actions/post-action"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import {useToast} from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 
@@ -11,6 +11,7 @@ import { useEffect } from "react"
 
 export default function NewPostPage() {
   const router = useRouter()
+  const {toast} = useToast()
   const { data: session, status } = useSession()
 
   useEffect(() => {
@@ -53,14 +54,19 @@ export default function NewPostPage() {
       if (!result.success) {
         throw new Error(result.error || 'Gagal menyimpan draft')
       }
-
-      toast.success(result.message || 'Draft berhasil disimpan')
-      
+      toast({
+        title: "Sukses",
+        description: result.message || 'Draft berhasil disimpan',
+      })      
       if (result.post?.id) {
         router.push(`/admin/posts/edit/${result.post.id}`)
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan draft')
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Gagal menyimpan draft',
+        variant: "destructive",
+      })
       throw error
     }
   }
@@ -92,11 +98,18 @@ export default function NewPostPage() {
         throw new Error(result.error || 'Gagal menerbitkan postingan')
       }
 
-      toast.success(result.message || 'Postingan berhasil diterbitkan')
+      toast({
+        title: "Sukses",
+        description: result.message || 'Postingan berhasil diterbitkan',
+      })
       
       router.push('/admin/posts')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal menerbitkan postingan')
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Gagal menerbitkan postingan',
+        variant: "destructive",
+      })
       throw error
     }
   }

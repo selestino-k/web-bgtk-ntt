@@ -3,7 +3,6 @@
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { uploadDocument } from "@/lib/admin/actions/doc-action"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,9 +10,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Save, Loader2 } from "lucide-react"
 import { DocumentUploader } from "@/components/cms/document-uploader"
+import { useToast } from "@/hooks/use-toast"
 
 export default function UploadDocumentPage() {
   const router = useRouter()
+  const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const [formData, setFormData] = useState({
@@ -33,12 +34,20 @@ export default function UploadDocumentPage() {
     e.preventDefault()
     
     if (!formData.title.trim()) {
-      toast.error("Harap masukkan judul dokumen")
+      toast({
+        title: "Error",
+        description: "Harap masukkan judul dokumen",
+        variant: "destructive",
+      })
       return
     }
 
     if (!formData.documentFile) {
-      toast.error("Harap unggah dokumen")
+      toast({
+        title: "Error",
+        description: "Harap unggah dokumen",
+        variant: "destructive",
+      })
       return
     }
 
@@ -56,11 +65,18 @@ export default function UploadDocumentPage() {
         throw new Error(result.error || "Gagal mengunggah dokumen")
       }
 
-      toast.success("Dokumen berhasil diunggah")
+      toast({
+        title: "Sukses",
+        description: "Dokumen berhasil diunggah",
+      })
       router.push("/admin/docs")
       router.refresh()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal mengunggah dokumen")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal mengunggah dokumen",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }

@@ -15,6 +15,10 @@ export function useViewCounter(slug: string) {
       method: "POST",
       body: JSON.stringify({ slug, deviceType }),
       headers: { "Content-Type": "application/json" },
-    }).catch(err => console.error("Failed to track view:", err));
+    }).catch(err => {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Failed to track view:", err);
+      }
+    });
   }, [slug, isMobile]);
 }

@@ -6,6 +6,31 @@ const redis = Redis.fromEnv();
 const cache = new Map<string, { data: any; expires: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
+// Helper function to generate chart data for a given number of days
+async function getChartData(days: number) {
+  const chartData = [];
+  const now = new Date();
+  
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dateKey = date.toISOString().split('T')[0];
+    
+    const [desktop, mobile] = await Promise.all([
+      redis.get<number>(`views:daily:${dateKey}:desktop`),
+      redis.get<number>(`views:daily:${dateKey}:mobile`),
+    ]);
+    
+    chartData.push({
+      date: dateKey,
+      desktop: desktop || 0,
+      mobile: mobile || 0,
+    });
+  }
+  
+  return chartData;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -18,31 +43,12 @@ export async function GET(request: Request) {
       return NextResponse.json(cached.data);
     }
 
-    const days = parseInt(searchParams.get('days') || '90');
+    const days = parseInt(searchParams.get('days') || '7');
     const slug = searchParams.get('slug');
 
     // For chart data
     if (type === 'chart') {
-      const chartData = [];
-      const now = new Date();
-
-      for (let i = days - 1; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        const dateKey = date.toISOString().split('T')[0];
-
-        const [desktop, mobile] = await Promise.all([
-          redis.get<number>(`views:daily:${dateKey}:desktop`),
-          redis.get<number>(`views:daily:${dateKey}:mobile`),
-        ]);
-
-        chartData.push({
-          date: dateKey,
-          desktop: desktop || 0,
-          mobile: mobile || 0,
-        });
-      }
-
+      const chartData = await getChartData(days);
       return NextResponse.json(chartData);
     }
 
@@ -118,70 +124,19 @@ export async function GET(request: Request) {
       return NextResponse.json(result);
     }
 
-    //For 90 days summary 
-    if (type === '90d') {
-      const chartData = [];
-      const now = new Date();
-      for (let i = 89; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        const dateKey = date.toISOString().split('T')[0];
-        const [desktop, mobile] = await Promise.all([
-          redis.get<number>(`views:daily:${dateKey}:desktop`),
-          redis.get<number>(`views:daily:${dateKey}:mobile`),
-        ]);
-        chartData.push({
-          date: dateKey,
-          desktop: desktop || 0,
-          mobile: mobile || 0,
-        });
-      }
-      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json({ chartData });
-    }
-
-    //For 30 days summary
-    if (type === '30d') {
-      const chartData = [];
-      const now = new Date();
-      for (let i = 29; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        const dateKey = date.toISOString().split('T')[0];
-        const [desktop, mobile] = await Promise.all([
-          redis.get<number>(`views:daily:${dateKey}:desktop`),
-          redis.get<number>(`views:daily:${dateKey}:mobile`),
-        ]);
-        chartData.push({
-          date: dateKey,
-          desktop: desktop || 0,
-          mobile: mobile || 0,
-        });
-      }
-      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json({ chartData });
-    }
-
-    //For 7 days summary
-    if (type === '7d') {
-      const chartData = [];
-      const now = new Date();
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        const dateKey = date.toISOString().split('T')[0];
-        const [desktop, mobile] = await Promise.all([
-          redis.get<number>(`views:daily:${dateKey}:desktop`),
-          redis.get<number>(`views:daily:${dateKey}:mobile`),
-        ]); 
-        chartData.push({
-          date: dateKey,
-          desktop: desktop || 0,
-          mobile: mobile || 0,
-        });
-      }
-      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json({ chartData });
+    // For 90, 30, or 7 days summary
+    if (type === '90d' || type === '30d' || type === '7d') {
+      const daysMap: Record<string, number> = {
+        '90d': 90,
+        '30d': 30,
+        '7d': 7,
+      };
+      
+      const chartData = await getChartData(daysMap[type]);
+      const result = { chartData };
+      
+      cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
+      return NextResponse.json(result);
     }
 
     // For individual post stats

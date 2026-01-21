@@ -16,7 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Prisma } from "@/lib/generated/prisma/browser"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 
 type NewsPost = {
   id: string;

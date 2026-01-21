@@ -45,12 +45,11 @@ type LexicalContent = {
 
 // Helper function to extract plain text from Lexical JSON for preview
 function extractTextFromLexical(content: Prisma.JsonValue): string {
-  if (!content || typeof content !== 'object') return "No content"
+  if (!content || typeof content !== 'object') return "Tidak ada konten"
 
   try {
     const contentObj = content as LexicalContent
-    if (!contentObj.root || !contentObj.root.children) return "No content"
-
+    if (!contentObj.root || !contentObj.root.children) return "Tidak ada konten"
     const extractText = (node: LexicalNode): string => {
       if (!node) return ""
 
@@ -68,22 +67,22 @@ function extractTextFromLexical(content: Prisma.JsonValue): string {
       .join(" ")
       .trim()
 
-    return text || "No content"
-  } catch (error) {
-    return "Invalid content"
+    return text || "Tidak ada konten"
+  } catch  {
+    return "Konten tidak valid"
   }
 }
 
 // Helper function to render Lexical JSON as HTML
 function renderLexicalContent(content: Prisma.JsonValue): JSX.Element {
   if (!content || typeof content !== 'object') {
-    return <p className="text-gray-400">No content</p>
+    return <p className="text-gray-400">Tidak ada konten</p>
   }
 
   try {
     const contentObj = content as LexicalContent
     if (!contentObj.root || !contentObj.root.children) {
-      return <p className="text-gray-400">No content</p>
+      return <p className="text-gray-400">Tidak ada konten</p>
     }
 
     const renderNode = (node: LexicalNode, index: number): JSX.Element | string => {
