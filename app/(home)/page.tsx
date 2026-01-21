@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { HomeCarousel } from "@/components/home-carousel";
 import { KataSambutan } from "./profil/sambutan-kata/page";
 import Image from "next/image";
+import Link from "next/link";
 
 async function getLatestPosts() {
   try {
@@ -40,7 +41,7 @@ async function getLatestPosts() {
         tag: tagRelation.tag,
       })),
     }));
-  } catch  {
+  } catch {
     return [];
   }
 }
@@ -54,7 +55,7 @@ async function getCarouselPhotos() {
     });
 
     return photos;
-  } catch  {
+  } catch {
     return [];
   }
 }
@@ -77,7 +78,7 @@ export default async function Home() {
             <p className="mt-5 lg:text-4xl text-md font-semibold font-montserrat text-white">
               di Situs Web Resmi
             </p>
-              <p className="mt-3 lg:text-4xl text-md font-semibold font-montserrat text-white">
+            <p className="mt-3 lg:text-4xl text-md font-semibold font-montserrat text-white">
               Balai Guru dan Tenaga Kependidikan
             </p>
             <p className="text-md lg:text-4xl font-semibold font-montserrat text-white">
@@ -103,13 +104,13 @@ export default async function Home() {
       <PrescenceMotion>
         <div id="sambutan" className="flex relative w-full max-w-7xl items-center mb-10">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
-            <div className="text-center"> 
+            <div className="text-center">
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-10">
-                Sambutan Kata 
+                Sambutan Kata
               </h2>
               <div className="max-w-7xl grid md:flex mx-auto font-montserrat">
                 <div className="w-full md:w-3/4 text-left md:mb-5 md:mr-10 relative px-4 md:px-0 mb-14">
-                  <Image 
+                  <Image
                     src="/images/kepala-bgtk-ntt.png"
                     alt="Kepala BGTK NTT"
                     width={1250}
@@ -135,7 +136,12 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center">
               <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
-                Berita Terkini
+                <Link
+                  href="/publikasi/berita-terkini"
+                  className="hover:text-primary/70 transition-colors"
+                >
+                  Berita Terkini
+                </Link>
               </h2>
             </div>
             <NewsCarousel initialPosts={latestPosts} />

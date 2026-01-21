@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { ReportView } from "@/components/view-counter";
 
 
 export const metadata: Metadata = {
@@ -13,27 +14,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  // Add custom properties as needed
-  // minimumScale: 1,
-  // maximumScale: 1,
-  // viewportFit: 'cover', 
 };
+
 export default async function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <main className="gap-3 w-full scroll-smooth">
+      <ReportView slug="homepage" />
       <NavBar />
       <div className="flex w-full min-h-screen items-center justify-center">
         {children}
       </div>
       <Footer />
     </main>
-
   );
 }
 

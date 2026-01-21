@@ -47,7 +47,6 @@ export function DeletePostDialog({ postId, postTitle }: DeletePostDialogProps) {
       setOpen(false)
       router.refresh()
     } catch (error) {
-      console.error("Gagal menghapus postingan:", error)
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Gagal menghapus postingan",

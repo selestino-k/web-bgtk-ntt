@@ -2,7 +2,7 @@
 
 import { PostEditor, PostData } from "@/components/cms/post-editor"
 import { updatePost } from "@/lib/admin/actions/post-action"
-import { toast } from "sonner"
+import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { Prisma } from "@/lib/generated/prisma/client"
 
@@ -22,6 +22,7 @@ interface EditPostClientProps {
 
 export function EditPostClient({ postId, initialData }: EditPostClientProps) {
   const router = useRouter()
+  const { toast } = useToast()
 
   const handleSave = async (data: PostData) => {
     try {
@@ -49,12 +50,19 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       if (!result.success) {
         throw new Error(result.error || "Gagal menyimpan perubahan")
       }
+      toast({
+        title: "Sukses",
+        description: result.message || "Perubahan berhasil disimpan",
+      })
 
-      toast.success(result.message || "Perubahan berhasil disimpan")
       router.push("/admin/posts")
       router.refresh()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal menyimpan perubahan")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal menyimpan perubahan",
+        variant: "destructive",
+      })
       throw error
     }
   }
@@ -86,11 +94,18 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
         throw new Error(result.error || "Gagal menerbitkan postingan")
       }
 
-      toast.success(result.message || "Postingan berhasil diterbitkan")
+      toast({
+        title: "Sukses",
+        description: result.message || "Postingan berhasil diterbitkan",
+      })
       router.push("/admin/posts")
       router.refresh()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal menerbitkan postingan")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal menerbitkan postingan",
+        variant: "destructive",
+      })
       throw error
     }
   }

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Edit } from "lucide-react"
-import { toast } from "sonner"
+import { useToast } from "@/hooks/use-toast"
 import { updateDocument } from "@/lib/admin/actions/doc-action"
 
 interface EditDocumentDialogProps {
@@ -25,6 +25,7 @@ interface EditDocumentDialogProps {
 }
 
 export function EditDocumentDialog({ id, title, description }: EditDocumentDialogProps) {
+  const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -46,10 +47,17 @@ export function EditDocumentDialog({ id, title, description }: EditDocumentDialo
         throw new Error(result.error || "Gagal memperbarui dokumen")
       }
 
-      toast.success("Dokumen berhasil diperbarui")
+      toast({
+        title: "Sukses",
+        description: "Dokumen berhasil diperbarui",
+      })
       setOpen(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gagal memperbarui dokumen")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal memperbarui dokumen",
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
     }

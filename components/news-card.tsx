@@ -34,7 +34,7 @@ interface NewsListProps {
 }
 
 function extractTextFromContent(content: Prisma.JsonValue): string {
-  if (!content) return "No content"
+  if (!content) return "Tidak ada konten"
 
   try {
     let contentObj: any
@@ -46,7 +46,7 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
     }
 
     if (!contentObj.content || !Array.isArray(contentObj.content)) {
-      return "No content"
+      return "Tidak ada konten"
     }
 
     const extractText = (node: any): string => {
@@ -59,9 +59,9 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
     }
     const fullText = contentObj.content.map(extractText).join(' ').trim()
 
-    return fullText.substring(0, 250) || "No content"
+    return fullText.substring(0, 250) || "Tidak ada konten"
   } catch  {
-    return "Error reading content"
+    return "Gagal memuat konten"
   }
 }
 

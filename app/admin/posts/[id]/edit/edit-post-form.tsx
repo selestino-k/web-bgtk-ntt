@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +58,7 @@ export default function EditPostForm({
   );
   
   // Parse initial content properly
-  const parseInitialContent = (): JSONContent => {
+  const parseInitialContent = useCallback((): JSONContent => {
     try {
       if (!post.content) {
         return {
@@ -67,16 +67,11 @@ export default function EditPostForm({
         };
       }
       
-      // Log to debug
-      console.log('Raw post.content:', post.content);
-      console.log('Type of post.content:', typeof post.content);
-      
       // If content is already an object with the right structure
       if (typeof post.content === 'object' && post.content !== null) {
         const content = post.content as JSONContent;
         // Validate it has the doc structure
         if (content.type === 'doc') {
-          console.log('Content is valid doc structure:', content);
           return content;
         }
       }
@@ -84,7 +79,6 @@ export default function EditPostForm({
       // If content is a string, parse it
       if (typeof post.content === 'string') {
         const parsed = JSON.parse(post.content) as JSONContent;
-        console.log('Parsed from string:', parsed);
         return parsed;
       }
       
@@ -93,8 +87,7 @@ export default function EditPostForm({
         type: "doc",
         content: [],
       };
-    } catch (error) {
-      console.error('Error parsing initial content:', error);
+    } catch  {
       toast({
         title: "Error",
         description: "Gagal memuat konten postingan. Konten akan direset.",
@@ -105,7 +98,7 @@ export default function EditPostForm({
         content: [],
       };
     }
-  };
+  }, [post.content, toast]);
 
   // TipTap editor content state
   const [editorContent, setEditorContent] = useState<JSONContent>(parseInitialContent());
@@ -114,7 +107,7 @@ export default function EditPostForm({
   useEffect(() => {
     const newContent = parseInitialContent();
     setEditorContent(newContent);
-  }, [post.id]);
+  }, [post.id, parseInitialContent]);
 
   // Generate slug from title
   const generateSlug = (text: string) => {
@@ -157,8 +150,12 @@ export default function EditPostForm({
         }
         return node.content && Array.isArray(node.content) && node.content.length > 0;
       });
-    } catch (error) {
-      console.error('Error validating content:', error);
+    } catch {
+      toast({
+        title: "Error",
+        description: "Gagal memeriksa konten postingan.",
+        variant: "destructive",
+      });
       return false;
     }
   };

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Montserrat } from "next/font/google";
+import { Geist, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -17,6 +17,11 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Balai GTK Provinsi NTT",
   description: "Website Resmi Balai GTK Provinsi NTT",
@@ -25,10 +30,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  // Add custom properties as needed
-  // minimumScale: 1,
-  // maximumScale: 1,
-  // viewportFit: 'cover', 
 };
 
 export default function RootLayout({
@@ -39,11 +40,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <meta name="theme-color" content="#297bbf" />
-      <body className={`${geistSans.variable} ${montserrat.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${montserrat.variable} ${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
-          enableSystem
+          enableSystem={false}
         >
           <main className="gap-3 w-full">
             <div className="flex w-full min-h-screen">

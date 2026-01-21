@@ -3,35 +3,26 @@
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createCarouselPhoto } from "@/lib/admin/actions/carousel-action"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Save, Loader2, Link2, Image as ImageIcon, AlertCircle } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { Save, Loader2,} from "lucide-react"
 import { CarouselImageUploader } from "@/components/cms/carousel-image-uploader"
+import { useToast } from "@/hooks/use-toast"
 
-interface AddCarouselPhotoPageProps {
-  caption : string | null
-  imageUrl : string 
-  imageFile : File | null
-  order : number 
 
-}
 
 
 
 export default function AddCarouselPhotoPage() {
   const router = useRouter()
+  const {toast} = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [imageUrl, setImageUrl] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [useExternalUrl, setUseExternalUrl] = useState(false)
+  const [useExternalUrl] = useState(false)
   const [externalUrl, setExternalUrl] = useState("")
   const [imageError, setImageError] = useState(false)
-  const [isValidating, setIsValidating] = useState(false)
+  const [isValidating] = useState(false)
   
   const [formData, setFormData] = useState({
     caption: "",
@@ -62,68 +53,9 @@ export default function AddCarouselPhotoPage() {
     }))
   }
 
-  const validateImageUrl = async (url: string) => {
-    setIsValidating(true)
-    setImageError(false)
-    
-    try {
-      const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg']
-      const hasValidExtension = validExtensions.some(ext => url.toLowerCase().includes(ext))
-      
-      if (!hasValidExtension) {
-        setImageError(true)
-        toast.error("URL harus mengarah ke file gambar (jpg, png, gif, webp, dll)")
-        setIsValidating(false)
-        return false
-      }
+  
 
-      const response = await fetch(url, { method: 'HEAD' })
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch image')
-      }
 
-      const contentType = response.headers.get('content-type')
-      if (!contentType || !contentType.startsWith('image/')) {
-        setImageError(true)
-        toast.error("URL tidak mengarah ke gambar yang valid")
-        setIsValidating(false)
-        return false
-      }
-
-      setImageError(false)
-      toast.success("URL gambar valid")
-      setIsValidating(false)
-      return true
-    } catch (error) {
-      console.error("Error validating image URL:", error)
-      setImageError(true)
-      toast.error("Tidak dapat memvalidasi URL. Pastikan URL dapat diakses secara publik")
-      setIsValidating(false)
-      return false
-    }
-  }
-
-  const handleExternalUrlChange = (url: string) => {
-    setExternalUrl(url)
-    setImageError(false)
-    if (url) {
-      setFormData(prev => ({
-        ...prev,
-        imageUrl: url,
-        imageFile: null,
-      }))
-    }
-  }
-
-  const handleValidateUrl = async () => {
-    if (!externalUrl) {
-      toast.error("Masukkan URL terlebih dahulu")
-      return
-    }
-    
-    await validateImageUrl(externalUrl)
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -131,17 +63,29 @@ export default function AddCarouselPhotoPage() {
    
 
     if (!formData.imageFile && !externalUrl) {
-      toast.error("Harap unggah gambar atau masukkan URL eksternal")
+      toast({
+        title: "Error",
+        description: "Harap unggah file gambar atau masukkan URL gambar",
+        variant: "destructive",
+      })
       return
     }
 
     if (!formData.order && formData.order !== 0) {
-      toast.error("Harap masukkan urutan gambar")
+      toast({
+        title: "Error",
+        description: "Harap masukkan urutan gambar",
+        variant: "destructive",
+      })
       return
     }
 
     if (useExternalUrl && imageError) {
-      toast.error("Harap gunakan URL gambar yang valid")
+      toast({
+        title: "Error",
+        description: "Harap gunakan URL gambar yang valid",
+        variant: "destructive",
+      })
       return
     }
 
@@ -165,12 +109,18 @@ export default function AddCarouselPhotoPage() {
         throw new Error(result.error || "Gagal menambahkan foto carousel")
       }
 
-      toast.success("Foto berhasil ditambahkan")
+      toast({
+        title: "Sukses",
+        description: "Foto carousel berhasil ditambahkan",
+      })
       router.push("/admin/carousel")
       router.refresh()
     } catch (error) {
-      console.error("Error adding photo:", error)
-      toast.error(error instanceof Error ? error.message : "Gagal menambahkan foto carousel")
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Gagal menambahkan foto carousel",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }
