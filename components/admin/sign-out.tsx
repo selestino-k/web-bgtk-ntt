@@ -22,7 +22,6 @@ export function SignOut() {
     setIsLoggingOut(true)
     
     try {
-      // Keep the dialog open while signing out
       await signOut({ 
         callbackUrl: "/sign-in",
         redirect: true

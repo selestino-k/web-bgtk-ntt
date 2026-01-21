@@ -16,6 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Prisma } from "@/lib/generated/prisma/browser"
+import { toast } from "sonner"
 
 type NewsPost = {
   id: string;
@@ -70,8 +71,7 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
     const fullText = contentObj.content.map(extractText).join(' ').trim()
 
     return fullText || "No content"
-  } catch (error) {
-    console.error('Error extracting text:', error)
+  } catch  {
     return "Error reading content"
   }
 }
@@ -90,8 +90,8 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
             const data = await response.json();
             setNews(data);
           }
-        } catch (error) {
-          console.error('Error fetching news:', error);
+        } catch {
+          toast.error("Gagal memuat berita terbaru.");
         } finally {
           setIsLoading(false);
         }

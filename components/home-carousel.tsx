@@ -52,7 +52,7 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
                                 src={photo.imageUrl}
                                 alt={photo.caption || `Carousel image ${photo.id}`}
                                 fill
-                                className="object-cover carousel-item-zoom opacity-50"
+                                className="object-cover carousel-item-zoom opacity-60"
                                 priority={photo.id === photos[0]?.id}
                             />
                             
