@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 
-import NavBar from "@/components/navbar";
-import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "BGTK NTT",
@@ -26,11 +24,9 @@ export default async function PublikasiLayout({
 
   return (
     <main className="gap-3 w-full scroll-smooth">
-      <NavBar />
       <div className="flex w-full min-h-screen">
         {children}
       </div>
-      <Footer />
     </main>
   );
 }

@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  name      String
+  password  String
+  role      Role
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  posts     Post[]
+
+  @@map("user")
+}
+
+model Post {
+  id        BigInt     @id @default(autoincrement())
+  title     String     @db.VarChar(500)
+  slug      String     @unique @db.VarChar(500)
+  content   Json
+  thumbnail String?    @db.VarChar(500)
+  document  String?    @db.VarChar(500)
+  published Boolean    @default(false)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  authorId  String     @map("author_id") @db.Uuid
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags      PostTag[]
+
+  @@index([published, createdAt])
+  @@index([slug])
+  @@map("post")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(100)
+  slug      String    @unique @db.VarChar(100)
+  type      TagType   @default(CATEGORY)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  posts     PostTag[]
+
+  @@map("tag")
+}
+
+model PostTag {
+  postId     BigInt   @map("post_id")
+  tagId      Int      @map("tag_id")
+  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz(6)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("post_tag")
+}
+
+model CarouselPhoto {
+  id        BigInt   @id @default(autoincrement())
+  imageUrl  String   @db.VarChar(500)
+  caption   String?  @db.VarChar(255)
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("carousel_photo")
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(500)
+  description String?
+  fileUrl     String   @map("file_url") @db.VarChar(500)
+  fileName    String   @map("file_name") @db.VarChar(255)
+  fileSize    Int      @map("file_size")
+  fileType    String   @map("file_type") @db.VarChar(100)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("document")
+}
+
+enum Role {
+  Admin
+  Operator
+
+  @@map("role")
+}
+
+enum TagType {
+  CATEGORY
+  ANNOUNCEMENT
+
+  @@map("tag_type")
+}

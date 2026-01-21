@@ -18,9 +18,9 @@ export default function NavMenu() {
 
   return (
     <NavigationMenu viewport={isMobile} className="text-black dark:text-white">
-      <NavigationMenuList className="flex-wrap font-geist gap-6">
+      <NavigationMenuList className="flex-wrap font-montserrat gap-6">
         <NavigationMenuItem className="hidden md:block ">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Profil</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Profil</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -50,7 +50,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Publikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Publikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -64,23 +64,17 @@ export default function NavMenu() {
                   <Link href="/publikasi/peraturan-juknis" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Peraturan dan Juknis</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/publikasi/unduh" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Unduh</Link>
+                  <Link href="/publikasi/dokumen" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dokumen</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">ULT</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">ULT</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/permintaan-informasi" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Permintaan Informasi</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/pengaduan" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Pengaduan</Link>
-                </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://prod.lapor.go.id/"  target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
@@ -97,7 +91,7 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
+        {/* <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">SAKIP</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
@@ -120,9 +114,9 @@ export default function NavMenu() {
               </li>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -130,7 +124,7 @@ export default function NavMenu() {
                   <Link href="https://sinde.kemdikbud.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/aplikasi/e-skp" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
+                  <Link href="https://skp.sdm.kemdikbud.go.id/skp/site/login.jsp"  target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
@@ -139,7 +133,7 @@ export default function NavMenu() {
                   <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://gtk.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">GTK</Link>
+                  <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">GTK</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://raporpendidikan.kemendikdasmen.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">Rapor Pendidikan</Link>
@@ -149,7 +143,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg hover:text-primary bg-white-700/20">Lainnya</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Lainnya</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>

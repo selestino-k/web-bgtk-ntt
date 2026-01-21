@@ -25,11 +25,15 @@ import { Input } from "@/components/ui/input"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[] | undefined
+  meta?: {
+    currentUserId?: string
+  }
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data = [],
+  meta,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [filtering, setFiltering] = useState("")
@@ -37,6 +41,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data: data ?? [],
     columns,
+    meta,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),

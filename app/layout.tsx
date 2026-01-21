@@ -1,7 +1,10 @@
-import type { Metadata, Viewport} from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/next"
+
 
 
 const geistSans = Geist({
@@ -9,13 +12,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Balai GTK NTT",
+  title: "Balai GTK Provinsi NTT",
   description: "Website Resmi Balai GTK Provinsi NTT",
 };
 
@@ -36,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <meta name="theme-color" content="#297bbf" />
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${montserrat.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -48,6 +51,8 @@ export default function RootLayout({
             </div>
           </main>
         </ThemeProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
 

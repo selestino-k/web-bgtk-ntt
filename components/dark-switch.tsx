@@ -19,12 +19,13 @@ export function ModeToggle() {
 
   return (
     <div className="flex items-center gap-2">
-      <Sun className="h-4 w-4" />
+      <Sun className={`h-4 w-4 ${!isDark ? "text-gray-100" : "text-gray-400"}`} />
       <Switch
         checked={isDark}
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+        className={isDark ? "bg-primary" : "bg-primary"}
       />
-      <Moon className="h-4 w-4" />
+      <Moon className={`h-4 w-4 ${isDark ? "text-primary" : "text-gray-100"}`} />
     </div>
   )
 }

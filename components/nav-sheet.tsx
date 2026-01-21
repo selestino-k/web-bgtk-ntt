@@ -15,7 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Link from "next/link"
-import { ModeToggle } from "./dark-switch"
+import { AdminModeToggle } from "./admin/admin-dark-switch"
 
 export function NavSheet() {
   return (
@@ -23,11 +23,11 @@ export function NavSheet() {
       <SheetTrigger asChild>
         <Button variant="outline" size="lg"><Menu size="50"/></Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-visible">
         <SheetHeader>
-          <SheetTitle className="text-2xl font-bold font-geist text-primary mb-5">Menu</SheetTitle> <ModeToggle />
+          <SheetTitle className="text-2xl font-bold font-montserrat text-primary mb-5">Menu</SheetTitle> <AdminModeToggle />
         </SheetHeader>
-        <div className="mx-5 font-geist text-primary" >
+        <div className="mx-5 font-montserrat text-primary" >
         <Accordion
             type="single"
             collapsible
@@ -117,30 +117,6 @@ export function NavSheet() {
             <AccordionTrigger className="text-lg font-bold">ULT</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/ult/permintaan-informasi"
-                    className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
-                    >
-                        Permintaan Informasi 
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/ult/pengaduan"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        Pengaduan
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
-                    href="/ult/perjanjian-kinerja"
-                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                    >
-                        Perjanjian Kinerja
-                </Link>
-            </AccordionContent>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-                <Link 
                     href="https://prod.lapor.go.id"
                     target="_blank" 
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
@@ -171,8 +147,8 @@ export function NavSheet() {
                         SIPPN
                 </Link>
             </AccordionContent>
-            <AccordionItem value="item-4">
-
+            {/* <AccordionItem value="item-4"> */}
+{/* 
             <AccordionTrigger className="text-lg font-bold">SAKIP</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
@@ -213,10 +189,10 @@ export function NavSheet() {
                     >
                         Wilayah Kerja
                 </Link>
-            </AccordionContent>
+            </AccordionContent> */}
             
             
-        </AccordionItem>
+        {/* </AccordionItem> */}
             
         </AccordionItem>
         <AccordionItem value="item-4">
@@ -232,7 +208,7 @@ export function NavSheet() {
             </AccordionContent>
             <AccordionContent className="flex flex-col gap-4 text-balance">
                 <Link 
-                    href="/sakip/e-skp"
+                    href="https://skp.sdm.kemdikbud.go.id/skp/site/login.jsp"
                     className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                     >
                         e-SKP
@@ -262,8 +238,22 @@ export function NavSheet() {
                         Rapor Pendidikan 
                 </Link>
             </AccordionContent>
-            
-            
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="https://info.gtk.kemendikdasmen.go.id/"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        GTK
+                </Link>
+            </AccordionContent>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+                <Link 
+                    href="https://raporpendidikan.kemendikdasmen.go.id/login"
+                    className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                    >
+                        Rapor Pendidikan
+                </Link>
+            </AccordionContent>
         </AccordionItem>
         
         <AccordionItem value="item-5">

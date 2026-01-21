@@ -3,8 +3,9 @@ import type { Metadata, Viewport } from "next";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 
+
 export const metadata: Metadata = {
-  title: "BGTK NTT",
+  title: "BGTK Provinsi NTT",
   keywords: ["Balai GTK NTT", "Balai GTK Provinsi NTT", "BGTK NTT", "Balai Guru dan Tenaga Kependidikan NTT"],
   description: "Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
 };

@@ -1,7 +1,7 @@
 import { PrescenceMotion } from "@/components/motion/presence-motion";
 import { FAQAccordion } from "./faq-accordion";
 
-export default function SambutanKata() {
+export default function FAQPage() {
     return (
         <PrescenceMotion>
             <div id="faq" className="mt-20 w-full max-w-7xl place-items-start px-10">
