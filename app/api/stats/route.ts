@@ -1,13 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Redis } from "@upstash/redis";
 import { NextResponse } from "next/server";
 
 const redis = Redis.fromEnv();
+const cache = new Map<string, { data: any; expires: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type');
+    const cacheKey = `${type}-${searchParams.toString()}`;
+
+    // Check cache first
+    const cached = cache.get(cacheKey);
+    if (cached && cached.expires > Date.now()) {
+      return NextResponse.json(cached.data);
+    }
+
     const days = parseInt(searchParams.get('days') || '90');
-    const type = searchParams.get('type'); // 'chart', 'summary', or 'post'
     const slug = searchParams.get('slug');
 
     // For chart data
@@ -80,7 +91,7 @@ export async function GET(request: Request) {
         redis.get<number>(`views:yearly:${year}:desktop`),
       ]);
 
-      return NextResponse.json({
+      const result = {
         homepage: {
           total: homepageTotal || 0,
           mobile: homepageMobile || 0,
@@ -101,7 +112,10 @@ export async function GET(request: Request) {
           mobile: yearMobile || 0,
           desktop: yearDesktop || 0,
         },
-      });
+      };
+      
+      cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
+      return NextResponse.json(result);
     }
 
     //For 90 days summary 
@@ -122,6 +136,7 @@ export async function GET(request: Request) {
           mobile: mobile || 0,
         });
       }
+      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
       return NextResponse.json({ chartData });
     }
 
@@ -143,6 +158,7 @@ export async function GET(request: Request) {
           mobile: mobile || 0,
         });
       }
+      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
       return NextResponse.json({ chartData });
     }
 
@@ -164,6 +180,7 @@ export async function GET(request: Request) {
           mobile: mobile || 0,
         });
       }
+      cache.set(cacheKey, { data: { chartData }, expires: Date.now() + CACHE_TTL });
       return NextResponse.json({ chartData });
     }
 
@@ -175,12 +192,15 @@ export async function GET(request: Request) {
         redis.get<number>(`views:post:${slug}:desktop`),
       ]);
 
-      return NextResponse.json({
+      const result = {
         slug,
         total: total || 0,
         mobile: mobile || 0,
         desktop: desktop || 0,
-      });
+      };
+      
+      cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
+      return NextResponse.json(result);
     }
 
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

@@ -70,30 +70,30 @@ export default async function AdminPage() {
 
                 {/* Database Stats */}
                 <div className="mt-5">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Statistik Konten</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">Statistik Konten</h3>
                     <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg  shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Postingan</h4>
                             <h2 className="text-3xl font-bold">
                                 <Newspaper className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalPosts}
                             </h2>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Media</h4>
                             <h2 className="text-3xl font-bold">
                                 <ImagePlay className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalMedia}
                             </h2>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Dokumen</h4>
                             <h2 className="text-3xl font-bold">
                                 <Book className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalDocuments}
                             </h2>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Admin</h4>
                             <h2 className="text-3xl font-bold">
                                 <User className="inline-block mr-2 h-6 w-6 text-primary" />
@@ -110,9 +110,9 @@ export default async function AdminPage() {
 
                 {/* Visit Stats */}
                 <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Statistik Kunjungan</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">Statistik Kunjungan</h3>
                     <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Hari Ini</h4>
                             <h2 className="text-3xl font-bold text-primary">
                                 {dashboardData.today?.total || 0}
@@ -122,7 +122,7 @@ export default async function AdminPage() {
                                 <Monitor className="h-4 w-4 ml-2" /> {dashboardData.today?.desktop || 0}
                             </p>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Bulan Ini</h4>
                             <h2 className="text-3xl font-bold text-primary">
                                 {dashboardData.thisMonth?.total || 0}
@@ -132,7 +132,7 @@ export default async function AdminPage() {
                                 <Monitor className="h-4 w-4 ml-2" /> {dashboardData.thisMonth?.desktop || 0}
                             </p>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Kunjungan Tahun Ini</h4>
                             <h2 className="text-3xl font-bold text-primary">
                                 {dashboardData.thisYear?.total || 0}
@@ -142,7 +142,7 @@ export default async function AdminPage() {
                                 <Monitor className="h-4 w-4 ml-2" /> {dashboardData.thisYear?.desktop || 0}
                             </p>
                         </div>
-                        <div className="p-4 border rounded-lg bg-white shadow-sm">
+                        <div className="p-4 border rounded-lg shadow-sm">
                             <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Total Kunjungan Homepage</h4>
                             <h2 className="text-3xl font-bold text-primary">
                                 {dashboardData.homepage?.total || 0}

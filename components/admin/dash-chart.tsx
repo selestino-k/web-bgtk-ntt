@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -25,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "@/hooks/use-toast"
+import { LoaderCircle } from "lucide-react"
 
 const chartConfig = {
   visitors: {
@@ -32,11 +33,11 @@ const chartConfig = {
   },
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   mobile: {
     label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
@@ -47,7 +48,7 @@ interface ChartDataPoint {
 }
 
 export function DashboardChart() {
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState("7d")
   const [chartData, setChartData] = React.useState<ChartDataPoint[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
 
@@ -65,7 +66,8 @@ export function DashboardChart() {
         const response = await fetch(`/api/stats?type=${type}`)
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
+          throw new Error(`HTTP error! status: ${response.status}`),
+          toast.error("Gagal memuat data grafik.")
         }
 
         const data = await response.json()
@@ -76,8 +78,8 @@ export function DashboardChart() {
           // Handle if API returns array directly
           setChartData(data)
         }
-      } catch (error) {
-        console.error("Failed to fetch chart data:", error)
+      } catch {
+        toast.error("Gagal memuat data grafik.")
       } finally {
         setIsLoading(false)
       }
@@ -102,7 +104,7 @@ export function DashboardChart() {
             className="w-[160px] rounded-lg sm:ml-auto"
             aria-label="Pilih rentang waktu"
           >
-            <SelectValue placeholder="3 bulan terakhir" />
+            <SelectValue placeholder="7 hari Terakhir"/>
           </SelectTrigger>
           <SelectContent className="rounded-xl">
             <SelectItem value="90d" className="rounded-lg">
@@ -120,6 +122,7 @@ export function DashboardChart() {
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         {isLoading ? (
           <div className="flex h-[250px] items-center justify-center">
+            <LoaderCircle className="animate-spin text-primary w-6 h-6 mr-4" />
             <p className="text-muted-foreground">Memuat data...</p>
           </div>
         ) : filteredData.length === 0 ? (
