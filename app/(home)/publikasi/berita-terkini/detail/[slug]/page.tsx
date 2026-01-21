@@ -539,6 +539,9 @@ export default async function BeritaTerkiniDetail({
 
 // Generate static params for static generation (optional)
 export async function generateStaticParams() {
+   if (process.env.NODE_ENV !== 'production') {
+    return [];
+  } 
   const posts = await prisma.post.findMany({
     where: {
       published: true,
