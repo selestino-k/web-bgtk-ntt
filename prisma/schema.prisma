@@ -34,7 +34,7 @@ model Post {
   author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags      PostTag[]
 
-  @@index([published, createdAt])
+  @@index([published, createdAt(sort: Desc)])
   @@index([slug])
   @@map("post")
 }
@@ -57,6 +57,8 @@ model PostTag {
   post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
+  @@index([postId])
+  @@index([tagId])
   @@id([postId, tagId])
   @@map("post_tag")
 }

@@ -37,33 +37,40 @@ export default function Footer() {
                     </div>
 
 
-                    <div className="space-y-4 text-center md:text-left mb-10 md:mb-0">
+                    <div className="space-y-4 text-center md:text-left mb-30 md:mb-0">
                         <h3 className="lg:text-xl text-sm font-bold text-white">Tag Berita</h3>
                         <div className="flex w-full flex-wrap gap-2 h-5 md:h-20 px-3">
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Kabar Kementerian</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Kabar Kementerian</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Internasional</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Internasional</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Teknologi</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Teknologi</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Humas</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Humas</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Rumah Pendidikan</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Rumah Pendidikan</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/" className="font-semibold lg:text-xs text-xs">Pendidikan</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/" className="font-semibold text-xs">Pendidikan</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/publikasi/berita-terkini?tag=3" className="font-semibold lg:text-xs text-xs">Kabar Balai</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/publikasi/berita-terkini?tag=3" className="font-semibold text-xs">Kabar Balai</Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-1 lg:px-2">
-                                <Link href="/publikasi/pengumuman" className="font-semibold lg:text-xs text-xs">Pengumuman</Link>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
+                                <Link href="/publikasi/pengumuman" className="font-semibold text-xs">Pengumuman</Link>
                             </Badge>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2">
+                                <Link href="/publikasi/agenda" className="font-semibold text-xs">Ramah</Link>
+                            </Badge>
+                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2">
+                                <Link href="/publikasi/agenda" className="font-semibold text-xs">Pendidikan Bermutu Untuk Semua</Link>
+                            </Badge>
+
                         </div>
                     </div>
 

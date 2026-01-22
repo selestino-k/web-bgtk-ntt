@@ -168,17 +168,17 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
                     >
                       <CardContent className="flex flex-col p-0 h-full">
                         {post.thumbnail ? (
-                          <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                          <div className="relative max-w-sm h-48 overflow-hidden rounded-t-lg">
                             <Image
                               src={post.thumbnail}
                               alt={post.title}
-                              width={1024}
-                              height={576}
-                              className="aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
+                              width={800}
+                              height={450}
+                              className="aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>
                         ) : (
-                          <div className="relative w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                          <div className="relative max-w-sm h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
                             <Image
                               src="/images/placeholder.svg"
                               alt="No Image"
@@ -213,7 +213,13 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
                               <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
                                 {tagRelation.tag.name}
                               </Badge>
-                            ))}
+                            ))
+                            }
+                            {post.tags.length - 2 > 0 && (
+                              <Badge variant="secondary" className="text-xs font-montserrat font-semibold">
+                                +{post.tags.length - 2} lainnya
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </CardContent>
@@ -226,8 +232,8 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
         })}
       </CarouselContent>
          
-      <CarouselPrevious className="left-0" />
-      <CarouselNext className="right-0" />
+      <CarouselPrevious className="-left-10" />
+      <CarouselNext className="-right-10" />
     </Carousel>
   );
 }

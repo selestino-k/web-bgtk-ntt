@@ -66,8 +66,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
           setUseExternalUrl(true)
           setExternalUrl(carouselPhoto.imageUrl)
         }
-      } catch (error) {
-        console.error("Error fetching photo:", error)
+      } catch  {
         toast({
           title: "Error",
           description: "Gagal memuat data foto",
@@ -133,8 +132,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       })
       setIsValidating(false)
       return true
-    } catch (error) {
-      console.error("Error validating image URL:", error)
+    } catch  {
       setImageError(true)
       toast({
         title: "Error",
@@ -230,7 +228,6 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       router.push("/admin/carousel")
       router.refresh()
     } catch (error) {
-      console.error("Error updating photo:", error)
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Gagal memperbarui foto",
@@ -291,11 +288,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                   type="number"
                   placeholder="Masukkan urutan tampil foto (angka)"
                   value={formData.order}
-                  onChange={(e) =>
-                    setFormData(prev => ({ ...prev, order: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setFormData(prev => ({ ...prev, order: value }))
+                  }}
                   disabled={isSubmitting}
-                  required
                   min={1}
                 />
               </div>
@@ -423,7 +420,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/admin/daftar-foto")}
+                  onClick={() => router.push("/admin/carousel")}
                   disabled={isSubmitting}
                 >
                   Batal

@@ -76,7 +76,7 @@ export default function NavMenu() {
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://prod.lapor.go.id/"  target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
+                  <Link href="https://prod.lapor.go.id/"  target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/ult/wbs-itjen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
