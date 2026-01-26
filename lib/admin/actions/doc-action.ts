@@ -10,6 +10,7 @@ export async function uploadDocument(formData: FormData) {
     const file = formData.get("file") as File
     const title = formData.get("title") as string
     const description = formData.get("description") as string | null
+    const category = formData.get("category") as string | null
 
     if (!file || !title) {
       return { success: false, error: "File dan judul harus diisi" }
@@ -27,6 +28,7 @@ export async function uploadDocument(formData: FormData) {
       data: {
         title,
         description,
+        category,
         fileUrl: uploadResult.url,
         fileName: file.name, // Store actual filename
         fileSize: file.size,
@@ -122,7 +124,7 @@ export async function getDocument(id: number) {
 }
 
 // Update document metadata (without changing file)
-export async function updateDocument(id: number, data: { title?: string; description?: string | null }) {
+export async function updateDocument(id: number, data: { title?: string; description?: string | null; category?: string | null }) {
   try {
     const document = await prisma.document.update({
       where: { id },
@@ -132,7 +134,6 @@ export async function updateDocument(id: number, data: { title?: string; descrip
     revalidatePath("/admin/documents")
     return { success: true, document }
   } catch (error) {
-    console.error("Update document error:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal memperbarui dokumen",

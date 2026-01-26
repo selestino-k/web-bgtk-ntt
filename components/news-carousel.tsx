@@ -162,7 +162,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                       whileHover={{ y: -5 }}
                       className="h-full"
                     >
-                      <CardContent className="flex flex-col p-0 h-full max-w-7xl">
+                      <CardContent className="flex flex-col p-0 h-full max-w-4xl">
                         {post.thumbnail ? (
                           <div className="relative max-w-sm h-52 overflow-hidden rounded-t-lg items-center justify-center mx-auto">
                             <Image

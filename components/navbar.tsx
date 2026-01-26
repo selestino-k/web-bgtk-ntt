@@ -9,7 +9,7 @@ export default async function NavBar() {
     <header className="shadow-lg fixed top-0 z-20 w-full py-2 bg-secondary/85 dark:bg-gray-950/85 blur-effect">
       <div className="flex h-16 max-w-screen items-center text-primary justify-between px-6 md:px-4" >
         <Link href="/" className="flex items-center gap-2 hover:text-sidebar-primary" prefetch={false}>
-          <Image src="/logo/logo-web-bgtk-ntt.png" alt="Balai GTK Logo" width={250} height={48} />
+          <Image src="/logo/logo-web-bgtk-ntt.svg" alt="Balai GTK Logo" width={250} height={48} />
         </Link>
 
         <div className="grid justify-items-center py-1">

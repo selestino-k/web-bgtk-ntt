@@ -41,7 +41,6 @@ export async function uploadImageToS3(
 
     return { success: true, url }
   } catch (error) {
-    console.error("S3 upload error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to upload image" 
@@ -71,7 +70,6 @@ export async function deleteImageFromS3(
 
     return { success: true }
   } catch (error) {
-    console.error("S3 delete error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to delete image" 
@@ -111,7 +109,6 @@ export async function uploadCarouselImageToS3(
 
     return { success: true, url }
   } catch (error) {
-    console.error("S3 upload error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to upload image" 
@@ -141,7 +138,6 @@ export async function deleteCarouselImageFromS3(
 
     return { success: true }
   } catch (error) {
-    console.error("S3 delete error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to delete image" 
@@ -206,7 +202,6 @@ export async function uploadDocumentToS3(
 
     return { success: true, url }
   } catch (error) {
-    console.error("S3 document upload error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Gagal mengunggah dokumen" 

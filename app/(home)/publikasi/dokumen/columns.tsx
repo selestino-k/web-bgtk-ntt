@@ -11,6 +11,7 @@ export type DocsPage = {
   id: number
   title: string
   description: string | null
+  category?: string | null
   fileSize: number
   fileUrl: string
   createdAt: Date
@@ -29,6 +30,10 @@ export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "description",
     header: "Deskripsi (Opsional)",
+  },
+  {
+    accessorKey: "category",
+    header: "Kategori",
   },
   {
     accessorKey: "fileSize",

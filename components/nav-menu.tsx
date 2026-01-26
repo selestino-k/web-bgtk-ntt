@@ -11,6 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { Button } from "./ui/button"
 
 
 export default function NavMenu() {
@@ -20,7 +21,7 @@ export default function NavMenu() {
     <NavigationMenu viewport={isMobile} className="text-black dark:text-white">
       <NavigationMenuList className="flex-wrap font-montserrat gap-6">
         <NavigationMenuItem className="hidden md:block ">
-          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Profil</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Profil</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -50,7 +51,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Publikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Publikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -71,7 +72,7 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">ULT</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">ULT</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -92,7 +93,28 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">SAKIP</NavigationMenuTrigger>
+          <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild className="text-md"> 
+                  <Link href="/sakip/rencana-strategis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rencana Strategis</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="/sakip/laporan-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Laporan Kinerja</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                    <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
+                  </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="/sakip/penghargaan" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Penghargaan</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -118,16 +140,16 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+        <Button variant="ghost" className="p-0 m-0 hidden md:block">
+          <Link href="/zi-wbk" className="text-base text-primary font-montserrat font-semibold hover:text-primary/70 transition-colors">ZI-WBK</Link>
+        </Button>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-lg text-primary bg-white-700/20 font-semibold">Lainnya</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Lainnya</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/lainnya/faq" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">FAQ</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/lainnya/zi-wbk" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">ZI-WBK</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/lainnya/survei" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Survei</Link>

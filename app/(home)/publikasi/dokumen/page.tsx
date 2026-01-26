@@ -13,7 +13,7 @@ async function getDocsData (){
 
 }
 
-export default async function Unduh() {
+export default async function DokumenPage() {
       const docsData = await getDocsData()
 
     return (

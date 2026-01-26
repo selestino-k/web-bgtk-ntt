@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import React, { useState, useEffect } from "react"
@@ -30,6 +31,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
   const [externalUrl, setExternalUrl] = useState("")
   const [imageError, setImageError] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
+  const [isLoading, setIsLoading] = useState(true) // Add loading state
 
   const [formData, setFormData] = useState({
     caption: "",
@@ -40,6 +42,8 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
 
   useEffect(() => {
     const fetchPhoto = async () => {
+      if (!isLoading) return // Prevent refetching
+      
       try {
         const carouselPhoto = await getCarouselPhotoById(resolvedParams.id)
 
@@ -60,7 +64,6 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
           imageFile: null,
         })
 
-
         // Check if it's an external URL
         if (carouselPhoto.imageUrl.startsWith("http")) {
           setUseExternalUrl(true)
@@ -73,11 +76,13 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
           variant: "destructive",
         })
         router.push("/admin/carousel")
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchPhoto()
-  }, [resolvedParams.id, router, toast])
+  }, [resolvedParams.id, isLoading]) // Remove router and toast from dependencies
 
   const handleImageChange = (url: string, file?: File) => {
     setFormData(prev => ({
@@ -237,14 +242,12 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       setIsSubmitting(false)
     }
   }
-
-
   return (
     <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
-            <Link href="/admin/daftar-foto">
+            <Link href="/admin/carousel">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>

@@ -7,17 +7,35 @@ import { HomeCarousel } from "@/components/home-carousel";
 import { KataSambutan } from "./profil/sambutan-kata/page";
 import Image from "next/image";
 import Link from "next/link";
+import PengumumanSidebar from "@/components/pengumuman-sidebar";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "@/app/(home)/publikasi/dokumen/columns";
 
-async function getLatestPosts() {
+async function getDocsData() {
+  return await prisma.document.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
+async function getLatestNews() {
   try {
     const posts = await prisma.post.findMany({
       where: {
         published: true,
+        tags: {
+          some: {
+            tag: {
+              type: 'CATEGORY',
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
       },
-      take: 6,
+      take: 3,
       include: {
         tags: {
           include: {
@@ -61,35 +79,22 @@ async function getCarouselPhotos() {
 }
 
 export default async function Home() {
-  const latestPosts = await getLatestPosts();
   const carouselPhotos = await getCarouselPhotos();
+  const latestPosts = await getLatestNews();
+  const docsData = await getDocsData();
 
   return (
-    <div className="grid w-full min-h-dvh overflow-hidden gap-10 justify-items-center">
+    <div className="grid w-full  overflow-hidden justify-items-center">
       <PrescenceMotion>
-        <div id="home" className="relative z-10 flex justify-center h-screen w-screen">
-          <div className="absolute inset-0 z-10">
+        <div id="home" className="flex relative w-screen mb-5">
+          <main className="relative z-10 flex md:-mt-64 w-full">
             <HomeCarousel photos={carouselPhotos} />
-          </div>
-          <main className="z-10 flex flex-col w-full justify-center text-justify justify-items-center items-center h-screen mt-15 px-10 pb-10">
-            <h1 className="lg:text-8xl text-4xl sm:text-wrap text-white font-semibold xs:text-xs font-geist">
-              Selamat Datang
-            </h1>
-            <p className="mt-5 lg:text-4xl text-md font-semibold font-montserrat text-white">
-              di Situs Web Resmi
-            </p>
-            <p className="mt-3 lg:text-4xl text-md font-semibold font-montserrat text-white">
-              Balai Guru dan Tenaga Kependidikan
-            </p>
-            <p className="text-md lg:text-4xl font-semibold font-montserrat text-white">
-              Provinsi Nusa Tenggara Timur
-            </p>
           </main>
         </div>
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="program" className="flex relative w-full max-w-7xl items-center mb-5 min-h-dvh">
+        <div id="program" className="md:-mt-20 flex relative w-full max-w-7xl items-center min-h-dvh">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
@@ -102,12 +107,9 @@ export default async function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="sambutan" className="flex relative w-full max-w-7xl items-center mb-10">
+        <div id="sambutan" className="flex relative w-full max-w-7xl items-center md:mb-20">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
-              <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-10">
-                Sambutan Kata
-              </h2>
               <div className="max-w-7xl grid md:flex mx-auto font-montserrat">
                 <div className="w-full md:w-3/4 text-left md:mb-5 md:mr-10 relative px-4 md:px-0 mb-14">
                   <Image
@@ -132,19 +134,21 @@ export default async function Home() {
       </PrescenceMotion>
 
       <PrescenceMotion>
-        <div id="berita" className="hidden sm:flex items-center relative mb-10 w-full max-w-7xl">
+        <div id="berita" className="hidden sm:flex items-center relative mb-10 mt-10 w-full max-w-7xl">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
-            <div className="text-center">
-              <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
-                <Link
-                  href="/publikasi/berita-terkini"
-                  className="hover:text-primary/70 transition-colors"
-                >
-                  Berita Terkini
-                </Link>
-              </h2>
+            <div className="flex" >
+              <div className="w-3/4 pr-6">
+                <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
+                  <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
+                    Berita Terkini
+                  </Link>
+                </h2>
+                <NewsCarousel initialPosts={latestPosts} />
+              </div>
+              <div className="flex w-1/4 gap-6">
+                <PengumumanSidebar />
+              </div>
             </div>
-            <NewsCarousel initialPosts={latestPosts} />
           </main>
         </div>
       </PrescenceMotion>
@@ -154,10 +158,30 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 p-8 w-full justify-center">
             <div className="text-center">
               <h2 className="text-3xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
-                Berita Terkini
+                <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
+                  Berita Terkini
+                </Link>
+              </h2>
+              <MobileNewsCarousel initialPosts={latestPosts} />
+            </div>
+            <div className="mt-6">
+              <PengumumanSidebar />
+            </div>
+          </main>
+        </div>
+      </PrescenceMotion>
+
+      <PrescenceMotion>
+        <div id="documents" className="flex relative mb-10 items-center">
+          <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
+            <div className="text-center">
+              <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
+                Dokumen
               </h2>
             </div>
-            <MobileNewsCarousel initialPosts={latestPosts} />
+            <div className="w-full flex-wrap">
+              <DataTable columns={columns} data={docsData} />
+            </div>
           </main>
         </div>
       </PrescenceMotion>

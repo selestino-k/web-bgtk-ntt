@@ -17,20 +17,23 @@ import { Textarea } from "@/components/ui/textarea"
 import { Edit } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { updateDocument } from "@/lib/admin/actions/doc-action"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface EditDocumentDialogProps {
   id: number
   title: string
   description: string | null
+  category?: string | null
 }
 
-export function EditDocumentDialog({ id, title, description }: EditDocumentDialogProps) {
+export function EditDocumentDialog({ id, title, description, category }: EditDocumentDialogProps) {
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: title,
     description: description || "",
+    category : category || "",
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,7 +78,7 @@ export function EditDocumentDialog({ id, title, description }: EditDocumentDialo
           <DialogHeader>
             <DialogTitle>Edit Dokumen</DialogTitle>
             <DialogDescription>
-              Perbarui judul dan deskripsi dokumen. Klik simpan untuk menyimpan perubahan.
+              Perbarui judul, deskripsi, dan kategori dokumen. Klik simpan untuk menyimpan perubahan.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -104,6 +107,20 @@ export function EditDocumentDialog({ id, title, description }: EditDocumentDialo
                 rows={4}
                 disabled={isLoading}
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="category">Kategori (Opsional)</Label>
+              <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })} disabled={isLoading}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih kategori" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Lainnya">Lainnya</SelectItem>
+                  <SelectItem value="Laporan Kinerja">Laporan Kinerja</SelectItem>
+                  <SelectItem value="Perjanjian Kinerja">Perjanjian Kinerja</SelectItem>
+                  <SelectItem value="Rencana Strategis">Rencana Strategis</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>

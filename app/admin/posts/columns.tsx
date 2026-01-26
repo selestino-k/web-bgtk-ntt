@@ -29,24 +29,7 @@ export type Post = {
   updatedAt: Date
 }
 
-// Types for Lexical JSON structure
-type LexicalNode = {
-  type?: string
-  text?: string
-  format?: number
-  children?: LexicalNode[]
-  tag?: string
-  url?: string
-  [key: string]: unknown
-}
 
-type LexicalContent = {
-  root?: {
-    children?: LexicalNode[]
-    [key: string]: unknown
-  }
-  [key: string]: unknown
-}
 
 // Helper function to render TipTap JSON as HTML (matching berita detail page)
 function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {

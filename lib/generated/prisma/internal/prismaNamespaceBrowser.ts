@@ -139,6 +139,7 @@ export const DocumentScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  category: 'category',
   fileUrl: 'fileUrl',
   fileName: 'fileName',
   fileSize: 'fileSize',

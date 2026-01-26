@@ -33,6 +33,10 @@ export const columns: ColumnDef<DocsPage>[] = [
     header: "Deskripsi (Opsional)",
   },
   {
+    accessorKey: "category",
+    header: "Kategori",
+  },
+  {
     accessorKey: "fileSize",
     header: "Ukuran",
     cell: ({ row }) => {
