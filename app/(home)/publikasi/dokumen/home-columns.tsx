@@ -56,10 +56,6 @@ export const columns: ColumnDef<DocsPage>[] = [
     }
   },
   {
-    accessorKey: "fileName",
-    header: "Nama File",
-  },
-  {
     accessorKey: "createdAt",
     header: "Tanggal Diunggah",
     cell: ({ row }) => {

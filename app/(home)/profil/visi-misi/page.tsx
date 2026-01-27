@@ -1,10 +1,35 @@
 import { PrescenceMotion } from "@/components/motion/presence-motion";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import Link from "next/link";
+
+export const metadata = {
+    title: "Visi Misi | BGTK Provinsi NTT",
+    description: "Halaman Visi Misi BGTK NTT",
+};
 
 export default function VisiMisi() {
     return (
         <PrescenceMotion>
+
             <div id="sambutan" className="mt-20 w-full max-w-7xl place-items-start px-10">
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink asChild>
+                                    <Link href="/">Beranda</Link>
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                Profil
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Visi Misi</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
                     <div className="text-left">
                         <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
                             Visi Misi

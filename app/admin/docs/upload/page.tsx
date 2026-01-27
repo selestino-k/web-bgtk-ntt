@@ -137,7 +137,13 @@ export default function UploadDocumentPage() {
 
               <div className="space-y-2">
                 <Label>Kategori Dokumen (opsional)</Label>
-                <Select disabled={isSubmitting} required>
+                <Select 
+                  disabled={isSubmitting}
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    setFormData(prev => ({ ...prev, category: value }))
+                  }
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Pilih kategori dokumen" />
                   </SelectTrigger>
@@ -148,7 +154,6 @@ export default function UploadDocumentPage() {
                     <SelectItem value="Rencana Strategis">Rencana Strategis</SelectItem>
                   </SelectContent>
                 </Select>
-
               </div>
 
               <DocumentUploader

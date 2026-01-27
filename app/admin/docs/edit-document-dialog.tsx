@@ -44,6 +44,7 @@ export function EditDocumentDialog({ id, title, description, category }: EditDoc
       const result = await updateDocument(id, {
         title: formData.title,
         description: formData.description || null,
+        category: formData.category || null,
       })
 
       if (!result.success) {

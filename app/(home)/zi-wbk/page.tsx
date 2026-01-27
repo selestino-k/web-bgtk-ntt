@@ -1,4 +1,5 @@
 import { PrescenceMotion } from "@/components/motion/presence-motion";
+import Image from "next/image";
 
 export default function ZIWBKPage() {
     return (
@@ -9,6 +10,14 @@ export default function ZIWBKPage() {
                         <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
                             Area Perubahan ZI-WBK 
                         </h2>
+                        <Image
+                            src="/images/zi-wbk-area-perubahan.jpg"
+                            alt="Area Perubahan ZI-WBK" 
+                            width={800}
+                            height={400}
+                            className="w-full h-auto rounded-lg mt-4"
+                        />
+
                         <p className="text-balance md:text-base font-inter mt-4">
                             Pimpinan dan pegawai di Satuan Kerja perlu memahami dan berkomitmen mengenai substansi dari enam area perubahan menuju Reformasi Birokrasi yang di dalamnya ada yang dinamakan Zona Integritas Wilayah Bebas dari Korupsi (WBK) dan Wilayah Birokrasi Bersih dan Melayani (WBBM). Hal itu dilakukan melalui keterlibatan pimpinan secara aktif dalam melakukan monitoring dan evaluasi pembangunan ZI. Selain itu, pimpinan juga harus berdialog dengan seluruh pegawai secara berjenjang.
                         </p>

@@ -438,16 +438,16 @@ export const columns: ColumnDef<Post>[] = [
           <DialogTrigger asChild>
             <Button variant="ghost" className="h-auto p-2 justify-start">
               <div className="max-w-[300px] text-left">
-                <p className="font-medium truncate">{truncatedTitle}</p>
+                <p className="font-medium font-geist truncate">{truncatedTitle}</p>
               </div>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold mb-4">Judul Lengkap</DialogTitle>
+              <DialogTitle className="text-2xl font-geist font-bold mb-4">Judul Lengkap</DialogTitle>
             </DialogHeader>
             <div className="p-4">
-              <p className="text-lg font-medium leading-relaxed">{title}</p>
+              <p className="text-lg font-medium font-geist leading-relaxed">{title}</p>
             </div>
           </DialogContent>
         </Dialog>
@@ -475,7 +475,7 @@ export const columns: ColumnDef<Post>[] = [
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold mb-4">Pratinjau Konten</DialogTitle>
+              <DialogTitle className="text-2xl font-bold font-geist mb-4">Pratinjau Konten</DialogTitle>
             </DialogHeader>
             <div className="p-4">
               {renderTipTapContent(content)}
@@ -515,7 +515,7 @@ export const columns: ColumnDef<Post>[] = [
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold mb-4">Semua Kategori</DialogTitle>
+              <DialogTitle className="text-2xl font-bold mb-4 font-geist">Semua Kategori</DialogTitle>
             </DialogHeader>
             <div className="flex flex-wrap gap-2 p-4">
               {tags.map((tagRelation, index) => (
@@ -556,7 +556,7 @@ export const columns: ColumnDef<Post>[] = [
       const published = row.getValue("published") as boolean
       return (
         <Badge variant={published ? "default" : "secondary"}>
-          {published ? "Published" : "Draft"}
+          {published ? "Diterbitkan" : "Draf"}
         </Badge>
       )
     },

@@ -79,6 +79,10 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
 export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCarouselProps) {
   const [news, setNews] = useState<NewsPost[]>(initialPosts);
   const [isLoading, setIsLoading] = useState(initialPosts.length === 0);
+  const tagnametruncate = (name: string, maxLength: number) => {
+    if (name.length <= maxLength) return name;
+    return name.slice(0, maxLength) + "...";
+  }
 
   useEffect(() => {
     // Only fetch if no initial posts were provided
@@ -166,7 +170,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
                       whileHover={{ y: -5 }}
                       className="h-full"
                     >
-                      <CardContent className="flex flex-col p-0 h-full">
+                      <CardContent className="flex flex-col p-0 h-full text-start">
                         {post.thumbnail ? (
                           <div className="relative max-w-sm h-48 overflow-hidden rounded-t-lg">
                             <Image
@@ -211,7 +215,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
                           <div className="flex flex-wrap gap-1 mt-auto">
                             {post.tags.slice(0, 2).map((tagRelation) => (
                               <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
-                                {tagRelation.tag.name}
+                                {tagRelation.tag.name.length > 20 ? tagnametruncate(tagRelation.tag.name, 20) : tagRelation.tag.name}
                               </Badge>
                             ))
                             }

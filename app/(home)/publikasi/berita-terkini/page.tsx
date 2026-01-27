@@ -7,8 +7,8 @@ import NewsListWithPagination from "@/components/news-card";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
-    title: "Berita Terkini",
-    description: "Halaman Berita Terkini",
+    title: "Berita Terkini | BGTK Provinsi NTT",
+    description: "Halaman Berita Terkini | BGTK Provinsi NTT",
 };
 
 // Add revalidation every 60 seconds

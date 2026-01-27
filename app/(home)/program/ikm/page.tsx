@@ -1,34 +1,39 @@
 import { PrescenceMotion } from "@/components/motion/presence-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Link } from "lucide-react";
+import Link from "next/link";
+
+export const metadata = {
+    title: "IKM (Indeks Kepuasan Masyarakat) | BGTK Provinsi NTT",
+    description: "Halaman IKM (Indeks Kepuasan Masyarakat) BGTK NTT",
+};
 
 export default function ProgramIKM() {
     return (
         <PrescenceMotion>
             <div id="sambutan" className="mt-20 w-full max-w-7xl place-items-start px-10">
-                <Breadcrumb className="mb-4 font-geist text-gray-600">
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink asChild>
-                                    <Link href="/">Beranda</Link>
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator>
-                            </BreadcrumbSeparator>
-                            <BreadcrumbItem>
-                                Program
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator>
-                            </BreadcrumbSeparator>
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>IKM (Indeks Kepuasan Masyarakat)</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
-                </Breadcrumb>
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
                     <div className="text-left">
+                        <Breadcrumb className="mb-4 font-geist text-gray-600">
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink asChild>
+                                            <Link href="/">Beranda</Link>
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator>
+                                    </BreadcrumbSeparator>
+                                    <BreadcrumbItem>
+                                        Program
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator>
+                                    </BreadcrumbSeparator>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>IKM (Indeks Kepuasan Masyarakat)</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
+                        </Breadcrumb>
                         <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
                             Indeks Kepuasan Masyarakat
                         </h2>

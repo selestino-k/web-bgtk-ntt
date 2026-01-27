@@ -2,6 +2,11 @@ import { PrescenceMotion } from "@/components/motion/presence-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
+export const metadata = {
+    title: "PPM (Program Pembelajaran Mendalam) | BGTK Provinsi NTT",
+    description: "Halaman PPM (Program Pembelajaran Mendalam) BGTK NTT",
+};
+
 export default function ProgramPPM() {
     return (
         <PrescenceMotion>

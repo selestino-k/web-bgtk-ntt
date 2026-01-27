@@ -43,7 +43,7 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
     return (
         <Carousel
             plugins={Plugin.current}
-            className="w-full max-w-screen h-auto bg-black overflow-hidden relative"
+            className="w-full max-w-screen h-auto bg-black overflow-hidden relative items-center justify-center"
             opts={{
                 loop: true,
                 dragFree: false,
@@ -56,7 +56,7 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
             <CarouselContent>
                 {photos.map((photo) => (
                     <CarouselItem key={photo.id}>
-                        <div className="relative w-full h-auto overflow-hidden">
+                        <div className="relative w-full h-auto overflow-hidden flex items-center justify-center">
                             <Image
                                 src={photo.imageUrl}
                                 alt={photo.caption || `Carousel image ${photo.id}`}
@@ -71,7 +71,7 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
                 ))}
             </CarouselContent>
             {/* Navigation Arrows and Pagination Dots Container */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4">
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 max-w-xs mx-auto">
 
                 {/* Pagination Dots */}
                 <div className="flex gap-2">

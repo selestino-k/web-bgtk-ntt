@@ -77,7 +77,7 @@ export default function NavMenu() {
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://prod.lapor.go.id/"  target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
+                  <Link href="https://prod.lapor.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/ult/wbs-itjen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
@@ -97,15 +97,15 @@ export default function NavMenu() {
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild className="text-md"> 
+                <NavigationMenuLink asChild className="text-md">
                   <Link href="/sakip/rencana-strategis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rencana Strategis</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/sakip/laporan-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Laporan Kinerja</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                    <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
-                  </NavigationMenuLink>
+                  <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
+                </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/sakip/penghargaan" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Penghargaan</Link>
                 </NavigationMenuLink>
@@ -118,14 +118,15 @@ export default function NavMenu() {
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://sinde.kemdikbud.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://skp.sdm.kemdikbud.go.id/skp/site/login.jsp"  target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
-                </NavigationMenuLink>
+
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">eMail Kemendikasmen</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Portal Data Kemendikdasmen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
@@ -136,11 +137,26 @@ export default function NavMenu() {
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://raporpendidikan.kemendikdasmen.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rapor Pendidikan</Link>
                 </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://sinde.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://skp.sdm.kemdikbud.go.id/skp/site/login.jsp" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPdasmen</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SAKTI Kemenkeu</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://djponline.pajak.go.id/account/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">DJP Online</Link>
+                </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <Button variant="ghost" className="p-0 m-0 hidden md:block">
+        <Button variant="ghost" className="p-0 m-0 hidden md:block mx-3">
           <Link href="/zi-wbk" className="text-base text-primary font-montserrat font-semibold hover:text-primary/70 transition-colors">ZI-WBK</Link>
         </Button>
         <NavigationMenuItem className="hidden md:block">

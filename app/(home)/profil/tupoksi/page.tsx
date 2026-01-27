@@ -2,6 +2,11 @@ import { PrescenceMotion } from "@/components/motion/presence-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
+export const metadata = {
+    title: "Tugas Pokok dan Fungsi | BGTK Provinsi NTT",
+    description: "Halaman Tugas Pokok dan Fungsi BGTK NTT",
+};
+
 export default function TuPoksi() {
     return (
         <PrescenceMotion>

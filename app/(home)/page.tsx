@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PengumumanSidebar from "@/components/pengumuman-sidebar";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "@/app/(home)/publikasi/dokumen/columns";
+import { columns } from "@/app/(home)/publikasi/dokumen/home-columns";
 
 async function getDocsData() {
   return await prisma.document.findMany({
@@ -82,6 +82,10 @@ export default async function Home() {
   const carouselPhotos = await getCarouselPhotos();
   const latestPosts = await getLatestNews();
   const docsData = await getDocsData();
+  const docsDataWithTableNumber = docsData.map((doc, index) => ({
+        ...doc,
+        tableNumber: index + 1
+    }))
 
   return (
     <div className="grid w-full  overflow-hidden justify-items-center">
@@ -179,8 +183,8 @@ export default async function Home() {
                 Dokumen
               </h2>
             </div>
-            <div className="w-full flex-wrap">
-              <DataTable columns={columns} data={docsData} />
+            <div className="md:max-w-full max-w-xs mx-auto">
+              <DataTable columns={columns} data={docsDataWithTableNumber} />
             </div>
           </main>
         </div>

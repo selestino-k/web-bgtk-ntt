@@ -9,7 +9,7 @@ import { JSX } from "react";
 import Link from "next/link";
 import ImagePreviewDialog from "./image-preview-dialog";
 import { toast } from "sonner";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ReportView } from "@/components/view-counter";
 import { Redis } from "@upstash/redis";
 
@@ -358,6 +358,44 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
+function calculateReadTime(content: Prisma.JsonValue) {
+  const wordsPerMinute = 200;
+
+  try {
+    // Parse TipTap JSON content
+    let contentObj: TipTapContent;
+    
+    if (typeof content === 'string') {
+      contentObj = JSON.parse(content) as TipTapContent;
+    } else if (typeof content === 'object' && content !== null) {
+      contentObj = content as TipTapContent;
+    } else {
+      return '0 menit baca';
+    }
+
+    // Extract text from TipTap nodes recursively
+    const extractText = (nodes: TipTapNode[]): string => {
+      return nodes.map(node => {
+        if (node.type === 'text' && node.text) {
+          return node.text;
+        }
+        if (node.content) {
+          return extractText(node.content);
+        }
+        return '';
+      }).join(' ');
+    };
+
+    const text = extractText(contentObj.content || []);
+    const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+    const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+    
+    return `${readingTime} menit baca`;
+  } catch {
+    return '0 menit baca';
+  }
+}
+
 export default async function PengumumanDetail({
   params,
 }: {
@@ -393,16 +431,7 @@ export default async function PengumumanDetail({
 
   const postTitleTruncated = post.title.length > 50 ? post.title.slice(0, 47) + "..." : post.title;
 
-  function calculateReadTime(content: string) {
-    const wordsPerMinute = 200;
-
-    // Remove HTML tags and split by whitespace
-    const text = content.replace(/<[^>]*>/g, '');
-    const wordCount = text.split(/\s+/).length;
-
-    const readingTime = Math.ceil(wordCount / wordsPerMinute);
-    return `${readingTime} menit baca`;
-  }
+  const readingTime = calculateReadTime(post.content);
 
   const redis = Redis.fromEnv();
   const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
@@ -411,33 +440,32 @@ export default async function PengumumanDetail({
     <div id="pengumuman-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
         <div className="text-left w-full">
-          <Breadcrumb className="mb-4 font-geist text-gray-500" aria-label="Breadcrumb">
+          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
             <BreadcrumbList className="flex flex-wrap gap-2">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/" className="text-primary hover:underline">
+                  <Link href="/" className="hover:underline">
                     Beranda
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbSeparator/>
               <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/publikasi" className="text-primary hover:underline">
                     Publikasi
-                  </Link>
-                </BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbSeparator/>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/publikasi/berita-terkini" className="text-primary hover:underline">
-                    Berita Terkini
+                  <Link href="/publikasi/pengumuman" className="hover:underline">
+                    Pengumuman
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbSeparator/>
               <BreadcrumbItem>
-                <BreadcrumbLink>
+                <BreadcrumbPage>
                   {postTitleTruncated}
-                </BreadcrumbLink>
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -456,7 +484,7 @@ export default async function PengumumanDetail({
             </span>
             <span className="flex items-center space-x-1">
               <Timer className="h-4 w-4 mr-1" />
-              <span>{calculateReadTime(post.content as string)}</span>
+              <span>{readingTime}</span>
             </span>
             <span className="flex items-center space-x-1">
               <Eye className="h-4 w-4 mr-1" />
@@ -566,7 +594,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: post.title,
+    title: post.title + " | Publikasi Pengumuman | BGTK Provinsi NTT",
     description: post.title,
     openGraph: {
       title: post.title,
