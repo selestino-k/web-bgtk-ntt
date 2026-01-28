@@ -80,10 +80,10 @@ export default function NavMenu() {
                   <Link href="https://prod.lapor.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/wbs-itjen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
+                  <Link href="https://wbs.kemendikdasmen.go.id/" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">WBS Itjen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/aduan-itjen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Aduan Itjen</Link>
+                  <Link href="https://posko-pengaduan.itjen.kemendikdasmen.go.id/" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Aduan Itjen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/ult/sippn" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPPN</Link>
