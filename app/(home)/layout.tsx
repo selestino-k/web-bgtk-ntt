@@ -6,7 +6,7 @@ import { ReportView } from "@/components/view-counter";
 
 
 export const metadata: Metadata = {
-  title: "BGTK Provinsi NTT",
+  title: "Balai Guru dan Tenaga Kependidikan (BGTK) Provinsi NTT",
   keywords: ["Balai GTK NTT", "Balai GTK Provinsi NTT", "BGTK NTT", "Balai Guru dan Tenaga Kependidikan NTT"],
   description: "Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
 };

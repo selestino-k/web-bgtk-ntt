@@ -117,7 +117,7 @@ export default function AddCarouselPhotoPage() {
       router.refresh()
     } catch (error) {
       toast({
-        title: "Error",
+        title: "Error", 
         description: error instanceof Error ? error.message : "Gagal menambahkan foto carousel",
         variant: "destructive",
       })

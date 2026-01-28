@@ -90,21 +90,21 @@ function NewsCard({
             <div className="flex flex-col md:flex-row">
               {/* Image Section - Left */}
               {thumbnail ? (
-                <div className="relative w-full md:w-80 h-48 md:h-64 flex-shrink-0">
+                <div className="relative w-full md:w-80 h-48 md:h-64 flex-shrink-0 ml-5">
                   <Image
                     src={thumbnail}
                     alt={title}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-md"
                   />
                 </div>
               ) : (
-                <div className="relative w-full md:w-80 h-48 md:h-64 bg-gray-200 flex items-center justify-center flex-shrink-0">
+                <div className="ml-5 relative w-full md:w-80 h-48 md:h-64 bg-gray-200 flex items-center justify-center flex-shrink-0">
                   <Image
                     src="/images/placeholder.svg"
                     alt="No Image"
                     fill
-                    className="object-cover"
+                    className="object-cover rounded-md"
                   />
                   <span className="absolute text-gray-400">No Image</span>
                 </div>
@@ -132,7 +132,7 @@ function NewsCard({
                 </p>
 
                 <div className="flex flex-wrap gap-2 mt-auto">
-                  {tags.slice(0, 3).map((tagRelation) => (
+                  {tags.map((tagRelation) => (
                     <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
                       {tagRelation.tag.name}
                     </Badge>

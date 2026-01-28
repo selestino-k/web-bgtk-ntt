@@ -21,9 +21,9 @@ export function DocumentUploader({
   required = false 
 }: DocumentUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
+  const maxSizeMB = 30
 
   const handleFileValidation = (selectedFile: File) => {
-    const maxSizeMB = 50
     const allowedTypes = [
       'application/pdf',
       'application/msword',
@@ -132,7 +132,7 @@ export function DocumentUploader({
                   atau klik tombol di bawah untuk memilih file
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  PDF, Word, Excel, PowerPoint, Text (Maks. 50MB)
+                  PDF, Word, Excel, PowerPoint, Text (Maks. {maxSizeMB}MB)
                 </p>
               </div>
               <Button type="button" variant="outline" asChild>

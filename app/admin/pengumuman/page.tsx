@@ -32,6 +32,12 @@ async function getPostData() {
           tag: true,
         },
       },
+      author: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
   });
 

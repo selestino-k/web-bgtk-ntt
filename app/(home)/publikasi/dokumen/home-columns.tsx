@@ -3,26 +3,31 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
-import { DeleteDocumentDialog } from "./delete-document-dialog"
-import { EditDocumentDialog } from "./edit-document-dialog"
 import Link from "next/link"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+
+
+
 export type DocsPage = {
-  id: number
+  tableNumber: number
   title: string
   description: string | null
+  category?: string | null
   fileSize: number
   fileUrl: string
   createdAt: Date
   fileName: string
 }
 
+
 export const columns: ColumnDef<DocsPage>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "tableNumber",
+    header: "No.",
+    cell: ({ row }) => row.index + 1,
+
   },
   {
     accessorKey: "title",
@@ -51,10 +56,6 @@ export const columns: ColumnDef<DocsPage>[] = [
     }
   },
   {
-    accessorKey: "fileName",
-    header: "Nama File",
-  },
-  {
     accessorKey: "createdAt",
     header: "Tanggal Diunggah",
     cell: ({ row }) => {
@@ -79,23 +80,6 @@ export const columns: ColumnDef<DocsPage>[] = [
           </Link>
         </Button>
       )
-    }
+    },
   },
-  {
-    accessorKey: "actions",
-    header: "Aksi",
-    cell: ({ row }) => {
-      const docId = row.original.id
-      return (
-        <div className="flex items-center gap-2">
-          <EditDocumentDialog 
-            id={docId} 
-            title={row.original.title}
-            description={row.original.description}
-          />
-          <DeleteDocumentDialog id={docId} title={row.original.title} />
-        </div>
-      )
-    }
-  }
 ]

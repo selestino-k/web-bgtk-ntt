@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Save, Loader2 } from "lucide-react"
 import { DocumentUploader } from "@/components/cms/document-uploader"
 import { useToast } from "@/hooks/use-toast"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,  } from "@/components/ui/select"
 
 export default function UploadDocumentPage() {
   const router = useRouter()
@@ -21,6 +22,7 @@ export default function UploadDocumentPage() {
     title: "",
     description: "",
     documentFile: null as File | null,
+    category: "",
   })
 
   const handleFileChange = (file: File | null) => {
@@ -58,6 +60,7 @@ export default function UploadDocumentPage() {
       submitData.append("title", formData.title)
       submitData.append("description", formData.description)
       submitData.append("file", formData.documentFile)
+      submitData.append("category", formData.category)
 
       const result = await uploadDocument(submitData)
 
@@ -130,6 +133,27 @@ export default function UploadDocumentPage() {
                   disabled={isSubmitting}
                   rows={4}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Kategori Dokumen (opsional)</Label>
+                <Select 
+                  disabled={isSubmitting}
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    setFormData(prev => ({ ...prev, category: value }))
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Pilih kategori dokumen" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Lainnya">Lainnya</SelectItem>
+                    <SelectItem value="Laporan Kinerja">Laporan Kinerja</SelectItem>
+                    <SelectItem value="Perjanjian Kinerja">Perjanjian Kinerja</SelectItem>
+                    <SelectItem value="Rencana Strategis">Rencana Strategis</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <DocumentUploader

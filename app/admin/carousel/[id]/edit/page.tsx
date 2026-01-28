@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import React, { useState, useEffect } from "react"
@@ -30,6 +31,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
   const [externalUrl, setExternalUrl] = useState("")
   const [imageError, setImageError] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
+  const [isLoading, setIsLoading] = useState(true) // Add loading state
 
   const [formData, setFormData] = useState({
     caption: "",
@@ -40,6 +42,8 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
 
   useEffect(() => {
     const fetchPhoto = async () => {
+      if (!isLoading) return // Prevent refetching
+      
       try {
         const carouselPhoto = await getCarouselPhotoById(resolvedParams.id)
 
@@ -60,25 +64,25 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
           imageFile: null,
         })
 
-
         // Check if it's an external URL
         if (carouselPhoto.imageUrl.startsWith("http")) {
           setUseExternalUrl(true)
           setExternalUrl(carouselPhoto.imageUrl)
         }
-      } catch (error) {
-        console.error("Error fetching photo:", error)
+      } catch  {
         toast({
           title: "Error",
           description: "Gagal memuat data foto",
           variant: "destructive",
         })
         router.push("/admin/carousel")
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchPhoto()
-  }, [resolvedParams.id, router, toast])
+  }, [resolvedParams.id, isLoading]) // Remove router and toast from dependencies
 
   const handleImageChange = (url: string, file?: File) => {
     setFormData(prev => ({
@@ -133,8 +137,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       })
       setIsValidating(false)
       return true
-    } catch (error) {
-      console.error("Error validating image URL:", error)
+    } catch  {
       setImageError(true)
       toast({
         title: "Error",
@@ -230,7 +233,6 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       router.push("/admin/carousel")
       router.refresh()
     } catch (error) {
-      console.error("Error updating photo:", error)
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Gagal memperbarui foto",
@@ -240,14 +242,12 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
       setIsSubmitting(false)
     }
   }
-
-
   return (
     <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
-            <Link href="/admin/daftar-foto">
+            <Link href="/admin/carousel">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
@@ -291,11 +291,11 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                   type="number"
                   placeholder="Masukkan urutan tampil foto (angka)"
                   value={formData.order}
-                  onChange={(e) =>
-                    setFormData(prev => ({ ...prev, order: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setFormData(prev => ({ ...prev, order: value }))
+                  }}
                   disabled={isSubmitting}
-                  required
                   min={1}
                 />
               </div>
@@ -423,7 +423,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/admin/daftar-foto")}
+                  onClick={() => router.push("/admin/carousel")}
                   disabled={isSubmitting}
                 >
                   Batal

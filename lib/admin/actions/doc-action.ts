@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
 import { uploadDocumentToS3, deleteDocumentFromS3 } from "./s3-actions"
+import { toast } from "sonner"
 
 // Upload document
 export async function uploadDocument(formData: FormData) {
@@ -10,6 +11,7 @@ export async function uploadDocument(formData: FormData) {
     const file = formData.get("file") as File
     const title = formData.get("title") as string
     const description = formData.get("description") as string | null
+    const category = formData.get("category") as string | null
 
     if (!file || !title) {
       return { success: false, error: "File dan judul harus diisi" }
@@ -27,6 +29,7 @@ export async function uploadDocument(formData: FormData) {
       data: {
         title,
         description,
+        category,
         fileUrl: uploadResult.url,
         fileName: file.name, // Store actual filename
         fileSize: file.size,
@@ -37,7 +40,7 @@ export async function uploadDocument(formData: FormData) {
     revalidatePath("/admin/documents")
     return { success: true, document }
   } catch (error) {
-    console.error("Document upload error:", error)
+    toast.error("Gagal mengunggah dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengunggah dokumen",
@@ -61,8 +64,7 @@ export async function deleteDocument(id: number) {
     const deleteResult = await deleteDocumentFromS3(document.fileUrl)
 
     if (!deleteResult.success) {
-      console.error("S3 delete warning:", deleteResult.error)
-      // Continue with database deletion even if S3 deletion fails
+        toast.error(deleteResult.error || "Gagal menghapus dokumen dari S3")      // Continue with database deletion even if S3 deletion fails
     }
 
     // Delete from database
@@ -73,7 +75,6 @@ export async function deleteDocument(id: number) {
     revalidatePath("/admin/documents")
     return { success: true }
   } catch (error) {
-    console.error("Document delete error:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal menghapus dokumen",
@@ -92,7 +93,7 @@ export async function getDocuments() {
 
     return { success: true, documents }
   } catch (error) {
-    console.error("Get documents error:", error)
+    toast.error("Gagal mengambil dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengambil dokumen",
@@ -113,7 +114,7 @@ export async function getDocument(id: number) {
 
     return { success: true, document }
   } catch (error) {
-    console.error("Get document error:", error)
+    toast.error("Gagal mengambil dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengambil dokumen",
@@ -122,7 +123,7 @@ export async function getDocument(id: number) {
 }
 
 // Update document metadata (without changing file)
-export async function updateDocument(id: number, data: { title?: string; description?: string | null }) {
+export async function updateDocument(id: number, data: { title?: string; description?: string | null; category?: string | null }) {
   try {
     const document = await prisma.document.update({
       where: { id },
@@ -132,7 +133,6 @@ export async function updateDocument(id: number, data: { title?: string; descrip
     revalidatePath("/admin/documents")
     return { success: true, document }
   } catch (error) {
-    console.error("Update document error:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal memperbarui dokumen",

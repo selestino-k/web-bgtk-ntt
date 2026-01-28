@@ -31,8 +31,7 @@ async function getDashboardData() {
                 }
                 return res.json();
             })
-            .catch((error) => {
-                console.error('Failed to fetch view stats:', error);
+            .catch(() => {
                 return {
                     today: { total: 0, mobile: 0, desktop: 0 },
                     thisMonth: { total: 0, mobile: 0, desktop: 0 },
@@ -48,6 +47,7 @@ async function getDashboardData() {
 export default async function AdminPage() {
     const session = await getServerSession(authOptions);
     const dashboardData = await getDashboardData();
+
     
     if (!session || !session.user || (session.user.role !== "Admin" && session.user.role !== "Operator")) {
         redirect('/sign-in');

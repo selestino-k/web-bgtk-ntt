@@ -162,25 +162,25 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                       whileHover={{ y: -5 }}
                       className="h-full"
                     >
-                      <CardContent className="flex flex-col p-0 h-full max-w-7xl">
+                      <CardContent className="flex flex-col p-0 h-full max-w-4xl">
                         {post.thumbnail ? (
-                          <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                          <div className="relative max-w-sm h-52 overflow-hidden rounded-t-lg items-center justify-center mx-auto">
                             <Image
                               src={post.thumbnail}
                               alt={post.title}
-                              width={1024}
-                              height={576}
-                              className=" aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
+                              width={800}
+                              height={450}
+                              className="aspect-video object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-lg"
                               
                             />
                           </div>
                         ) : (
-                          <div className="relative w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                          <div className="relative max-w-sm h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
                             <Image
                             src="/images/placeholder.svg"
                             alt="No Image"
                             fill
-                            className="object-cover"
+                            className="object-cover rounded-t-lg"
                             />
                             <span className="text-gray-400">No Image</span>
                           </div>
@@ -206,11 +206,19 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                           </p>
                           
                           <div className="flex flex-wrap gap-1 mt-auto">
-                            {post.tags.slice(0, 2).map((tagRelation) => (
+                            {post.tags.slice(0, 3).map((tagRelation) => (
                               <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
                                 {tagRelation.tag.name}
                               </Badge>
-                            ))}
+                              
+                            ))
+                            }
+                            {post.tags.length - 2 > 0 && (
+                              <Badge variant="secondary" className="text-xs font-montserrat font-semibold">
+                                +{post.tags.length - 2} lainnya
+                              </Badge>
+                            )
+                            }
                           </div>
                         </div>
                       </CardContent>

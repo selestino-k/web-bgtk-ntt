@@ -7,20 +7,27 @@ import Link from "next/link"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+
+
+
 export type DocsPage = {
-  id: number
+  tableNumber: number
   title: string
   description: string | null
+  category?: string | null
   fileSize: number
   fileUrl: string
   createdAt: Date
   fileName: string
 }
 
+
 export const columns: ColumnDef<DocsPage>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "tableNumber",
+    header: "No.",
+    cell: ({ row }) => row.index + 1,
+
   },
   {
     accessorKey: "title",
@@ -29,6 +36,10 @@ export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "description",
     header: "Deskripsi (Opsional)",
+  },
+  {
+    accessorKey: "category",
+    header: "Kategori",
   },
   {
     accessorKey: "fileSize",

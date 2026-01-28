@@ -29,7 +29,7 @@ export default async function SignInPage() {
                     src="/images/intro-web.png"
                     alt="Background"
                     fill
-                    className="object-cover opacity-95 blur-xs dark:opacity-40"
+                    className="object-cover opacity-85 dark:opacity-40"
                     priority
                 />
             </div>

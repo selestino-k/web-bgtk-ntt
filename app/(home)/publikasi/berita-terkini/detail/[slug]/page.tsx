@@ -362,6 +362,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
+
 export default async function BeritaTerkiniDetail({
   params,
 }: {
@@ -411,7 +412,7 @@ export default async function BeritaTerkiniDetail({
 
   const redis = Redis.fromEnv();
   const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
-  
+
 
 
 
@@ -419,7 +420,7 @@ export default async function BeritaTerkiniDetail({
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
         <div className="text-left w-full md:w-3/4 md:pr-8">
-          <Breadcrumb className="mb-4 font-geist text-gray-600">
+          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
@@ -427,11 +428,14 @@ export default async function BeritaTerkiniDetail({
                     <Link href="/">Beranda</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                </BreadcrumbSeparator>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  Publikasi
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="/publikasi/berita-terkini">Berita Terkini</Link>
+                    <Link href="/publikasi/berita-terkini" className="hover:underline">Berita Terkini</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
@@ -539,9 +543,9 @@ export default async function BeritaTerkiniDetail({
 
 // Generate static params for static generation (optional)
 export async function generateStaticParams() {
-   if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     return [];
-  } 
+  }
   const posts = await prisma.post.findMany({
     where: {
       published: true,
@@ -572,12 +576,13 @@ export async function generateMetadata({
   }
 
   return {
-    title: post.title,
+    title: post.title + " | Berita Terkini | BGTK Provinsi NTT",
     description: post.title,
     openGraph: {
       title: post.title,
       description: post.title,
       images: post.thumbnail ? [post.thumbnail] : [],
     },
+
   };
 }

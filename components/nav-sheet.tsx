@@ -34,6 +34,7 @@ export function NavSheet() {
                         className="w-full"
                         defaultValue="item-1"
                     >
+                        
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="text-lg font-bold">Profil</AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 text-balance">
@@ -77,6 +78,7 @@ export function NavSheet() {
                                 </Link>
                             </AccordionContent>
                         </AccordionItem>
+
                         <AccordionItem value="item-2">
                             <AccordionTrigger className="text-lg font-bold">Publikasi</AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 text-balance">
@@ -111,8 +113,8 @@ export function NavSheet() {
                                     Unduh
                                 </Link>
                             </AccordionContent>
-
                         </AccordionItem>
+
                         <AccordionItem value="item-3">
                             <AccordionTrigger className="text-lg font-bold">ULT</AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 text-balance">
@@ -148,6 +150,7 @@ export function NavSheet() {
                                 </Link>
                             </AccordionContent>
                         </AccordionItem>
+
                         <AccordionItem value="item-4">
                             <AccordionTrigger className="text-lg font-bold">Aplikasi</AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 text-balance">
@@ -228,6 +231,7 @@ export function NavSheet() {
                                 </Link>
                             </AccordionContent>
                         </AccordionItem>
+
                     </Accordion>
                 </div>
             </SheetContent>

@@ -2,42 +2,41 @@ import { PrescenceMotion } from "@/components/motion/presence-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-
 export const metadata = {
-    title: "Sejarah | BGTK Provinsi NTT",
-    description: "Halaman Sejarah Berdirinya Balai Guru dan Tenaga Kependidikan (BGTK) NTT",
+    title: "IKM (Indeks Kepuasan Masyarakat) | BGTK Provinsi NTT",
+    description: "Halaman IKM (Indeks Kepuasan Masyarakat) BGTK NTT",
 };
 
-export default function Sejarah() {
+export default function ProgramIKM() {
     return (
         <PrescenceMotion>
-
             <div id="sambutan" className="mt-20 w-full max-w-7xl place-items-start px-10">
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink asChild>
-                                    <Link href="/">Beranda</Link>
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                Profil
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Sejarah</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
                     <div className="text-left">
+                        <Breadcrumb className="mb-4 font-geist text-gray-600">
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink asChild>
+                                            <Link href="/">Beranda</Link>
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator>
+                                    </BreadcrumbSeparator>
+                                    <BreadcrumbItem>
+                                        Program
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator>
+                                    </BreadcrumbSeparator>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>IKM (Indeks Kepuasan Masyarakat)</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
+                        </Breadcrumb>
                         <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
-                            Sejarah
+                            Indeks Kepuasan Masyarakat
                         </h2>
-                        <h3 className="text-md md:text-xl sm:tracking-tight mb-5 md:mb-10 font-geist">
-                            Sejarah Berdirinya Balai Guru dan Tenaga Kependidikan (BGTK) NTT
-                        </h3>
                         <p className="mt-3 text-sm md:text-base font-medium font-inter text-wrap text-justify">
                             Balai Pengembangan Pendidikan Anak Usia Dini dan Pendidikan Masyarakat Nusa Tenggara Timur (BP PAUD dan Dikmas NTT) pada awalnya bernama Balai Pendidikan Masyarakat. Secara operasional diresmikan oleh Dirjen Pendidikan Luar Sekolah Pemuda dan Olahraga (Diklusepora) Prof. Dr. W. P. Napitupulu, pada tahun 1987.  Secara kelembagaan Balai Pendidikan Masyarakat waktu itu berada dibawah pembinaan Bidang Pendidikan Masyarakat pada Kanwil Depdikbud Propinsi Nusa Tenggara Timur.
                             Dalam melaksanakan fungsinya tersebut maka dibentuk 4 (empat) kelompok kerja dan masing-masing pokja bertanggung jawab langsung kepada Kepala Bidang Pendidikan Masyarakat yang waktu itu dijabat oleh Drs. Jefta Fanggidae.
