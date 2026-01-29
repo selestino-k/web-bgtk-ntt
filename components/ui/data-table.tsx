@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 "use client"
 
 import { useState } from "react"
@@ -61,7 +62,7 @@ export function DataTable<TData, TValue>({
           placeholder="Cari disini..."
           value={filtering}
           onChange={(e) => setFiltering(e.target.value)}
-          className="max-w-sm"
+          className="max-w-sm border-primary/50"
         />
       </div>
       <div className="rounded-md border overflow-x-auto">
