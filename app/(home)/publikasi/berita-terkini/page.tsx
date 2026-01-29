@@ -23,9 +23,23 @@ async function fetchNews(page = 1, limit = 10, tagId?: number) {
                 some: {
                     tagId: tagId,
                 },
+                none: {
+                    tag: {
+                        type: TagType.ANNOUNCEMENT,
+                    },
+                },
             },
         }
-        : { published: true };
+        : { 
+            published: true,
+            tags: {
+                some: {
+                    tag: {
+                        type: TagType.CATEGORY,
+                    },
+                },
+            },
+        };
 
     return await prisma.post.findMany({
         where,
@@ -65,7 +79,9 @@ async function fetchNews(page = 1, limit = 10, tagId?: number) {
 async function fetchTags() {
     return await prisma.tag.findMany({
         where: {
-            type: TagType.CATEGORY,
+            NOT: {
+                type: TagType.ANNOUNCEMENT,
+            },
         },
         orderBy: {
             name: 'asc',
@@ -85,9 +101,23 @@ async function getTotalPosts(tagId?: number) {
                 some: {
                     tagId: tagId,
                 },
+                none: {
+                    tag: {
+                        type: TagType.ANNOUNCEMENT,
+                    },
+                },
             },
         }
-        : { published: true };
+        : { 
+            published: true,
+            tags: {
+                some: {
+                    tag: {
+                        type: TagType.CATEGORY,
+                    },
+                },
+            },
+        };
 
     return await prisma.post.count({ where });
 }
