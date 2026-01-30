@@ -19,12 +19,11 @@ import { AdminModeToggle } from "./admin/admin-dark-switch"
 
 export function NavSheet() {
     return (
-        <div className="overflow-visible" >
-            <Sheet>
+            <Sheet> 
                 <SheetTrigger asChild>
                     <Button variant="outline" size="lg"><Menu size="50" /></Button>
                 </SheetTrigger>
-                <SheetContent className="overflow-visible">
+                <SheetContent className="overflow-y-scroll">
                     <SheetHeader>
                         <SheetTitle className="text-2xl font-bold font-montserrat text-primary mb-5">Menu</SheetTitle> <AdminModeToggle />
                     </SheetHeader>
@@ -170,60 +169,60 @@ export function NavSheet() {
 
                             <AccordionItem value="item-4">
                                 <AccordionTrigger className="text-lg font-bold">SAKIP</AccordionTrigger>
-                                <AccordionContent className="text-md">
-                                    <Link href="/sakip/rencana-strategis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rencana Strategis</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="/sakip/rencana-strategis" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rencana Strategis</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="/sakip/laporan-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Laporan Kinerja</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="/sakip/laporan-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Laporan Kinerja</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Perjanjian Kinerja</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="/sakip/penghargaan" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Penghargaan</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="/sakip/penghargaan" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Penghargaan</Link>
                                 </AccordionContent>
                             </AccordionItem>
 
                             <AccordionItem value="item-5">
                                 <AccordionTrigger className="text-lg font-bold">Aplikasi</AccordionTrigger>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Dapodik</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-Mail Kemendikdasmen</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">e-Mail Kemendikdasmen</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Portal Data Kemendikdasmen</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Portal Data Kemendikdasmen</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rumah Pendidikan</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Info GTK</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Info GTK</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://raporpendidikan.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rapor Pendidikan</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://raporpendidikan.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rapor Pendidikan</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://sinde.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SINDE</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://sinde.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SINDE</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://skp.sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://skp.sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">e-SKP</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPdasmen</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SIPdasmen</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SAKTI Kemenkeu</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SAKTI Kemenkeu</Link>
                                 </AccordionContent>
-                                <AccordionContent className="text-md">
-                                    <Link href="https://djponline.pajak.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">DJP Online</Link>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="https://djponline.pajak.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">DJP Online</Link>
                                 </AccordionContent>
                             </AccordionItem>
 
-                            <AccordionItem value="item-6">
-                                <Link href="/zi-wbk">
-                                <AccordionTrigger className="text-lg font-bold">ZI-WBK</AccordionTrigger>
+                            <AccordionItem value="item-6" className="py-2">
+                                <Link href="/zi-wbk" className="text-lg font-bold">
+                                ZI-WBK
                                 </Link>
                             </AccordionItem>
 
@@ -251,6 +250,5 @@ export function NavSheet() {
                     </div>
                 </SheetContent>
             </Sheet>
-        </div>
     )
 }

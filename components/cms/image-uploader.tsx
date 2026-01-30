@@ -66,9 +66,8 @@ export function ImageUploader({
 
       onChange(result.url, file)
       toast.success('Gambar berhasil diunggah')
-    } catch (error) {
-      console.error('Upload error:', error)
-      toast.error(error instanceof Error ? error.message : 'Gagal mengunggah gambar')
+    } catch {
+      toast.error('Gagal mengunggah gambar')
     } finally {
       setIsUploading(false)
     }
@@ -106,8 +105,7 @@ export function ImageUploader({
       setExternalUrl('')
       onDelete?.()
       toast.success('Gambar dihapus')
-    } catch (error) {
-      console.error('Delete image error:', error)
+    } catch {
       toast.error('Gagal menghapus gambar')
     }
   }

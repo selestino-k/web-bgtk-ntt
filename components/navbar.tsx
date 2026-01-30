@@ -12,16 +12,15 @@ export default async function NavBar() {
           <Image src="/logo/logo-web-bgtk-ntt.svg" alt="Balai GTK Logo" width={250} height={48} />
         </Link>
 
-        <div className="grid justify-items-center py-1">
+        <div className="xl:grid justify-items-center py-1 max-w-7xl hidden">
           <NavMenu />
         </div>
 
-        <div className="md:hidden sm:xs:flex">
+        <div className="xl:hidden sm:xs:flex">
           <NavSheet />
         </div>
 
-
-        <div className="hidden md:flex items-center sm:xs:md:hidden">
+        <div className="hidden xl:flex items-center sm:xs:md:hidden">
           <Image
             src="/logo/Ramah-ori.png"
             alt="Kemendikdasmen Ramah"
