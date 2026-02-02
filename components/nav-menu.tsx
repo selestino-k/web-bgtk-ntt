@@ -28,17 +28,11 @@ export default function NavMenu() {
                 <NavigationMenuLink asChild className="text-md ">
                   <Link href="/profil/sambutan-kata" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sambutan Kata</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md ">
-                  <Link href="/profil/profil-lembaga" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Profil Lembaga</Link>
-                </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/sejarah" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sejarah</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/struktur-organisasi" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Struktur Organisasi</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/profil/sarana-prasarana" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sarana dan Prasana</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/tupoksi" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Tugas Pokok dan Fungsi</Link>
@@ -60,9 +54,6 @@ export default function NavMenu() {
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/publikasi/pengumuman" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Pengumuman</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/publikasi/peraturan-juknis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Peraturan dan Juknis</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/publikasi/dokumen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dokumen</Link>
@@ -171,9 +162,6 @@ export default function NavMenu() {
               <li>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/lainnya/faq" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">FAQ</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/lainnya/survei" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Survei</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
