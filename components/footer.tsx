@@ -6,7 +6,16 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ModeToggle } from "./dark-switch";
 
-export default function Footer() {
+interface FooterProps {
+    tags: {
+        id: number;
+        name: string;
+    }[];
+    tagId?: number;
+}
+
+
+export default function Footer({ tags, tagId }: FooterProps) {
     return (
         <footer className="bg-primary w-full dark:bg-gray-950/80">
             <div className="container mx-auto px-4 py-12 md:px-6 max-w-7xl font-montserrat">
@@ -36,40 +45,24 @@ export default function Footer() {
                         </div>
                     </div>
 
-
                     <div className="space-y-4 text-center md:text-left mb-30 md:mb-0">
                         <h3 className="lg:text-xl text-sm font-bold text-white">Tag Berita</h3>
                         <div className="flex w-full flex-wrap gap-2 h-5 md:h-20 px-3 items-center md:items-start justify-center md:justify-start">
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Kabar Kementerian</Link>
+                        {tags.map((tag) => (
+                            <Badge
+                                key={tag.id}
+                                variant={tagId === tag.id ? "default" : "secondary"}
+                                asChild 
+                                className="md:lg:py-1 px-1 lg:px-3 hover:cursor-pointer hover:opacity-80"
+                            >
+                                <Link 
+                                    href={`/publikasi/berita-terkini?tag=${tag.id}`}
+                                    className="font-semibold lg:text-xs text-xs"
+                                >
+                                    {tag.name}
+                                </Link>
                             </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Internasional</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Teknologi</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Humas</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Rumah Pendidikan</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/" className="font-semibold text-xs">Pendidikan</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/publikasi/berita-terkini?tag=3" className="font-semibold text-xs">Kabar Balai</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2 ">
-                                <Link href="/publikasi/pengumuman" className="font-semibold text-xs">Pengumuman</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2">
-                                <Link href="/publikasi/agenda" className="font-semibold text-xs">Ramah</Link>
-                            </Badge>
-                            <Badge variant="secondary" asChild className="md:lg:py-1 px-2">
-                                <Link href="/publikasi/agenda" className="font-semibold text-xs">Pendidikan Bermutu Untuk Semua</Link>
-                            </Badge>
+                        ))}
 
                         </div>
                     </div>
@@ -162,7 +155,5 @@ export default function Footer() {
 
             </div>
         </footer>
-
-
     );
 }

@@ -11,10 +11,6 @@ import { Save, Loader2,} from "lucide-react"
 import { CarouselImageUploader } from "@/components/cms/carousel-image-uploader"
 import { useToast } from "@/hooks/use-toast"
 
-
-
-
-
 export default function AddCarouselPhotoPage() {
   const router = useRouter()
   const {toast} = useToast()

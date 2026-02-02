@@ -398,6 +398,8 @@ export default async function BeritaTerkiniDetail({
 
   const postTitleTruncated = post.title.length > 50 ? post.title.slice(0, 47) + "..." : post.title;
 
+  
+
 
   function calculateReadTime(content: string) {
     const wordsPerMinute = 200;
@@ -418,7 +420,7 @@ export default async function BeritaTerkiniDetail({
 
   return (
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
-      <main className="relative z-10 gap-8 p-8 md:flex w-full">
+      <main className="relative z-10 gap-8 md:p-8 p-1 md:flex w-full">
         <div className="text-left w-full md:w-3/4 md:pr-8">
           <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
             <Breadcrumb>
@@ -435,7 +437,7 @@ export default async function BeritaTerkiniDetail({
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="/publikasi/berita-terkini" className="hover:underline">Berita Terkini</Link>
+                    <Link href="/publikasi/berita-terkini">Berita Terkini</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
@@ -449,7 +451,7 @@ export default async function BeritaTerkiniDetail({
           <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
             {post.title}
           </h2>
-          <div className="mb-6 text-sm text-gray-500 flex space-x-4">
+          <div className="mb-6 text-sm text-gray-500 md: flex space-x-4 space-y-2 md:space-y-0 flex-wrap">
             <span className="flex items-center space-x-1">
               <User className="h-4 w-4 mr-1" />
               <span>{post.author?.name || "Admin"}</span>
@@ -462,8 +464,8 @@ export default async function BeritaTerkiniDetail({
               <Timer className="h-4 w-4 mr-1" />
               <span>{calculateReadTime(typeof post.content === 'string' ? post.content : JSON.stringify(post.content))}</span>
             </span>
-            <span className="flex items-center space-x-1">
-              <Eye className="h-4 w-4 mr-1" />
+            <span className="flex items-start space-x-1">
+              <Eye className="h-5 w-5 mr-1 pt-1" />
               <ReportView slug={post.slug} />
               <span id="view-count">{viewCount}x dilihat</span>
             </span>
@@ -568,19 +570,24 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
+  const postDescriptionTruncated = (content: Prisma.JsonValue) => {
+    const text = typeof content === 'string' ? content : JSON.stringify(content);
+    const plainText = text.replace(/<[^>]*>/g, '');
+    return plainText.length > 100 ? plainText.slice(0, 100) + "..." : plainText;
+  }
 
   if (!post) {
     return {
       title: "Post Not Found",
+      description: "The requested post does not exist.",
     };
   }
 
   return {
     title: post.title + " | Berita Terkini | BGTK Provinsi NTT",
-    description: post.title,
+    description: postDescriptionTruncated(post.content),
     openGraph: {
       title: post.title,
-      description: post.title,
       images: post.thumbnail ? [post.thumbnail] : [],
     },
 

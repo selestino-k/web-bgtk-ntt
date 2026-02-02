@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -108,12 +107,6 @@ export function LoginForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link 
-                href="/forgot-password" 
-                className="text-sm text-primary hover:underline"
-              >
-                Lupa password?
-              </Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />

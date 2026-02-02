@@ -12,8 +12,7 @@ export async function getCarouselPhotos() {
       },
     });
     return carouselPhotos;
-  } catch (error) {
-    console.error('Error fetching photos:', error);
+  } catch  {
     return [];
   }
 }
@@ -24,8 +23,7 @@ export async function getCarouselPhotoById(id: string) {
       where: { id: parseInt(id) },
     });
     return carouselPhoto;
-  } catch (error) {
-    console.error('Error fetching photo:', error);
+  } catch  {
     return null;
   }
 }
@@ -71,7 +69,6 @@ export async function createCarouselPhoto(formData: FormData) {
     revalidatePath('/');
     return { success: true, carouselPhoto };
   } catch (error) {
-    console.error('Error creating photo:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to create photo',
@@ -141,9 +138,7 @@ export async function updateCarouselPhoto(formData: FormData) {
     });
     revalidatePath('/');
     return { success: true, carouselPhoto };
-  }
-    catch (error) {
-    console.error('Error updating photo:', error);
+  } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update photo',
@@ -166,7 +161,7 @@ export async function deleteCarouselPhoto(id: number) {
     const deleteResult = await deleteCarouselImageFromS3(carouselPhoto.imageUrl);
 
     if (!deleteResult.success) {
-      console.error('Failed to delete image from S3:', deleteResult.error);
+      return { success: false, error: deleteResult.error };
       // Continue with database deletion even if S3 deletion fails
     }
 
@@ -178,7 +173,6 @@ export async function deleteCarouselPhoto(id: number) {
     revalidatePath('/');
     return { success: true };
   } catch (error) {
-    console.error('Error deleting photo:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to delete photo',
@@ -198,7 +192,6 @@ export async function reorderCarouselPhotos(photoIds: number[]) {
     revalidatePath('/');
     return { success: true };
   } catch (error) {
-    console.error('Error reordering photos:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to reorder photos',

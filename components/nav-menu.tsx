@@ -28,17 +28,11 @@ export default function NavMenu() {
                 <NavigationMenuLink asChild className="text-md ">
                   <Link href="/profil/sambutan-kata" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sambutan Kata</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md ">
-                  <Link href="/profil/profil-lembaga" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Profil Lembaga</Link>
-                </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/sejarah" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sejarah</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/struktur-organisasi" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Struktur Organisasi</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/profil/sarana-prasarana" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sarana dan Prasana</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/profil/tupoksi" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Tugas Pokok dan Fungsi</Link>
@@ -62,10 +56,13 @@ export default function NavMenu() {
                   <Link href="/publikasi/pengumuman" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Pengumuman</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/publikasi/peraturan-juknis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Peraturan dan Juknis</Link>
+                  <Link href="/publikasi/dokumen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dokumen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/publikasi/dokumen" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dokumen</Link>
+                  <Link href="https://ppid.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">PPID Kemendikdasmen</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://kemendikdasmen.go.id/pencarian/siaran-pers" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Siaran Pers Kemendikdasmen</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -86,7 +83,7 @@ export default function NavMenu() {
                   <Link href="https://posko-pengaduan.itjen.kemendikdasmen.go.id/" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Aduan Itjen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="/ult/sippn" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPPN</Link>
+                  <Link href="https://sippn.menpan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPPN</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -118,12 +115,11 @@ export default function NavMenu() {
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
-
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">eMail Kemendikasmen</Link>
+                  <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-Mail Kemendikasmen</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Portal Data Kemendikdasmen</Link>
@@ -132,7 +128,7 @@ export default function NavMenu() {
                   <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">GTK</Link>
+                  <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Info GTK</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://raporpendidikan.kemendikdasmen.go.id/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rapor Pendidikan</Link>
@@ -166,9 +162,6 @@ export default function NavMenu() {
               <li>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="/lainnya/faq" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">FAQ</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/lainnya/survei" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Survei</Link>
                 </NavigationMenuLink>
               </li>
             </ul>

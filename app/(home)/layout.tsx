@@ -3,6 +3,18 @@ import type { Metadata, Viewport } from "next";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { ReportView } from "@/components/view-counter";
+import prisma from "@/lib/prisma";
+
+async function getTags() {
+  return await prisma.tag.findMany({
+    where: {
+      type: { equals: 'CATEGORY' },
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
 
 
 export const metadata: Metadata = {
@@ -28,7 +40,7 @@ export default async function HomeLayout({
       <div className="flex w-full min-h-screen items-center justify-center">
         {children}
       </div>
-      <Footer />
+      <Footer tags={await getTags()} tagId={undefined} />
     </main>
   );
 }

@@ -30,7 +30,7 @@ export const features = [
 ];
 export default function ProgramCardList() {
 	return (
-		<div className="grid md:grid-cols-1 lg:grid-cols-4 gap-10 max-w-7xl h-full mx-auto mt-5 items-center place-content-around">
+		<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-10 xl:max-w-7xl max-w-5xl lg:max-w-3xl h-full mx-auto mt-5 items-center place-content-around">
 			{features.map((feature, index) => (
 				<div
 					key={index}

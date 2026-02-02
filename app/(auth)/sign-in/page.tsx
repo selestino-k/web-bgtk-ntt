@@ -39,7 +39,7 @@ export default async function SignInPage() {
                         <div className="pb-6 flex items-center justify-center space-x-6">
                             <Link href="/">
                                 <Image
-                                    src="/logo/logo-web-bgtk-ntt.png"
+                                    src="/logo/logo-web-bgtk-ntt.svg"
                                     alt="Logo BGTK NTT"
                                     width={300}
                                     height={100}
