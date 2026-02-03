@@ -40,7 +40,6 @@ export async function uploadDocument(formData: FormData) {
     revalidatePath("/admin/documents")
     return { success: true, document }
   } catch (error) {
-    toast.error("Gagal mengunggah dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengunggah dokumen",
@@ -93,7 +92,6 @@ export async function getDocuments() {
 
     return { success: true, documents }
   } catch (error) {
-    toast.error("Gagal mengambil dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengambil dokumen",

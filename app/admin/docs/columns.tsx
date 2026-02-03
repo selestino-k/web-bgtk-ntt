@@ -31,6 +31,15 @@ export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "description",
     header: "Deskripsi (Opsional)",
+  
+    cell: ({ row }) => {
+      const descriptionTruncated = row.original.description 
+        ? row.original.description.length > 20
+          ? row.original.description.slice(0, 18) + '...'
+          : row.original.description
+        : '-'
+      return descriptionTruncated
+    }
   },
   {
     accessorKey: "category",
@@ -53,6 +62,14 @@ export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "fileName",
     header: "Nama File",
+    cell: ({ row }) => {
+      const fileNameTruncated = row.original.fileName .length > 20
+        ? row.original.fileName.slice(0, 18) + '...'
+        : row.original.fileName
+      return fileNameTruncated
+
+    }
+     
   },
   {
     accessorKey: "createdAt",
@@ -63,31 +80,22 @@ export const columns: ColumnDef<DocsPage>[] = [
     },
   },
   {
-    accessorKey: "fileUrl",
-    header: "",
+    accessorKey: "actions",
+    header: "Aksi",
     cell: ({ row }) => {
+      const docId = row.original.id
       const fileUrl = row.original.fileUrl
       return (
-        <Button
+        <div className="flex items-center gap-2">
+          <Button
           variant="default"
           size="sm"
           asChild
         >
           <Link href={fileUrl} target="_blank" rel="noopener noreferrer" download>
-            <Download className="mr-2 h-4 w-4" />
-            Unduh
+            <Download className="h-4 w-4" />
           </Link>
         </Button>
-      )
-    }
-  },
-  {
-    accessorKey: "actions",
-    header: "Aksi",
-    cell: ({ row }) => {
-      const docId = row.original.id
-      return (
-        <div className="flex items-center gap-2">
           <EditDocumentDialog 
             id={docId} 
             title={row.original.title}

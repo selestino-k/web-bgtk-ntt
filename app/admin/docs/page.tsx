@@ -40,7 +40,7 @@ export default async function DocsPage() {
             </Button>
           </Link>
         </div>
-        <div className="mt-6 w-full">
+        <div className="mt-6 max-w-screen">
             <DataTable columns={columns} data={docsData} />
         </div>
       </main>
