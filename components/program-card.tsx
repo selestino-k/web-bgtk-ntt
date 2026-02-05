@@ -4,16 +4,16 @@ import { FeatureCard } from "@/components/motion/program-card-hover-motion";
 
 export const features = [
 	{
-		title: "Program Pembelajaran Mendalam (PPM)",
+		title: "Program Pembelajaran Mendalam (PM)",
 		description:
 			"Menyediakan materi pembelajaran yang mendalam dan komprehensif untuk guru dan calon guru.",
 			link: "/program/ppm"
 	},
 	{
-		title: "Indeks Kepuasan Masyarakat (IKM)",
+		title: "Koding dan Kecerdasan Artifisial (KKA)",
 		description:
-			"mengukur tingkat kepuasan masyarakat terhadap layanan yang diberikan oleh Balai GTK NTT.",
-			link: "/program/ikm"
+			"Menyediakan pelatihan dan sumber daya untuk mengintegrasikan teknologi koding dan kecerdasan artifisial dalam pendidikan.",
+			link: "/program/kka"
 	},
 	{
 		title: "Program Pendidikan Profesi Guru (PPG)",

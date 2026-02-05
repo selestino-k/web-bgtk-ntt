@@ -18,7 +18,7 @@ export default function NavMenu() {
   const isMobile = useIsMobile()
 
   return (
-    <NavigationMenu viewport={isMobile} className="text-black dark:text-white">
+    <NavigationMenu viewport={isMobile} className="text-black dark:text-white max-w-full">
       <NavigationMenuList className="flex-wrap font-montserrat gap-6">
         <NavigationMenuItem className="hidden md:block ">
           <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Profil</NavigationMenuTrigger>
@@ -111,13 +111,10 @@ export default function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Interen</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
-                </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-Mail Kemendikasmen</Link>
                 </NavigationMenuLink>
@@ -126,6 +123,22 @@ export default function NavMenu() {
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rumah Pendidikan</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPdasmen</Link>
+                </NavigationMenuLink>
+                
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="hidden md:block">
+          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
+          <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild className="text-md">
+                  <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Dapodik</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Info GTK</Link>
@@ -139,15 +152,6 @@ export default function NavMenu() {
                 <NavigationMenuLink asChild className="text-md">
                   <Link href="https://skp.sdm.kemdikbud.go.id/skp/site/login.jsp" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">e-SKP</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SIPdasmen</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SAKTI Kemenkeu</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="https://djponline.pajak.go.id/account/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">DJP Online</Link>
-                </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
@@ -155,18 +159,9 @@ export default function NavMenu() {
         <Button variant="ghost" className="p-0 m-0 hidden md:block mx-3">
           <Link href="/zi-wbk" className="text-base text-primary font-montserrat font-semibold hover:text-primary/70 transition-colors">ZI-WBK</Link>
         </Button>
-        <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-base text-primary bg-white-700/20 font-semibold">Lainnya</NavigationMenuTrigger>
-          <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                <NavigationMenuLink asChild className="text-md">
-                  <Link href="/lainnya/faq" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">FAQ</Link>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        <Button variant="ghost" className="p-0 m-0 hidden md:block mx-3">
+          <Link href="/faq" className="text-base text-primary font-montserrat font-semibold hover:text-primary/70 transition-colors">FAQ</Link>
+        </Button>
       </NavigationMenuList>
     </NavigationMenu>
   )

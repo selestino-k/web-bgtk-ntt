@@ -23,7 +23,7 @@ export function NavSheet() {
                 <SheetTrigger asChild>
                     <Button variant="outline" size="lg"><Menu size="50" /></Button>
                 </SheetTrigger>
-                <SheetContent className="overflow-y-scroll">
+                <SheetContent className="overflow-y-scroll" side="left">
                     <SheetHeader>
                         <SheetTitle className="text-2xl font-bold font-montserrat text-primary mb-5">Menu</SheetTitle> <AdminModeToggle />
                     </SheetHeader>

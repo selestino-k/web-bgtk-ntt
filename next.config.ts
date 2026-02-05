@@ -50,6 +50,11 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "31mb",
     },
   },
+  allowedDevOrigins: [
+    "http://localhost:3000",
+    "http://10.11.237.80:3000",
+    "https://web-bgtk-ntt.vercel.app",
+  ],
 };
 
 export default nextConfig;

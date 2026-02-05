@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link"
-import { Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from "lucide-react"
+import { Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react"
 import { scrollToElement } from "@/utils/scroll";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -109,15 +109,15 @@ export default function Footer({ tags, tagId }: FooterProps) {
                     </div>
 
                 </div>
-                <div className="md:hidden mt-8 pt-8  justify-items-center text-sm text-white grid grid-cols-2 gap-4 md:flex md:items-center md:justify-between">
+                <div className="lg:hidden mt-8 pt-8  justify-items-center text-sm text-white grid grid-cols-2 gap-4 md:flex md:items-center md:justify-between">
                     <Image
-                        src="/logo/ramah-white.png"
+                        src="/logo/ramah-ori-bordered.png"
                         alt="Kemendikdasmen Ramah"
                         width={120}
                         height={40}
                     />
                     <Image
-                        src="/logo/pend-white.png"
+                        src="/logo/pendidikan-ori-bordered.png"
                         alt="Pendidikan Bermutu"
                         width={120}
                         height={40}
@@ -128,12 +128,19 @@ export default function Footer({ tags, tagId }: FooterProps) {
                     <div>
                         <p>© {new Date().getFullYear()} BGTK NTT</p>
                     </div>
-                    <div className="ml-4 justify-center flex gap-4">
+                    <div className="ml-4 justify-center items-center flex gap-4">
                         <Link href="https://www.facebook.com/balaigurupenggerakntt/" target="_blank" rel="noopener noreferrer">
                             <Facebook className="inline-block hover:cursor-pointer" />
                         </Link>
                         <Link href="https://twitter.com/BGTK_NTT" target="_blank" rel="noopener noreferrer">
-                            <Twitter className="inline-block hover:cursor-pointer" />
+                            <Image
+                            
+                                src="/logo/x-social-media-white-icon.svg"
+                                alt="Twitter BGTK NTT"
+                                width={25}
+                                height={25}
+                                className="inline-block hover:cursor-pointer color-white"
+                            />
                         </Link>
                         <Link href="https://www.instagram.com/bgtkntt/" target="_blank" rel="noopener noreferrer">
                             <Instagram className="inline-block hover:cursor-pointer" />
@@ -148,7 +155,7 @@ export default function Footer({ tags, tagId }: FooterProps) {
                            />
                         </Link>
                         <Link href="https://www.youtube.com/@bgtkntt/" target="_blank" rel="noopener noreferrer">
-                            <Youtube className="inline-block hover:cursor-pointer" />
+                            <Youtube className="inline-block hover:cursor-pointer h-7 w-7" />
                         </Link>
                     </div>
                 </div>
