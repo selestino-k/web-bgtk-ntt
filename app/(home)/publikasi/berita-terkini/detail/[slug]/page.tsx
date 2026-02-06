@@ -9,7 +9,6 @@ import { JSX } from "react";
 import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
-import { toast } from "sonner";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb";
 import { ReportView } from "@/components/view-counter";
 import { Redis } from "@upstash/redis";
@@ -64,7 +63,6 @@ async function getPostBySlug(slug: string) {
       id: post.id.toString(),
     };
   } catch {
-    toast.error("Error fetching post");
     return null;
   }
 }

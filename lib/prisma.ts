@@ -12,7 +12,7 @@ const globalForPool = globalThis as unknown as {
 
 const pool = globalForPool.pool ?? new Pool({ 
   connectionString,
-  max: 10, // Limit connections to 10 in development/serverless
+  max: 1, // CRITICAL: Set to 1 for serverless/Vercel
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 })
