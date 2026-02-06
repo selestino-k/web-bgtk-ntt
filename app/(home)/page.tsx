@@ -78,6 +78,9 @@ async function getCarouselPhotos() {
   }
 }
 
+
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const carouselPhotos = await getCarouselPhotos();
   const latestPosts = await getLatestNews();

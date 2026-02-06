@@ -360,6 +360,8 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 
 export default async function BeritaTerkiniDetail({
   params,

@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     title: "Pengumuman",
     description: "Halaman Pengumuman",
 };
+export const dynamic = 'force-dynamic';
+
 
 async function fetchNews(page = 1, limit = 10, tagId?: number) {
     const where = tagId 

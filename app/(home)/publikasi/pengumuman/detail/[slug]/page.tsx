@@ -434,6 +434,8 @@ export default async function PengumumanDetail({
   const redis = Redis.fromEnv();
   const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
 
+  await redis.incr(`views:post:${post.slug}`);
+
   return (
     <div id="pengumuman-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
@@ -559,6 +561,8 @@ export default async function PengumumanDetail({
     </div>
   );
 }
+
+export const dynamic = 'force-dynamic';
 
 // Generate static params for static generation (optional)
 export async function generateStaticParams() {
