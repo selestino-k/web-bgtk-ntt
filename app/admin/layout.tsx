@@ -12,6 +12,11 @@ import { getServerSession } from "next-auth";
 export const metadata: Metadata = {
   title: "Panel Admin Web BGTK NTT",
   description: "Panel Admin untuk mengelola konten website Balai GTK NTT",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  }
 };
 
 export default async function AdminLayout({

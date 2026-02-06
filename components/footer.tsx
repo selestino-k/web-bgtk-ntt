@@ -132,11 +132,11 @@ export default function Footer({ tags, tagId }: FooterProps) {
                         <Link href="https://www.facebook.com/balaigurupenggerakntt/" target="_blank" rel="noopener noreferrer">
                             <Facebook className="inline-block hover:cursor-pointer" />
                         </Link>
-                        <Link href="https://twitter.com/BGTK_NTT" target="_blank" rel="noopener noreferrer">
+                        <Link href="https://x.com/BGTK_NTT" target="_blank" rel="noopener noreferrer">
                             <Image
                             
                                 src="/logo/x-social-media-white-icon.svg"
-                                alt="Twitter BGTK NTT"
+                                alt="X BGTK NTT"
                                 width={25}
                                 height={25}
                                 className="inline-block hover:cursor-pointer color-white"
