@@ -12,6 +12,9 @@ const globalForPool = globalThis as unknown as {
 
 const pool = globalForPool.pool ?? new Pool({ 
   connectionString,
+  max: 10, // Limit connections to 10 in development/serverless
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 })
 
 if (process.env.NODE_ENV !== 'production') globalForPool.pool = pool
