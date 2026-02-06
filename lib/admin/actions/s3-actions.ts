@@ -13,7 +13,7 @@ const s3Client = new S3Client({
 
 const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME || ""
 
-// Upload image to S3
+// Upload thumbnail image to S3
 export async function uploadImageToS3(
   file: File,
   folder: string = "posts"

@@ -3,7 +3,7 @@ import { uploadFileToS3 } from '@/utils/s3';
 
 // Validate resource type to prevent issues
 const validateResourceType = (type: string) => {
-  const allowedTypes = ['instrumen', 'barang', 'alat'];
+  const allowedTypes = ['general'];
   return allowedTypes.includes(type) ? type : 'general';
 };
 
