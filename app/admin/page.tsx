@@ -16,8 +16,7 @@ async function getDashboardData() {
             totalMedia: await prisma.post.count({
                 where: { thumbnail: { not: null } },
             }),
-            totalDocuments: await prisma.post.count({
-                where: { document: { not: null } },
+            totalDocuments: await prisma.document.count({
             }),
             totalAdmins: await prisma.user.count(),
         },

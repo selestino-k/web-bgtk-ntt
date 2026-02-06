@@ -43,7 +43,7 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
     return (
         <Carousel
             plugins={Plugin.current}
-            className="w-full max-w-screen h-auto bg-black overflow-hidden relative items-center justify-center"
+            className="w-full max-w-full lg:h-[60vh] h-[70vh] bg-black overflow-hidden relative items-center justify-center"
             opts={{
                 loop: true,
                 dragFree: false,
@@ -56,13 +56,12 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
             <CarouselContent>
                 {photos.map((photo) => (
                     <CarouselItem key={photo.id}>
-                        <div className="relative w-full h-auto overflow-hidden flex items-center justify-center">
+                        <div className="relative w-full lg:h-[60vh] h-[70vh] overflow-hidden flex items-center justify-center">
                             <Image
                                 src={photo.imageUrl}
                                 alt={photo.caption || `Carousel image ${photo.id}`}
-                                width ={1920}
-                                height={960}
-                                className="aspect-video object-cover carousel-item-zoom opacity-80"
+                                fill
+                                className="absolute object-cover carousel-item-zoom opacity-80"
                                 priority={photo.id === photos[0]?.id}
                             />
 

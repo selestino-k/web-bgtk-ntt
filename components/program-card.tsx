@@ -4,42 +4,52 @@ import { FeatureCard } from "@/components/motion/program-card-hover-motion";
 
 export const features = [
 	{
-		title: "Program Pembelajaran Mendalam (PPM)",
-		description:
-			"Menyediakan materi pembelajaran yang mendalam dan komprehensif untuk guru dan calon guru.",
-			link: "/program/ppm"
+		title: "Program Pembelajaran Mendalam (PM)",
+		link: "/program/ppm",
+		imageUrl: "/logo/pm.png"
 	},
 	{
-		title: "Indeks Kepuasan Masyarakat (IKM)",
-		description:
-			"mengukur tingkat kepuasan masyarakat terhadap layanan yang diberikan oleh Balai GTK NTT.",
-			link: "/program/ikm"
+		title: "Koding dan Kecerdasan Artifisial (KKA)",
+		link: "/program/kka",
+		imageUrl: "/logo/kka.png"
 	},
 	{
 		title: "Program Pendidikan Profesi Guru (PPG)",
-		description:
-			"Menyediakan pendidikan profesi bagi calon guru untuk memenuhi standar kompetensi nasional.",
-			link: "/program/ppg"
+		link: "/program/ppg",
+		imageUrl: "/logo/ppg.png"
+
 	},
 	{
-		title: "Program Pengembangan Keprofesian Berkelanjutan (PKB)",
-		description:
-			"Menyediakan pelatihan dan workshop untuk guru dalam rangka meningkatkan kompetensi dan profesionalisme.",
-			link: "/program/pkb"
+		title: "Program Pengembangan Keprofesian Guru (PKG) - Bahasa Inggris",
+		link: "/program/pkb",
+		imageUrl: "/logo/pkg-bi.png"
+	},
+
+	{
+		title: "Program Pengembangan Keprofesian Guru (PKG) - Bimbingan Konseling",
+		link: "/program/pkm",
+		imageUrl: "/logo/pkg-bk.png"
+	},
+	{
+		title: "Program Bakal Calon Kepala Sekolah (BCKS)",
+		link: "/program/bcks",
+		imageUrl: "/logo/bcks.png"
 	},
 ];
 export default function ProgramCardList() {
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-10 xl:max-w-7xl max-w-5xl lg:max-w-3xl h-full mx-auto mt-5 items-center place-content-around">
+		<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-10 lg:w-full h-full max-w-7xl mx-auto mt-5 items-center px-2 py-2">
 			{features.map((feature, index) => (
 				<div
 					key={index}
-					className="h-full flex items-center content-center justify-center"
+					className={`h-full flex items-center content-center justify-center ${
+						index >= 4 ? "xl:col-start-2" : ""
+					} ${index === 5 ? "xl:col-start-3" : ""}`}
 				>
 					<FeatureCard
 						title={feature.title}
-						description={feature.description}
-						link ={feature.link}
+						link={feature.link}
+						imageUrl={feature.imageUrl}
 					/>
 				</div>
 			))}

@@ -127,8 +127,8 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-0" />
-        <CarouselNext className="right-0" />
+        <CarouselPrevious className="relative bg-white/20 hover:bg-white/50 text-white border-white/50 left-0 translate-y-0" />
+        <CarouselNext className="relative bg-white/20 hover:bg-white/50 text-white border-white/50 right-0 bottom-0 translate-y-0" />
       </Carousel>
     );
   }
