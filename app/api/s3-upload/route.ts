@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { uploadFileToS3 } from '@/utils/s3';
 
 // Validate resource type to prevent issues
 const validateResourceType = (type: string) => {
@@ -23,31 +22,21 @@ export async function POST(request: NextRequest) {
     // Create a unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/\s+/g, '-').toLowerCase();
-    const filename = `${timestamp}-${originalName}`;
-    
-    // Define upload directory
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', validatedType);
-    
-    // Ensure directory exists
-    await mkdir(uploadDir, { recursive: true });
+    const filename = `${validatedType}/${timestamp}-${originalName}`;
     
     // Convert the file to a Buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
-    // Save file locally
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
+    // Upload to S3
+    const image_url = await uploadFileToS3(buffer, filename, file.type);
     
-    // Return the public URL
-    const imageUrl = `/uploads/${validatedType}/${filename}`;
-    
+    // Return the direct S3 URL that can be stored in the Instrumen table
     return NextResponse.json({ 
       success: true,
-      imageUrl: imageUrl
+      imageUrl: image_url
     });
-  } catch (error) {
-    console.error('Upload error:', error);
+  } catch {
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
   }
 }

@@ -3,7 +3,9 @@
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { Prisma } from "@/lib/generated/prisma/client"
-import { uploadImageToS3, deleteImageFromS3 } from "./s3-actions"
+//import { uploadImageToS3, deleteImageFromS3 } from "./s3-actions"
+import { uploadImageToAssets, deleteFileFromAssets } from "./file-actions"
+
 
 // Create new post
 export async function createPost(formData: FormData) {
@@ -45,10 +47,10 @@ export async function createPost(formData: FormData) {
       }
     }
 
-    // Upload thumbnail to S3 if provided
+    // Upload thumbnail to Assets if provided
     let thumbnailUrl = ""
     if (thumbnailFile && thumbnailFile.size > 0) {
-      const uploadResult = await uploadImageToS3(thumbnailFile, "posts/thumbnails")
+      const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
       
       if (!uploadResult.success) {
         return { 
@@ -178,13 +180,13 @@ export async function updatePost(postId: string, formData: FormData) {
     let thumbnailUrl = existingThumbnail || existingPost.thumbnail
 
     if (thumbnailFile && thumbnailFile.size > 0) {
-      // Delete old thumbnail from S3 if exists
+      // Delete old thumbnail from Assets if exists
       if (existingPost.thumbnail) {
-        await deleteImageFromS3(existingPost.thumbnail)
+        await deleteFileFromAssets(existingPost.thumbnail)
       }
 
       // Upload new thumbnail
-      const uploadResult = await uploadImageToS3(thumbnailFile, "posts/thumbnails")
+      const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
       
       if (!uploadResult.success) {
         return { 
@@ -256,7 +258,7 @@ export async function updatePost(postId: string, formData: FormData) {
 // Delete post
 export async function deletePost(postId: string) {
   try {
-    // Get post to delete thumbnail from S3
+    // Get post to delete thumbnail from Assets
     const post = await prisma.post.findUnique({
       where: { id: BigInt(postId) }
     })
@@ -268,9 +270,9 @@ export async function deletePost(postId: string) {
       }
     }
 
-    // Delete thumbnail from S3 if exists
+    // Delete thumbnail from Assets if exists
     if (post.thumbnail) {
-      await deleteImageFromS3(post.thumbnail)
+      await deleteFileFromAssets(post.thumbnail)
     }
 
     // Delete post from database

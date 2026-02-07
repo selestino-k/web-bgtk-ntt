@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
-import { uploadDocumentToS3, deleteDocumentFromS3 } from "./s3-actions"
+//import { uploadDocumentToS3, deleteDocumentFromS3 } from "./s3-actions"
+import { uploadDocumentToAssets, deleteDocumentFromAssets } from "./file-actions"
 import { toast } from "sonner"
 
 // Upload document
@@ -17,8 +18,8 @@ export async function uploadDocument(formData: FormData) {
       return { success: false, error: "File dan judul harus diisi" }
     }
 
-    // Upload to S3
-    const uploadResult = await uploadDocumentToS3(file, "documents")
+    // Upload to Assets
+    const uploadResult = await uploadDocumentToAssets(file, "documents")
 
     if (!uploadResult.success || !uploadResult.url) {
       return { success: false, error: uploadResult.error || "Gagal mengunggah dokumen" }
@@ -59,11 +60,11 @@ export async function deleteDocument(id: number) {
       return { success: false, error: "Dokumen tidak ditemukan" }
     }
 
-    // Delete from S3
-    const deleteResult = await deleteDocumentFromS3(document.fileUrl)
+    // Delete from Assets
+    const deleteResult = await deleteDocumentFromAssets(document.fileUrl)
 
     if (!deleteResult.success) {
-        toast.error(deleteResult.error || "Gagal menghapus dokumen dari S3")      // Continue with database deletion even if S3 deletion fails
+        toast.error(deleteResult.error || "Gagal menghapus dokumen dari Server")      // Continue with database deletion even if Assets deletion fails
     }
 
     // Delete from database

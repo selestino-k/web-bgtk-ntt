@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Upload, Loader2, X, Link2, Eye } from "lucide-react"
-import { uploadImageToS3, deleteImageFromS3 } from "@/lib/admin/actions/s3-actions"
+import { uploadImageToAssets, deletePostImageFromAssets } from "@/lib/admin/actions/file-actions"
+//import { uploadImageToS3, deleteImageFromS3 } from "@/lib/admin/actions/s3-actions"
 import { toast } from "sonner"
 
 interface ImageUploaderProps {
@@ -52,13 +53,13 @@ export function ImageUploader({
     setIsUploading(true)
 
     try {
-      // Delete old image from S3 if exists and is S3 URL
-      if (value && value.includes('.amazonaws.com/')) {
-        await deleteImageFromS3(value)
+      // Delete old image from Assets if exists and is Assets URL
+      if (value && value.includes('/assets/')) {
+        await deletePostImageFromAssets(value)
       }
 
       // Upload new image
-      const result = await uploadImageToS3(file, folder)
+      const result = await uploadImageToAssets(file, folder)
 
       if (!result.success || !result.url) {
         throw new Error(result.error || 'Gagal mengunggah gambar')
@@ -93,9 +94,9 @@ export function ImageUploader({
     if (!value) return
 
     try {
-      // Delete from S3 only if it's an S3 URL
-      if (value.includes('.amazonaws.com/')) {
-        const deleteResult = await deleteImageFromS3(value)
+      // Delete from Assets only if it's an Assets URL
+      if (value.includes('/assets/')) {
+        const deleteResult = await deletePostImageFromAssets(value)
         if (!deleteResult.success) {
           throw new Error(deleteResult.error || 'Gagal menghapus gambar')
         }

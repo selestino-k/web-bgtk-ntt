@@ -1,7 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from './s3-actions';
+import { uploadCarouselImageToAssets, deleteCarouselImageFromAssets } from './file-actions';
+//import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from './s3-actions';
 import { revalidatePath } from 'next/cache';
 
 export async function getCarouselPhotos() {
@@ -45,8 +46,8 @@ export async function createCarouselPhoto(formData: FormData) {
     if (externalUrl) {
       imageUrl = externalUrl;
     } else if (file) {
-      // Upload image to S3
-      const uploadResult = await uploadCarouselImageToS3(file, 'carousel');
+      // Upload image to Assets
+      const uploadResult = await uploadCarouselImageToAssets(file);
 
       if (!uploadResult.success || !uploadResult.url) {
         return { success: false, error: uploadResult.error || 'Failed to upload image' };
@@ -104,23 +105,23 @@ export async function updateCarouselPhoto(formData: FormData) {
 
     // Handle image update logic
     if (file && file.size > 0) {
-      // New file uploaded - upload to S3
-      const uploadResult = await uploadCarouselImageToS3(file, 'carousel');
+      // New file uploaded - upload to Assets
+      const uploadResult = await uploadCarouselImageToAssets(file);
 
       if (!uploadResult.success || !uploadResult.url) {
         return { success: false, error: uploadResult.error || 'Failed to upload image' };
       }
 
-      // Delete old image from S3 if it's not an external URL
+      // Delete old image from Assets if it's not an external URL
       if (!existingPhoto.imageUrl.startsWith('http://') && !existingPhoto.imageUrl.startsWith('https://')) {
-        await deleteCarouselImageFromS3(existingPhoto.imageUrl);
+        await deleteCarouselImageFromAssets(existingPhoto.imageUrl);
       }
       
       imageUrl = uploadResult.url;
     } else if (externalUrl) {
-      // Using external URL - delete old image from S3 if needed
+      // Using external URL - delete old image from Assets if needed
       if (!existingPhoto.imageUrl.startsWith('http://') && !existingPhoto.imageUrl.startsWith('https://')) {
-        await deleteCarouselImageFromS3(existingPhoto.imageUrl);
+        await deleteCarouselImageFromAssets(existingPhoto.imageUrl);
       }
       imageUrl = externalUrl;
     } else if (existingImageUrl) {
@@ -157,12 +158,12 @@ export async function deleteCarouselPhoto(id: number) {
       return { success: false, error: 'Photo not found' };
     }
 
-    // Delete image from S3
-    const deleteResult = await deleteCarouselImageFromS3(carouselPhoto.imageUrl);
+    // Delete image from Assets
+    const deleteResult = await deleteCarouselImageFromAssets(carouselPhoto.imageUrl);
 
     if (!deleteResult.success) {
       return { success: false, error: deleteResult.error };
-      // Continue with database deletion even if S3 deletion fails
+      // Continue with database deletion even if Assets deletion fails
     }
 
     // Delete photo record from database

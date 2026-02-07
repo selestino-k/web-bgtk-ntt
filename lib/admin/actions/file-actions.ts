@@ -133,12 +133,7 @@ export async function uploadCarouselImageToAssets(
   return uploadImageToAssets(file, "carousel")
 }
 
-// Upload post image to public/assets/posts
-export async function uploadPostImageToAssets(
-  file: File
-): Promise<{ success: boolean; url?: string; error?: string }> {
-  return uploadImageToAssets(file, "posts")
-}
+
 
 // Delete file from public/assets
 export async function deleteFileFromAssets(
@@ -240,6 +235,158 @@ export async function uploadFileToAssets(
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengunggah file",
+    }
+  }
+}
+
+// Replace/Update image in assets folder
+export async function replaceImageInAssets(
+  oldImageUrl: string,
+  newFile: File,
+  subfolder: string = "images"
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  try {
+    // First, delete the old image
+    const deleteResult = await deleteFileFromAssets(oldImageUrl)
+    if (!deleteResult.success) {
+      return {
+        success: false,
+        error: `Gagal menghapus gambar lama: ${deleteResult.error}`,
+      }
+    }
+
+    // Then upload the new image
+    const uploadResult = await uploadImageToAssets(newFile, subfolder)
+    if (!uploadResult.success) {
+      return {
+        success: false,
+        error: `Gagal mengunggah gambar baru: ${uploadResult.error}`,
+      }
+    }
+
+    return {
+      success: true,
+      url: uploadResult.url,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengganti gambar",
+    }
+  }
+}
+
+// Replace/Update document in assets folder
+export async function replaceDocumentInAssets(
+  oldDocumentUrl: string,
+  newFile: File,
+  subfolder: string = "documents"
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  try {
+    // First, delete the old document
+    const deleteResult = await deleteFileFromAssets(oldDocumentUrl)
+    if (!deleteResult.success) {
+      return {
+        success: false,
+        error: `Gagal menghapus dokumen lama: ${deleteResult.error}`,
+      }
+    }
+
+    // Then upload the new document
+    const uploadResult = await uploadDocumentToAssets(newFile, subfolder)
+    if (!uploadResult.success) {
+      return {
+        success: false,
+        error: `Gagal mengunggah dokumen baru: ${uploadResult.error}`,
+      }
+    }
+
+    return {
+      success: true,
+      url: uploadResult.url,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengganti dokumen",
+    }
+  }
+}
+
+// Replace carousel image in assets folder
+export async function replaceCarouselImageInAssets(
+  oldImageUrl: string,
+  newFile: File
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  return replaceImageInAssets(oldImageUrl, newFile, "carousel")
+}
+
+// Replace post image in assets folder
+export async function replacePostImageInAssets(
+  oldImageUrl: string,
+  newFile: File
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  return replaceImageInAssets(oldImageUrl, newFile, "posts")
+}
+
+// Delete carousel image from assets
+export async function deleteCarouselImageFromAssets(
+  imageUrl: string
+): Promise<{ success: boolean; error?: string }> {
+  return deleteFileFromAssets(imageUrl)
+}
+
+// Delete post image from assets
+export async function deletePostImageFromAssets(
+  imageUrl: string
+): Promise<{ success: boolean; error?: string }> {
+  return deleteFileFromAssets(imageUrl)
+}
+
+// Delete document from assets
+export async function deleteDocumentFromAssets(
+  documentUrl: string
+): Promise<{ success: boolean; error?: string }> {
+  return deleteFileFromAssets(documentUrl)
+}
+
+// Generic replace file function
+export async function replaceFileInAssets(
+  oldFileUrl: string,
+  newFile: File,
+  subfolder: string = "uploads",
+  options?: {
+    maxSize?: number
+    allowedTypes?: string[]
+  }
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  try {
+    // First, delete the old file
+    const deleteResult = await deleteFileFromAssets(oldFileUrl)
+    if (!deleteResult.success) {
+      return {
+        success: false,
+        error: `Gagal menghapus file lama: ${deleteResult.error}`,
+      }
+    }
+
+    // Then upload the new file
+    const uploadResult = await uploadFileToAssets(newFile, subfolder, options)
+    if (!uploadResult.success) {
+      return {
+        success: false,
+        error: `Gagal mengunggah file baru: ${uploadResult.error}`,
+      }
+    }
+
+    return {
+      success: true,
+      url: uploadResult.url,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Gagal mengganti file",
     }
   }
 }

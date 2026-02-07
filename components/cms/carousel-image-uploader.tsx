@@ -5,8 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Upload, Loader2, X, Link2, Eye } from "lucide-react"
-import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from "@/lib/admin/actions/s3-actions"
+import { Upload, X, Link2, Eye } from "lucide-react"
 import { toast } from "sonner"
 
 interface CarouselImageUploaderProps {
@@ -25,7 +24,6 @@ export function CarouselImageUploader({
   value,
   onChange,
   onDelete,
-  folder = "images",
   maxSizeMB = 10,
   disabled = false,
   showUrlInput = true,
@@ -33,12 +31,12 @@ export function CarouselImageUploader({
   aspectRatio = "video"
 }: CarouselImageUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
-  const [isUploading, setIsUploading] = useState(false)
   const [uploadMode, setUploadMode] = useState<"file" | "url">("file")
   const [externalUrl, setExternalUrl] = useState("")
   const [showUrlPreview, setShowUrlPreview] = useState(true)
+  const [previewUrl, setPreviewUrl] = useState<string>("")
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileSelect = (file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error('Harap unggah file gambar')
       return
@@ -49,27 +47,13 @@ export function CarouselImageUploader({
       return
     }
 
-    setIsUploading(true)
-
-    try {
-      // Delete old image from S3 if exists and is S3 URL
-      if (value && value.includes('.amazonaws.com/')) {
-        await deleteCarouselImageFromS3(value)
-      }
-
-      // Upload new image
-      const result = await uploadCarouselImageToS3(file, folder)
-      if (!result.success || !result.url) {
-        throw new Error(result.error || 'Gagal mengunggah gambar')
-      }
-
-      onChange(result.url, file)
-      toast.success('Gambar berhasil diunggah')
-    } catch {
-      toast.error('Gagal mengunggah gambar')
-    } finally {
-      setIsUploading(false)
-    }
+    // Create preview URL
+    const url = URL.createObjectURL(file)
+    setPreviewUrl(url)
+    
+    // Pass file to parent without uploading
+    onChange("", file)
+    toast.success('File dipilih, akan diunggah saat submit')
   }
 
   const handleExternalUrlSubmit = () => {
@@ -81,6 +65,7 @@ export function CarouselImageUploader({
     // Basic URL validation
     try {
       new URL(externalUrl)
+      setPreviewUrl(externalUrl)
       onChange(externalUrl)
       toast.success('URL gambar berhasil ditambahkan')
     } catch {
@@ -88,25 +73,16 @@ export function CarouselImageUploader({
     }
   }
 
-  const handleDelete = async () => {
-    if (!value) return
-
-    try {
-      // Delete from S3 only if it's an S3 URL
-      if (value.includes('.amazonaws.com/')) {
-        const deleteResult = await deleteCarouselImageFromS3(value)
-        if (!deleteResult.success) {
-          throw new Error(deleteResult.error || 'Gagal menghapus gambar')
-        }
-      }
-
-      onChange('')
-      setExternalUrl('')
-      onDelete?.()
-      toast.success('Gambar dihapus')
-    } catch {
-      toast.error('Gagal menghapus gambar')
+  const handleDelete = () => {
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl)
     }
+    
+    setPreviewUrl("")
+    setExternalUrl("")
+    onChange("")
+    onDelete?.()
+    toast.success('Gambar dihapus')
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -129,14 +105,14 @@ export function CarouselImageUploader({
 
     const file = e.dataTransfer.files[0]
     if (file) {
-      handleFileUpload(file)
+      handleFileSelect(file)
     }
   }
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      handleFileUpload(file)
+      handleFileSelect(file)
     }
   }
 
@@ -152,21 +128,21 @@ export function CarouselImageUploader({
   }
 
   const copyToClipboard = async () => {
-    if (value) {
-      await navigator.clipboard.writeText(value)
+    if (value || externalUrl) {
+      await navigator.clipboard.writeText(value || externalUrl)
       toast.success('URL berhasil disalin')
     }
   }
 
-  const isS3Url = value?.includes('.amazonaws.com/')
+  const displayUrl = value || previewUrl
 
   return (
     <div className="space-y-4">
       <Label>{label}</Label>
 
       {/* Toggle Buttons */}
-      {!value && (
-        <div className="flex gap-2 p-1 bg-gray-100 rounded-lg w-fit">
+      {!displayUrl && (
+        <div className="flex gap-2 p-1 rounded-lg w-fit">
           <Button
             type="button"
             variant={uploadMode === "file" ? "default" : "ghost"}
@@ -190,7 +166,7 @@ export function CarouselImageUploader({
         </div>
       )}
       
-      {!value ? (
+      {!displayUrl ? (
         <>
           {uploadMode === "file" ? (
             <div
@@ -207,25 +183,24 @@ export function CarouselImageUploader({
                 id="image-upload"
                 type="file"
                 accept="image/*"
-                onChange={handleFileSelect}
+                onChange={handleFileChange}
                 className="hidden"
-                disabled={disabled || isUploading}
+                disabled={disabled}
               />
               
               <label
                 htmlFor="image-upload"
                 className="flex flex-col items-center justify-center cursor-pointer"
               >
-                {isUploading ? (
-                  <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
-                ) : (
-                  <Upload className="h-12 w-12 text-gray-400 mb-4" />
-                )}
+                <Upload className="h-12 w-12 text-gray-400 mb-4" />
                 <p className="text-sm font-medium text-gray-700 mb-1">
-                  {isUploading ? 'Mengunggah...' : 'Klik untuk unggah atau seret gambar ke sini'}
+                  Klik untuk unggah atau seret gambar ke sini
                 </p>
                 <p className="text-xs text-gray-500">
                   Maksimal {maxSizeMB}MB - Format: JPG, PNG, GIF, WebP
+                </p>
+                <p className="text-xs text-blue-600 mt-2">
+                  File akan diunggah saat Anda menyimpan form
                 </p>
               </label>
             </div>
@@ -264,7 +239,7 @@ export function CarouselImageUploader({
         <div className="space-y-4">
           <div className={`relative rounded-lg overflow-hidden border border-gray-200 ${getAspectClass()}`}>
             <Image
-              src={value}
+              src={displayUrl}
               alt="Preview"
               fill
               className="object-cover"
@@ -281,11 +256,11 @@ export function CarouselImageUploader({
             </Button>
           </div>
 
-          {showUrlInput && (
+          {showUrlInput && (value || externalUrl) && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-medium">
-                  {isS3Url ? 'URL Gambar S3' : 'URL Gambar Eksternal'}
+                  URL Gambar Eksternal
                 </Label>
                 <Button
                   type="button"
@@ -303,7 +278,7 @@ export function CarouselImageUploader({
                 <div className="relative flex-1">
                   <Link2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    value={value}
+                    value={value || externalUrl}
                     readOnly
                     className="pl-9 font-mono text-xs bg-gray-50"
                     onClick={(e) => e.currentTarget.select()}
@@ -324,13 +299,13 @@ export function CarouselImageUploader({
                   <p className="text-xs font-medium text-gray-700 mb-2">Preview URL:</p>
                   <div className="relative w-full h-48 rounded-md overflow-hidden">
                     <Image
-                      src={value}
+                      src={value || externalUrl}
                       alt="URL Preview"
                       fill
                       className="object-contain"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-2 break-all">{value}</p>
+                  <p className="text-xs text-gray-500 mt-2 break-all">{value || externalUrl}</p>
                 </div>
               )}
             </div>
@@ -351,9 +326,9 @@ export function CarouselImageUploader({
             id="image-upload"
             type="file"
             accept="image/*"
-            onChange={handleFileSelect}
+            onChange={handleFileChange}
             className="hidden"
-            disabled={disabled || isUploading}
+            disabled={disabled}
           />
         </div>
       )}
