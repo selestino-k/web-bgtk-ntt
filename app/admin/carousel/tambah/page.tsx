@@ -49,24 +49,10 @@ export default function AddCarouselPhotoPage() {
     }))
   }
 
-  
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-   
-
-    if (!formData.imageFile && !externalUrl) {
-      toast({
-        title: "Error",
-        description: "Harap unggah file gambar atau masukkan URL gambar",
-        variant: "destructive",
-      })
-      return
-    }
-
+ 
     if (!formData.order && formData.order !== 0) {
       toast({
         title: "Error",
@@ -90,10 +76,12 @@ export default function AddCarouselPhotoPage() {
     try {
       const submitData = new FormData()
       submitData.append("caption", formData.caption)
-      submitData.append ("imageUrl" , formData.imageUrl)
       submitData.append("order", formData.order.toString())
       
-      if (formData.imageFile) {
+       if (formData.imageUrl) {
+        submitData.append("externalUrl", formData.imageUrl)
+      } else if (formData.imageFile) {
+        // Fallback: only upload file if imageUrl doesn't exist
         submitData.append("file", formData.imageFile)
       } else if (externalUrl) {
         submitData.append("externalUrl", externalUrl)
