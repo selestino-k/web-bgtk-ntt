@@ -100,7 +100,7 @@ export default async function Home() {
           </main>
         </div>
 
-        <div id="sambutan" className="flex relative w-full xs:sm:max-w-md items-center mb-10 ">
+        <div id="sambutan" className="flex relative w-full xs:sm:max-w-md items-center mb-3 ">
           <main className="relative z-10 flex flex-col gap-3 p-8 px-4 sm:px-0 items-center justify-items-center w-full lg:w-full">
             <div className="text-center">
               <div className="max-w-full mx-auto lg:mx-8 lg:flex font-montserrat">
@@ -171,8 +171,8 @@ export default async function Home() {
 
       <PrescenceMotion>
         <div id="program" className="xl:mt-5 mt-10 flex relative max-w-2xl xl:max-w-7xl items-center min-h-dvh">
-          <main className="relative z-10 flex flex-col gap-3 p-8 justify-center">
-            <div className="text-center">
+          <main className="relative z-10 flex flex-col gap-3 justify-center">
+            <div className="text-center mb-8">
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
                 Program Prioritas
               </h2>
