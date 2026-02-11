@@ -272,12 +272,20 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
   }, [mobileView])
 
   return (
-    <div className="simple-editor-wrapper" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="simple-editor-wrapper" 
+    style={{ 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column' ,
+      position: 'relative',
+      }}>
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           ref={toolbarRef}
           style={{
             flexShrink: 0,
+            position: 'relative',
+            zIndex: 10,
             ...(isMobile
               ? {
                   bottom: `calc(100% - ${height - rect.y}px)`,
@@ -303,7 +311,13 @@ export function SimpleEditor({ initialContent, onChange }: SimpleEditorProps) {
           editor={editor}
           role="presentation"
           className="simple-editor-content"
-          style={{ flex: 1, overflow: 'auto', minHeight: 0 }}
+          style={{ 
+            flex: 1, 
+            overflow: 'auto', 
+            minHeight: 0 , 
+            position: 'relative',
+            zIndex: 1,
+          }}
         />
       </EditorContext.Provider>
     </div>

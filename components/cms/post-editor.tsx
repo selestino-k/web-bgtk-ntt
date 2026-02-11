@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { X, Loader2, ArrowLeft } from "lucide-react"
+import { X, Loader2 } from "lucide-react"
 import { ImageUploader } from "@/components/cms/image-uploader"
 import { DocumentCard } from "@/components/cms/document-card"
 import { DocumentDialog } from "@/components/cms/document-dialog"
@@ -204,11 +204,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link href="/admin/posts">
-            <Button type="button" variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
           <h2 className="text-2xl/7 font-semibold sm:text-5xl sm:tracking-tight text-primary">
             {isEditMode ? 'Edit Berita' : 'Buat Berita Baru'}
           </h2>
