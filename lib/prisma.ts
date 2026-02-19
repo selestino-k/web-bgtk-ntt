@@ -12,6 +12,7 @@ const globalForPool = globalThis as unknown as {
 
 const pool = globalForPool.pool ?? new Pool({ 
   connectionString,
+  max: 5, // Adjust based on your needs
 })
 
 if (process.env.NODE_ENV !== 'production') globalForPool.pool = pool
