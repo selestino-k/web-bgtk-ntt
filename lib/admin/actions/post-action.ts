@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { Prisma } from "@/lib/generated/prisma/client"
-//import { uploadImageToS3, deleteImageFromS3 } from "./s3-actions"
 import { uploadImageToAssets, deleteFileFromAssets } from "./file-actions"
 
 

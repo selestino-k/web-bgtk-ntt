@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 async function getDashboardData() {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PROD_BASE_URL || 'http://localhost:3000';
     
     const [dbStats, viewStats] = await Promise.all([
         {

@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/prisma';
 import { uploadCarouselImageToAssets, deleteCarouselImageFromAssets } from './file-actions';
-//import { uploadCarouselImageToS3, deleteCarouselImageFromS3 } from './s3-actions';
 import { revalidatePath } from 'next/cache';
 
 export async function getCarouselPhotos() {

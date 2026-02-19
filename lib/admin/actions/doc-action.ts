@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
-//import { uploadDocumentToS3, deleteDocumentFromS3 } from "./s3-actions"
 import { uploadDocumentToAssets, deleteDocumentFromAssets } from "./file-actions"
 import { toast } from "sonner"
 
