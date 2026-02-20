@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Upload, Loader2, X, Link2, Eye } from "lucide-react"
 import { uploadImageToAssets, deletePostImageFromAssets } from "@/lib/admin/actions/file-actions"
-//import { uploadImageToS3, deleteImageFromS3 } from "@/lib/admin/actions/s3-actions"
 import { toast } from "sonner"
 
 interface ImageUploaderProps {
