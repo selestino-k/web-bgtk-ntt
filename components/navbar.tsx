@@ -14,7 +14,7 @@ export default async function NavBar() {
         </div>
         
         <Link href="/" className="flex lg:flex lg:items-start xl:items-start xl:px-2 px-6 items-center gap-1" prefetch={false}>
-          <Image src="/logo/logo-web-bgtk-ntt.svg" alt="Balai GTK Logo" width={220} height={48} />
+          <Image src="/logo/logo-web-bgtk-ntt.svg" alt="Balai GTK Logo" width={230} height={48} />
         </Link>
 
         <div className="xl:grid justify-items-center py-0 hidden">

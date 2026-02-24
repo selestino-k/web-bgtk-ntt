@@ -77,6 +77,9 @@ export default function NavMenu() {
                   <Link href="/ult/sarana-prasarana" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Sarana dan Prasarana</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-sm">
+                  <Link href="https://s.id/ult-bgtkntt" target="_blank" rel="noopener noreferrer"  className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Survei Kepuasan Masyarakat (SKM)</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild className="text-sm">
                   <Link href="https://prod.lapor.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">SP4N Lapor</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild className="text-sm">

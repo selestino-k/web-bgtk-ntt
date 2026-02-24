@@ -103,7 +103,7 @@ export default async function Home() {
         <div id="sambutan" className="flex relative w-full xs:sm:max-w-md items-center mb-3 ">
           <main className="relative z-10 flex flex-col gap-3 p-8 px-4 sm:px-0 items-center justify-items-center w-full lg:w-full">
             <div className="text-center">
-              <div className="max-w-full mx-auto lg:mx-8 lg:flex font-montserrat">
+              <div className="max-w-full mx-auto lg:mx-8 xl:flex font-montserrat">
 
                 <div id="sambutan-video-mobile" className="md:hidden sm:grid justify-items-center mb-6">
                   <div className="rounded-lg overflow-hidden shadow-lg ">
@@ -135,7 +135,23 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div className="md:lg:xl:w-3/5 xs:sm:grid md:lg:px-8 xs:sm:max-w-md md:max-w-2xl lg:max-w-full justify-items-center items-center">
+                <div id="sambutan-video-laptop" className="hidden lg:grid xl:hidden justify-items-center mb-6">
+                  <div className="rounded-lg overflow-hidden shadow-lg ">
+                    <iframe
+                      width="480"
+                      height="270"
+                      src="https://www.youtube-nocookie.com/embed/kWEl6wepuO4?si=hdhp-Gjd-cRPK4x4"
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen>
+                    </iframe>
+                  </div>
+                </div>
+
+                <div id="sambutan-text" className="lg:grid xl:flex mb-6 flex-1">
+                <div className="w-full xs:sm:grid md:lg:px-8 xs:sm:max-w-md lg:max-w-full justify-items-center items-center">
                   <Image
                     src="/images/foto-pak-kepala+textbox.png"
                     alt="Kepala BGTK NTT"
@@ -145,8 +161,9 @@ export default async function Home() {
                   />
                   <KataSambutan />
                 </div>
+                </div>
 
-                <div id="sambutan-video-desktop" className="hidden lg:w-2/5 lg:ml-2 lg:flex justify-center items-start">
+                <div id="sambutan-video-desktop" className="hidden xl:w-2/5 xl:ml-2 xl:flex justify-center items-start">
                   <div className="rounded-lg overflow-hidden shadow-lg">
                     <iframe
                       width="540"
@@ -170,10 +187,10 @@ export default async function Home() {
 
 
       <PrescenceMotion>
-        <div id="program" className="xl:mt-5 mt-10 flex relative max-w-2xl xl:max-w-7xl items-center min-h-dvh">
+        <div id="program" className="xl:mt-5 mt-10 flex relative max-w-7xl items-center min-h-dvh">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center mb-8">
-              <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
+              <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
                 Program Prioritas
               </h2>
             </div>

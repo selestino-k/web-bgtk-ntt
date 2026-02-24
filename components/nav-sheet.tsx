@@ -99,14 +99,6 @@ export function NavSheet() {
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
                                     <Link
-                                        href="/publikasi/peraturan-juknis"
-                                        className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                                    >
-                                        Peraturan dan Juknis
-                                    </Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link
                                         href="/publikasi/dokumen"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                                     >
@@ -115,10 +107,10 @@ export function NavSheet() {
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
                                     <Link
-                                        href="https://ppid.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer"
+                                        href="/publikasi/sakip"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
                                     >
-                                        PPID Kemendikdasmen
+                                        SAKIP
                                     </Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
@@ -133,6 +125,22 @@ export function NavSheet() {
 
                             <AccordionItem value="item-3">
                                 <AccordionTrigger className="text-lg font-bold">ULT</AccordionTrigger>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link
+                                        href="/ult/sarana-prasarana"
+                                        className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                    >
+                                        Sarana dan Prasarana
+                                    </Link>
+                                </AccordionContent>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link
+                                        href="https://s.id/ult-bgtkntt" target="_blank" rel="noopener noreferrer"
+                                        className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                    >
+                                        Survei Kepuasan Masyarakat (SKM)
+                                    </Link>
+                                </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
                                     <Link
                                         href="https://prod.lapor.go.id"
@@ -168,18 +176,21 @@ export function NavSheet() {
                             </AccordionItem>
 
                             <AccordionItem value="item-4">
-                                <AccordionTrigger className="text-lg font-bold">SAKIP</AccordionTrigger>
+                                <AccordionTrigger className="text-lg font-bold">PPID</AccordionTrigger>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/sakip/rencana-strategis" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rencana Strategis</Link>
+                                    <Link href="https://ppid.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md">PPID Kemendikdasmen</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/sakip/laporan-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Laporan Kinerja</Link>
+                                    <Link href="/ppid/rencana-strategis" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rencana Strategis</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/sakip/perjanjian-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Perjanjian Kinerja</Link>
+                                    <Link href="/ppid/laporan-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Laporan Kinerja</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/sakip/penghargaan" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Penghargaan</Link>
+                                    <Link href="/ppid/perjanjian-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Perjanjian Kinerja</Link>
+                                </AccordionContent>
+                                <AccordionContent className="flex flex-col gap-4 text-balance">
+                                    <Link href="/ppid/penghargaan" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Penghargaan</Link>
                                 </AccordionContent>
                             </AccordionItem>
 
@@ -220,31 +231,19 @@ export function NavSheet() {
                                 </AccordionContent>
                             </AccordionItem>
 
-                            <AccordionItem value="item-6" className="py-2">
+                            <AccordionItem value="item-6" className="py-4">
                                 <Link href="/zi-wbk" className="text-lg font-bold">
                                 ZI-WBK
                                 </Link>
                             </AccordionItem>
 
-                            <AccordionItem value="item-7">
-                                <AccordionTrigger className="text-lg font-bold">Lainnya</AccordionTrigger>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link
-                                        href="/lainnya/faq"
-                                        className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
-                                    >
-                                        FAQ
-                                    </Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link
-                                        href="/lainnya/survei"
-                                        className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
-                                    >
-                                        Survei
-                                    </Link>
-                                </AccordionContent>
+                            <AccordionItem value="item-7" className="py-4">
+                                <Link href="/ssd" className="text-lg font-bold">
+                                SSD
+                                </Link>
                             </AccordionItem>
+
+                           
 
                         </Accordion>
                     </div>

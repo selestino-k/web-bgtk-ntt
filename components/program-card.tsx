@@ -61,7 +61,7 @@ export default function ProgramCardList() {
     }, [api]);
 
     return (
-        <div className="w-full max-w-7xl px-8">
+        <div className="w-full md:max-w-6xl lg:max-w-7xl max-w-xs px-8">
             <Carousel
                 plugins={Plugin.current}
                 className="w-full"
@@ -73,7 +73,7 @@ export default function ProgramCardList() {
             >
                 <CarouselContent className="-ml-4">
                     {features.map((feature, index) => (
-                        <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                        <CarouselItem key={index} className="pl-4 lg:w-full max-w-xs md:basis-1/2 xl:basis-1/4">
                             <div className="h-full flex items-center justify-center">
                                 <FeatureCard
                                     title={feature.title}
