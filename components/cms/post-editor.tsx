@@ -204,23 +204,19 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link href="/admin/posts">
-            <Button type="button" variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <h2 className="text-2xl/7 font-semibold sm:text-5xl sm:tracking-tight text-primary">
+          <h2 className="text-2xl font-bold font-montserrat sm:text-5xl sm:tracking-tight text-primary">
             {isEditMode ? 'Edit Berita' : 'Buat Berita Baru'}
           </h2>
         </div>
         <div className="space-x-2">
           <Link href="/admin/posts">
-            <Button type="button" variant="outline" disabled={isLoading}>
+            <Button type="button" variant="outline" className="font-montserrat" disabled={isLoading}>
               Batal
             </Button>
           </Link>
           <Button
             variant="outline"
+            className="font-montserrat"
             onClick={() => handleSave(false)}
             disabled={isLoading}
           >
@@ -229,6 +225,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
           </Button>
           <Button
             onClick={() => handleSave(true)}
+            className="font-montserrat"
             disabled={isLoading}
           >
             {isPublishing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

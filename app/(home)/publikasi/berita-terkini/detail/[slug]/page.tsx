@@ -422,7 +422,7 @@ export default async function BeritaTerkiniDetail({
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 md:p-8 p-1 md:flex w-full">
         <div className="text-left w-full md:w-3/4 md:pr-8">
-          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
+          <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
@@ -448,7 +448,7 @@ export default async function BeritaTerkiniDetail({
               </BreadcrumbList>
             </Breadcrumb>
           </Breadcrumb>
-          <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+          <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
             {post.title}
           </h2>
           <div className="mb-6 text-sm text-gray-500 md: flex space-x-4 space-y-2 md:space-y-0 flex-wrap">

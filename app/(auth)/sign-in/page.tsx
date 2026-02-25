@@ -34,7 +34,7 @@ export default async function SignInPage() {
                 />
             </div>
             <Suspense fallback={<AuthLoading />}>
-                <main className="relative z-10 w-full max-w-md mx-auto my-auto space-y-6 p-8 rounded-xl shadow-lg bg-white/90 dark:bg-gray-900/90">
+                <main className="font-montserrat relative z-10 w-full max-w-md mx-auto my-auto space-y-6 p-8 rounded-xl shadow-lg bg-white/90 dark:bg-gray-900/90">
                     <div className="space-y-2 text-center">
                         <div className="pb-6 flex items-center justify-center space-x-6">
                             <Link href="/">
@@ -47,10 +47,9 @@ export default async function SignInPage() {
                                 />
                             </Link>
                         </div>
-                        <h1 className="text-3xl font-geist font-bold text-primary mb-1">Selamat Datang</h1>
-                        <h2 className="text-md">Panel Admin CMS <br />BGTK Provinsi NTT</h2>
+                        <h1 className="text-3xl font-bold text-primary mb-1">Selamat Datang</h1>
+                        <h2 className="text-md font">Panel Admin CMS <br />BGTK Provinsi NTT</h2>
                     </div>
-
                     <LoginForm />
                 </main>
             </Suspense>

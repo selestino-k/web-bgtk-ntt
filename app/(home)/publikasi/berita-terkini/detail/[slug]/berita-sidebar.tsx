@@ -77,7 +77,7 @@ export default async function BeritaSidebar({ currentSlug }: { currentSlug: stri
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors mb-1">
+                  <h3 className="font-semibold font-montserrat text-sm line-clamp-2 group-hover:text-primary transition-colors mb-1">
                     {post.title}
                   </h3>
                   <p className="text-xs text-gray-500 flex items-center gap-1">

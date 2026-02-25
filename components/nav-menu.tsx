@@ -95,30 +95,9 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
-          <NavigationMenuTrigger className="text-sm text-primary bg-white-700/20 font-semibold">PPID</NavigationMenuTrigger>
-          <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                 <NavigationMenuLink asChild className="text-sm">
-                  <Link href="https://ppid.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">PPID Kemendikdasmen</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-sm">
-                  <Link href="/ppid/rencana-strategis" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Rencana Strategis</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-sm">
-                  <Link href="/ppid/laporan-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Laporan Kinerja</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-sm">
-                  <Link href="/ppid/perjanjian-kinerja" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Perjanjian Kinerja</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild className="text-sm">
-                  <Link href="/ppid/penghargaan" className="hover:text-primary font-medium hover:bg-gray-700/20 hover:font-semibold">Penghargaan</Link>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        <Button variant="ghost" className="p-0 m-0 hidden md:block mx-3">
+          <Link href="/ppid" className="text-sm text-primary font-montserrat font-semibold hover:text-primary/70 transition-colors">PPID</Link>
+        </Button>
         <NavigationMenuItem className="hidden md:block">
           <NavigationMenuTrigger className="text-sm text-primary bg-white-700/20 font-semibold">Aplikasi</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-xl/20 border border-primary-500 bg-white/80 ">

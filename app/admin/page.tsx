@@ -53,10 +53,10 @@ export default async function AdminPage() {
     }
 
     return (
-        <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="items-stretch w-full min-h-screen p-8 pb-20 font-montserrat">
             <main className="flex flex-col gap-3 w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+                    <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
                         Dashboard
                     </h2>
                     <Button variant="default" size="lg" asChild>

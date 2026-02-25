@@ -1,7 +1,7 @@
 import { columns } from "@/app/(home)/publikasi/dokumen/columns";
 import { DataTable } from "@/components/ui/data-table";
 import prisma from "@/lib/prisma";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,  } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
 export const metadata = {
@@ -35,33 +35,37 @@ export default async function PerjanjianKinerjaPage() {
             <main className="relative z-10 gap-20 p-8 flex w-full">
 
                 <div className="text-left w-full">
-                        <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
-                            <BreadcrumbList className="flex flex-wrap gap-2">
-                              <BreadcrumbItem>
+                    <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
+                        <BreadcrumbList className="flex flex-wrap gap-2">
+                            <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
-                                  <Link href="/" className="hover:underline">
-                                    Beranda
-                                  </Link>
+                                    <Link href="/" className="hover:underline">
+                                        Beranda
+                                    </Link>
                                 </BreadcrumbLink>
-                              </BreadcrumbItem>
-                              <BreadcrumbSeparator/>
-                              <BreadcrumbItem>
-                                    SAKIP
-                              </BreadcrumbItem>
-                              <BreadcrumbSeparator/>
-                              <BreadcrumbItem>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbLink asChild>
+                                    <Link href="/ppid" className="hover:underline">
+                                        PPID
+                                    </Link>
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
                                 <BreadcrumbPage>
                                     Perjanjian Kinerja
                                 </BreadcrumbPage>
-                              </BreadcrumbItem>
-                            </BreadcrumbList>
-                          </Breadcrumb>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
 
 
 
 
 
-                    <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+                    <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Perjanjian Kinerja
                     </h2>
                     <div className="mb-10 text-md md:text-lg">

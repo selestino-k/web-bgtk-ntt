@@ -243,7 +243,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
     }
   }
   return (
-    <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="items-stretch w-full min-h-screen p-8 pb-20">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
@@ -252,8 +252,8 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Edit Foto</h1>
-            <p className="text-muted-foreground">Perbarui informasi foto untuk slideshow</p>
+            <h1 className="text-3xl font-montserrat font-bold tracking-tight">Edit Foto</h1>
+            <p className="text-muted-foreground font-montserrat">Perbarui informasi foto untuk slideshow</p>
           </div>
         </div>
 
@@ -406,7 +406,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                 <Button
                   type="submit"
                   disabled={isSubmitting || isValidating || (!formData.imageFile && !formData.imageUrl && !externalUrl) || (useExternalUrl && imageError)}
-                  className="min-w-[150px]"
+                  className="min-w-[150px] font-montserrat"
                 >
                   {isSubmitting ? (
                     <>
@@ -423,6 +423,7 @@ export default function EditPhotoPage({ params }: EditPhotoPageProps) {
                 <Button
                   type="button"
                   variant="outline"
+                  className="font-montserrat"
                   onClick={() => router.push("/admin/carousel")}
                   disabled={isSubmitting}
                 >

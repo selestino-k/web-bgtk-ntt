@@ -190,7 +190,7 @@ export default async function Home() {
         <div id="program" className="xl:mt-5 mt-10 flex relative max-w-7xl items-center min-h-dvh">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center mb-8">
-              <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
+              <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold font-montserrat sm:tracking-tight font-montserrat text-primary">
                 Program Prioritas
               </h2>
             </div>
@@ -204,7 +204,7 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="flex" >
               <div className="w-3/4 pr-6">
-                <h2 className="text-5xl font-semibold sm:tracking-tight mt-2 font-geist text-primary mb-5">
+                <h2 className="text-5xl font-semibold font-montserrat sm:tracking-tight mt-2 font-montserrat text-primary mb-5">
                   <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
                     Berita Terkini
                   </Link>
@@ -223,7 +223,7 @@ export default async function Home() {
         <div id="berita-mobile" className="xl:hidden sm:md:lg:flex items-center relative mb-10 max-w-xs sm:md:max-w-xl lg:max-w-3xl">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center">
             <div className="text-center">
-              <h2 className="text-3xl font-semibold sm:tracking-tight mt-2 font-geist text-primary">
+              <h2 className="text-3xl font-semibold sm:tracking-tight mt-2 font-montserrat text-primary">
                 <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
                   Berita Terkini
                 </Link>
@@ -241,7 +241,7 @@ export default async function Home() {
         <div id="documents" className="flex relative mb-10 items-center overflow-x-scroll xl:overflow-x-hidden xl:w-full max-w-2xl xl:max-w-7xl">
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
-              <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-geist text-primary">
+              <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-montserrat text-primary">
                 Dokumen
               </h2>
             </div>

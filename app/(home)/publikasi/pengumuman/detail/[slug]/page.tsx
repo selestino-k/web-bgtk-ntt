@@ -440,7 +440,7 @@ export default async function PengumumanDetail({
     <div id="pengumuman-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
         <div className="text-left w-full">
-          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
+          <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
             <BreadcrumbList className="flex flex-wrap gap-2">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
@@ -470,7 +470,7 @@ export default async function PengumumanDetail({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+          <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
             {post.title}
           </h2>
           <div className="mb-4 text-sm text-gray-500 flex space-x-4">
