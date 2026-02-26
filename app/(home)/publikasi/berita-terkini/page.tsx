@@ -122,7 +122,7 @@ async function getTotalPosts(tagId?: number) {
     return await prisma.post.count({ where });
 }
 
-
+export const dynamic = 'force-dynamic';
 
 export default async function BeritaTerkini({
     searchParams,
