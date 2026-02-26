@@ -13,39 +13,40 @@ import {
 } from "@/components/ui/carousel";
 
 export const features = [
-	{
-		title: "Program Pembelajaran Mendalam (PM)",
-		link: "/program/ppm",
-		imageUrl: "/logo/pm.png"
-	},
-	{
-		title: "Koding dan Kecerdasan Artifisial (KKA)",
-		link: "/program/kka",
-		imageUrl: "/logo/kka.png"
-	},
-	{
-		title: "Program Pendidikan Profesi Guru (PPG)",
-		link: "/program/ppg",
-		imageUrl: "/logo/ppg.png"
+    {
+        title: "Program Pembelajaran Mendalam (PM)",
+        link: "/program/ppm",
+        imageUrl: "/logo/pm.png"
+    },
+    {
+        title: "Koding dan Kecerdasan Artifisial (KKA)",
+        link: "/program/kka",
+        imageUrl: "/logo/kka.png"
+    },
+    {
+        title: "Program Pendidikan Profesi Guru (PPG)",
+        link: "/program/ppg",
+        imageUrl: "/logo/ppg.png"
 
-	},
-	{
-		title: "Program Pengembangan Keprofesian Guru (PKG) - Bahasa Inggris",
-		link: "/program/pkb",
-		imageUrl: "/logo/pkg-bi.png"
-	},
+    },
+    {
+        title: "Program Pengembangan Keprofesian Guru (PKG) - Bahasa Inggris",
+        link: "/program/pkb",
+        imageUrl: "/logo/pkg-bi.png"
+    },
 
-	{
-		title: "Program Pengembangan Keprofesian Guru (PKG) - Bimbingan Konseling",
-		link: "/program/pkm",
-		imageUrl: "/logo/pkg-bk.png"
-	},
-	{
-		title: "Program Bakal Calon Kepala Sekolah (BCKS)",
-		link: "/program/bcks",
-		imageUrl: "/logo/bcks.png"
-	},
+    {
+        title: "Program Pengembangan Keprofesian Guru (PKG) - Bimbingan Konseling",
+        link: "/program/pkm",
+        imageUrl: "/logo/pkg-bk.png"
+    },
+    {
+        title: "Program Bakal Calon Kepala Sekolah (BCKS)",
+        link: "/program/bcks",
+        imageUrl: "/logo/bcks.png"
+    },
 ];
+
 export default function ProgramCardList() {
 	 const Plugin = React.useRef([
         Autoplay({ delay: 3000, stopOnInteraction: true }),

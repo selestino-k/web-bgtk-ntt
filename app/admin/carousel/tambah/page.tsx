@@ -49,9 +49,6 @@ export default function AddCarouselPhotoPage() {
     }))
   }
 
-  
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
