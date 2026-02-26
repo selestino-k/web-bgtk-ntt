@@ -7,7 +7,6 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Avatar } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -36,7 +35,6 @@ export function SidebarUser({
 }) {
   const { isMobile } = useSidebar()
   const [open, setOpen] = useState(false)
-  const router = useRouter()
 
   return (
     <SidebarMenu className="font-montserrat">
