@@ -7,26 +7,26 @@ import { revalidatePath } from "next/cache";
 
 // Validation schemas
 const createUserSchema = z.object({
-  email: z.string().email("Alamat email tidak valid"),
+  email: z.email("Alamat email tidak valid"),
   password: z.string().min(8, "Password harus terdiri dari minimal 8 karakter"),
   name: z.string().min(1, "Nama diperlukan"),
   role: z.enum(["Admin", "Operator"]),
 });
 
 const updateUserSchema = z.object({
-  id: z.string().uuid("User ID tidak valid"),
+  id: z.uuid("User ID tidak valid"),
   name: z.string().min(1, "Nama diperlukan").optional(),
-  email: z.string().email("Alamat email tidak valid").optional(),
+  email: z.email("Alamat email tidak valid").optional(),
   password: z.string().min(8, "Password harus terdiri dari minimal 8 karakter").optional(),
   role: z.enum(["Admin", "Operator"]).optional(),
 });
 
 const deleteUserSchema = z.object({
-  userId: z.string().uuid("User ID tidak valid"),
+  userId: z.uuid("User ID tidak valid"),
 });
 
 const getUserByIdSchema = z.object({
-  id: z.string().uuid("User ID tidak valid"),
+  id: z.uuid("User ID tidak valid"),
 });
 
 type CreateUserInput = z.infer<typeof createUserSchema>;

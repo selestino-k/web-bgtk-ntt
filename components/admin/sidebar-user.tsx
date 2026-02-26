@@ -7,7 +7,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import {Avatar} from "@/components/ui/avatar"
+import { useRouter } from "next/navigation"
+import { Avatar } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,15 +36,10 @@ export function SidebarUser({
 }) {
   const { isMobile } = useSidebar()
   const [open, setOpen] = useState(false)
- 
-   // Prevent closing when clicking inside items by stopping event propagation
-   const handleItemClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // Don't call setOpen(false) here to keep the dropdown open
-  }
+  const router = useRouter()
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="font-montserrat">
       <SidebarMenuItem>
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
@@ -52,7 +48,7 @@ export function SidebarUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <User/>
+                <User />
               </Avatar>
               <div className="grid my-3 flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
@@ -63,30 +59,27 @@ export function SidebarUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] font-montserrat font-medium w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
             onCloseAutoFocus={(e) => e.preventDefault()}
-          >            
-            <DropdownMenuSeparator />
+          >
             <DropdownMenuGroup>
-          <Link href="/admin/pengaturan-akun" passHref>
-            <div onClick={handleItemClick} className="w-full">
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <Settings/>Pengaturan Akun
+              <DropdownMenuItem asChild>
+                <Link href="/admin/pengaturan-akun" className="flex items-center cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Pengaturan Akun
+                </Link>
               </DropdownMenuItem>
-            </div>
-          </Link>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <div onClick={handleItemClick} className="w-full">
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            <SignOut />
-          </DropdownMenuItem>
-        </div>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <SignOut />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        
       </SidebarMenuItem>
     </SidebarMenu>
   )
