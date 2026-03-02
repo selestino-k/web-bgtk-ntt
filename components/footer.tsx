@@ -109,7 +109,7 @@ export default function Footer({ tags, tagId }: FooterProps) {
                     </div>
 
                 </div>
-                <div className="lg:hidden mt-8 pt-8  justify-items-center text-sm text-white grid grid-cols-2 gap-4 md:flex md:items-center md:justify-between">
+                <div className="lg:hidden mt-8 pt-8 justify-items-center text-sm text-white grid grid-cols-2 gap-4 md:flex md:items-center md:justify-between">
                     <Image
                         src="/logo/ramah-ori-bordered.png"
                         alt="Kemendikdasmen Ramah"
@@ -118,7 +118,7 @@ export default function Footer({ tags, tagId }: FooterProps) {
                     />
                     <Image
                         src="/logo/pendidikan-ori-bordered.png"
-                        alt="Pendidikan Bermutu"
+                        alt="Pendidikan Bermutu Untuk Semua"
                         width={120}
                         height={40}
                     />

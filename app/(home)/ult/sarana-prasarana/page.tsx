@@ -51,7 +51,7 @@ export default function SaranaPrasaranaPage() {
         <PrescenceMotion>
             <div id="faq" className="mt-20 w-full max-w-7xl place-items-start px-10">
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
-                    <Breadcrumb>
+                    <Breadcrumb className="font-montserrat text-sm text-gray-500">
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
@@ -69,12 +69,12 @@ export default function SaranaPrasaranaPage() {
                         </BreadcrumbList>
                     </Breadcrumb>
                     <div className="text-left mb-8">
-                        <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+                        <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                             Sarana dan Prasarana
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
                         {saranaData.map((item, index) => (
                             <SaranaCard
                                 key={index}

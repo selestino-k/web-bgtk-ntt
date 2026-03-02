@@ -67,21 +67,21 @@ export function DeleteDocumentDialog({ id, title }: DeleteDocumentDialogProps) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Dokumen?</AlertDialogTitle>
+          <AlertDialogTitle className="font-montserrat font-bold">Hapus Dokumen?</AlertDialogTitle>
           <AlertDialogDescription>
             Apakah Anda yakin ingin menghapus dokumen <strong>&quot;{title}&quot;</strong>?
             Tindakan ini tidak dapat dibatalkan.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Kembali</AlertDialogCancel>
+          <AlertDialogCancel className="font-montserrat" disabled={isDeleting}>Kembali</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault()
               handleDelete()
             }}
             disabled={isDeleting}
-            className="bg-destructive hover:bg-destructive/90"
+            className="bg-destructive hover:bg-destructive/90 font-montserrat"
           >
             {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Hapus

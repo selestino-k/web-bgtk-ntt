@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircleIcon } from "lucide-react";
+import { HoverMotion } from "@/components/motion/hover-motion";
 
 interface SaranaCardProps {
     title: string;
@@ -21,7 +22,8 @@ export function SaranaCard({
     estimasiSasaran 
 }: SaranaCardProps) {
     return (
-        <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <HoverMotion>
+        <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 font-montserrat borer border-primary/30 dark:border-gray-700">
             <div className="relative h-64 w-full bg-gray-100">
                 <Image
                     src={image}
@@ -40,15 +42,15 @@ export function SaranaCard({
 
                 <div className="space-y-3">
                     <div>
-                        <p className="text-sm text-gray-600 mb-1">Estimasi Biaya Program:</p>
+                        <p className="text-sm text-gray-600 mb-1 dark:text-gray-400">Estimasi Biaya Program:</p>
                         <p className="text-lg font-semibold text-blue-600">
                             {estimasiBiaya}
                         </p>
                     </div>
 
                     <div>
-                        <p className="text-sm text-gray-600 mb-2">Estimasi Sasaran:</p>
-                        <ul className="space-y-1 text-sm text-gray-700">
+                        <p className="text-sm text-gray-600 mb-2 dark:text-gray-400">Estimasi Sasaran:</p>
+                        <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-400">
                             {estimasiSasaran.sd && (
                                 <li>• {estimasiSasaran.sd}</li>
                             )}
@@ -70,5 +72,6 @@ export function SaranaCard({
                 </Button>
             </CardFooter>
         </Card>
+        </HoverMotion>
     );
 }

@@ -15,8 +15,7 @@ async function getCarouselPhotoData() {
 
     return await prisma.carouselPhoto.findMany({
         orderBy: { order : 'asc' },
-        
-    },
+        },
     );
 
 }
@@ -30,15 +29,15 @@ export default async function DaftarFotoPage() {
     }
 
     return (
-        <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="items-stretch w-full min-h-screen p-8 pb-20">
             <main className="flex flex-col gap-3 w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+                    <h2 className="text-2xl font-bold font-montserrat sm:truncate sm:text-5xl sm:tracking-tight text-primary">
                         Daftar Carousel Foto
                     </h2>
                 </div>
                 <div className="mt-10 flex">
-                    <Button variant="default" size="lg" asChild>
+                    <Button variant="default" size="lg" className="font-montserrat" asChild>
                         <Link href="/admin/carousel/tambah">
                             <Plus className="mr-2 h-8 w-8" />
                             Tambah Foto Carousel Baru

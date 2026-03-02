@@ -14,7 +14,7 @@ export default function Sejarah() {
 
             <div id="sambutan" className="mt-20 w-full max-w-7xl place-items-start px-10">
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
-                    <Breadcrumb>
+                    <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
@@ -32,10 +32,10 @@ export default function Sejarah() {
                         </BreadcrumbList>
                     </Breadcrumb>
                     <div className="text-left">
-                        <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+                        <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                             Sejarah
                         </h2>
-                        <h3 className="text-md md:text-xl sm:tracking-tight mb-5 md:mb-10 font-geist">
+                        <h3 className="text-md md:text-xl sm:tracking-tight mb-5 md:mb-10 font-montserrat">
                             Sejarah Berdirinya Balai Guru dan Tenaga Kependidikan (BGTK) NTT
                         </h3>
                         <p className="mt-3 text-sm md:text-base font-medium font-inter text-wrap text-justify">

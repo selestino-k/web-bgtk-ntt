@@ -357,7 +357,6 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
 
     return fullText || "No content"
   } catch (error) {
-    console.error('Error extracting text:', error)
     return "Error reading content"
   }
 }
@@ -438,16 +437,16 @@ export const columns: ColumnDef<Post>[] = [
           <DialogTrigger asChild>
             <Button variant="ghost" className="h-auto p-2 justify-start">
               <div className="max-w-[300px] text-left">
-                <p className="font-medium font-geist truncate">{truncatedTitle}</p>
+                <p className="font-bold font-montserrat truncate">{truncatedTitle}</p>
               </div>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-geist font-bold mb-4">Judul Lengkap</DialogTitle>
+              <DialogTitle className="text-2xl font-montserrat font-bold mb-4">Judul Lengkap</DialogTitle>
             </DialogHeader>
             <div className="p-4">
-              <p className="text-lg font-medium font-geist leading-relaxed">{title}</p>
+              <p className="text-lg font-medium font-montserrat leading-relaxed">{title}</p>
             </div>
           </DialogContent>
         </Dialog>
@@ -469,13 +468,13 @@ export const columns: ColumnDef<Post>[] = [
           <DialogTrigger asChild>
             <Button variant="ghost" className="h-auto p-2 justify-start">
               <div className="max-w-[250px] text-left">
-                <p className="text-sm truncate">{truncatedPreview}</p>
+                <p className="text-sm font-normal truncate">{truncatedPreview}</p>
               </div>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold font-geist mb-4">Pratinjau Konten</DialogTitle>
+              <DialogTitle className="text-2xl font-bold font-montserrat mb-4">Pratinjau Konten</DialogTitle>
             </DialogHeader>
             <div className="p-4">
               {renderTipTapContent(content)}
@@ -515,7 +514,7 @@ export const columns: ColumnDef<Post>[] = [
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold mb-4 font-geist">Semua Kategori</DialogTitle>
+              <DialogTitle className="text-2xl font-bold mb-4 font-montserrat">Semua Kategori</DialogTitle>
             </DialogHeader>
             <div className="flex flex-wrap gap-2 p-4">
               {tags.map((tagRelation, index) => (

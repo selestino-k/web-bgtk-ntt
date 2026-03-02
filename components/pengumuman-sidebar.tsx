@@ -40,7 +40,7 @@ export default async function PengumumanSidebar() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold font-geist text-primary">
+        <CardTitle className="text-2xl font-semibold font-montserrat text-primary">
           <Link href="/publikasi/pengumuman" className="hover:text-primary/70 transition-colors">
           Pengumuman Terbaru
           </Link>
@@ -76,7 +76,7 @@ export default async function PengumumanSidebar() {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors mb-1">
+                  <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors mb-1 font-montserrat">
                     {post.title}
                   </h3>
                   <p className="text-xs text-gray-500 flex items-center gap-1">

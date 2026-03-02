@@ -77,8 +77,8 @@ export function EditDocumentDialog({ id, title, description, category }: EditDoc
       <DialogContent className="sm:max-w-[525px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Dokumen</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="font-bold font-montserrat">Edit Dokumen</DialogTitle>
+            <DialogDescription className="font-montserrat">
               Perbarui judul, deskripsi, dan kategori dokumen. Klik simpan untuk menyimpan perubahan.
             </DialogDescription>
           </DialogHeader>
@@ -128,12 +128,13 @@ export function EditDocumentDialog({ id, title, description, category }: EditDoc
             <Button
               type="button"
               variant="outline"
+              className="font-montserrat"
               onClick={() => setOpen(false)}
               disabled={isLoading}
             >
               Batal
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" className="font-montserrat" disabled={isLoading}>
               {isLoading ? "Menyimpan..." : "Simpan Perubahan"}
             </Button>
           </DialogFooter>

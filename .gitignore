@@ -17,8 +17,6 @@
 /.next/
 /out/
 
-/public/assets
-
 # production
 /build
 

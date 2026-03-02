@@ -39,12 +39,12 @@ export function SignOut() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Apakah anda yakin untuk Log Out?</AlertDialogTitle>
+          <AlertDialogTitle className="font-montserrat">Apakah anda yakin untuk Log Out?</AlertDialogTitle>
           <AlertDialogDescription>
             Anda perlu Log In lagi nanti untuk mengakses sistem.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="font-montserrat">
           <AlertDialogCancel disabled={isLoggingOut}>Batal</AlertDialogCancel>
           <Button 
             variant="destructive" 
