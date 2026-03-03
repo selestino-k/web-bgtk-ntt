@@ -18,7 +18,6 @@ export default function OGImage() {
                     alignItems: "center",
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "#ffffff",
                 }}
             >
                 <img 
