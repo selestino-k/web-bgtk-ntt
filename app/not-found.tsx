@@ -15,7 +15,7 @@ const NotFound = () => {
             <div className="flex items-center justify-center h-screen w-full relative">
                 <div className="absolute inset-0 z-0">
                     <Image 
-                        src="/images/intro-web.png"
+                        src="/images/bgtk-background.png"
                         alt="Background"
                         fill
                         className="object-cover opacity-95 grayscale"

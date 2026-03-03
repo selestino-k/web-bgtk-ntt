@@ -26,7 +26,7 @@ export default async function SignInPage() {
         <div className="relative grid w-full min-h-screen">
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/intro-web.png"
+                    src="/images/bgtk-background.png"
                     alt="Background"
                     fill
                     className="object-cover opacity-85 dark:opacity-40"
