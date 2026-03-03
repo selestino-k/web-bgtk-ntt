@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: [
     "http://localhost:3000",
     "https://web-bgtk-ntt.vercel.app",
-    "bgtkntt.kemendikdasmen.go.id",
+    "https://bgtkntt.kemendikdasmen.go.id",
   ],
 };
 

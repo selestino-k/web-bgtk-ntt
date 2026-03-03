@@ -575,7 +575,8 @@ export async function generateMetadata({
     const plainText = text.replace(/<[^>]*>/g, '');
     return plainText.length > 100 ? plainText.slice(0, 100) + "..." : plainText;
   }
-
+  const metadescription = post ? postDescriptionTruncated(post.content) : "Berita terkini dari BGTK Provinsi NTT. Dapatkan informasi terbaru seputar kegiatan, program, dan inisiatif kami untuk meningkatkan kualitas pendidikan di NTT."  
+  
   if (!post) {
     return {
       title: "Post Not Found",
@@ -584,8 +585,10 @@ export async function generateMetadata({
   }
 
   return {
+    
+
     title: post.title + " | Berita Terkini | BGTK Provinsi NTT",
-    description: postDescriptionTruncated(post.content),
+    description: renderTipTapContent(metadescription),
     openGraph: {
       title: post.title,
       images: post.thumbnail ? [post.thumbnail] : [],
