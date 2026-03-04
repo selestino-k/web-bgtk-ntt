@@ -54,6 +54,11 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
         return new Response("Postingan tidak ditemukan", { status: 404 });
     }
 
+    // If post has thumbnail, redirect to it instead of generating image
+    if (post.thumbnail) {
+        return Response.redirect(post.thumbnail, 302);
+    }
+
     const postTitleTruncated = post.title.length > 100 ? post.title.slice(0, 97) + "..." : post.title;
 
     // Read the background image from public folder

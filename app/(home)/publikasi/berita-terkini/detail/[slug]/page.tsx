@@ -570,7 +570,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  const postDescriptionTruncated = (content: Prisma.JsonValue) => {
+  const postDescriptionTruncated = (content: Prisma.JsonValue): string => {
     const text = typeof content === 'string' ? content : JSON.stringify(content);
     const plainText = text.replace(/<[^>]*>/g, '');
     return plainText.length > 100 ? plainText.slice(0, 100) + "..." : plainText;
@@ -579,20 +579,39 @@ export async function generateMetadata({
   
   if (!post) {
     return {
-      title: "Post Not Found",
-      description: "The requested post does not exist.",
+      title: "Postingan Tidak Ditemukan | BGTK Provinsi NTT",
+      description: "Postingan yang diminta tidak ditemukan.",
     };
   }
 
-  return {
-    
+  // Use thumbnail if available, otherwise use the generated opengraph-image
+  const ogImage = post.thumbnail 
+    ? post.thumbnail 
+    : `/publikasi/berita-terkini/detail/${slug}/opengraph-image`;
 
+  return {
     title: post.title + " | Berita Terkini | BGTK Provinsi NTT",
-    description: renderTipTapContent(metadescription),
+    description: metadescription,
     openGraph: {
       title: post.title,
-      images: post.thumbnail ? [post.thumbnail] : [],
+      description: metadescription,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ],
+      type: 'article',
+      publishedTime: post.createdAt.toISOString(),
+      authors: [post.author?.name || 'Admin'],
     },
-
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: metadescription,
+      images: [ogImage],
+    },
   };
 }

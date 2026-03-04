@@ -157,7 +157,7 @@ export default async function Home() {
                     alt="Kepala BGTK NTT"
                     width={400}
                     height={400}
-                    className="rounded-lg md:float-start lg:float-start mr-4 mb-1 md:lg:mb-4 md:w-[20vw] xs:sm:w-[80vw] h-auto sm:items-center object-cover"
+                    className="rounded-lg md:float-start w-[50vw] lg:float-start mr-4 mb-1 md:lg:mb-4 md:w-[20vw] h-auto sm:items-center object-cover"
                   />
                   <KataSambutan />
                 </div>

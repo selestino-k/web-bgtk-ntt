@@ -23,16 +23,16 @@ export default function PPIDPage() {
 
                         <div className="w-full grid lg:flex mt-10 items-center gap-10">
 
-                            <div className="w-1/2 flex justify-center">
+                            <div className="w-full md:w-1/2 flex justify-center">
                                 <Image
                                     src="/images/maklumat-pelayanan-bbgtk-jateng1759111258.jpg"
                                     alt="Maklumat Pelayanan PPID BGTK NTT"
                                     width={300}
                                     height={200}
-                                    className="w-full h-auto rounded-lg shadow-md mt-10"
+                                    className="w-[80vw] md:w-full h-auto rounded-lg shadow-md mt-10"
                                 />
                             </div>
-                            <div className="w-1/2 pr-4 grid">
+                            <div className="w-full md:w-1/2 pr-4 grid">
                                 <h2 className="text-2xl lg:text-5xl font-bold font-montserrat sm:tracking-tight mb-1 text-primary">
                                     Maklumat Pelayanan
                                 </h2>
@@ -51,7 +51,7 @@ export default function PPIDPage() {
 
 
                     </div>
-                    <div id="ppid-item" className="xl:mt-15 mb-9 flex flex-col justify-center relative max-w-7xl items-center">
+                    <div id="ppid-item" className="xl:mt-15 mt-8 sm:mt-10 mb-9 flex flex-col justify-center relative max-w-7xl items-center">
                         <div className="text-center">
                             <h2 className="md:text-3xl lg:text-5xl text-3xl font-bold font-montserrat sm:tracking-tight font-montserrat text-primary">
                                 Informasi

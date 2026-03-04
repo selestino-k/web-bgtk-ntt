@@ -212,11 +212,11 @@ export default async function BeritaTerkini({
                         </div>
                     )}
                 </div>
-                <div className="mb-5 md:w-1/6">
+                <div className="mb-5 md:w-1/6 mt-10 md:mt-0">
                     <h2 className="text-md md:text-xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Tag Berita
                     </h2>
-                    <div className="flex w-full flex-wrap gap-2 px-3 font-montserrat">
+                    <div className="flex w-full mt-5 md:mt-0 flex-wrap gap-2 px-3 font-montserrat">
                         <Badge
                             variant={!tagId ? "default" : "secondary"}
                             asChild 
