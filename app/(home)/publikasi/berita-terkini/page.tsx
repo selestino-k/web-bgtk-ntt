@@ -155,8 +155,8 @@ export default async function BeritaTerkini({
     return (
         <div id="berita-terkini" className="mt-20 flex place-items-start w-full px-10">
             <main className="relative z-10 gap-20 p-8 md:flex w-full block">
-                <div className="text-left md:w-5/6 pl-5">
-                    <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
+                <div className="text-left md:w-5/6 md:pl-5">
+                    <h2 className="text-3xl md:text-5xl font-bold sm:tracking-tight mb-10 md:mb-5 font-montserrat text-primary">
                         Berita Terkini
                     </h2>
                     

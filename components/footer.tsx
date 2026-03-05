@@ -126,7 +126,7 @@ export default function Footer({ tags, tagId }: FooterProps) {
 
                 <div className="mt-8 pt-8  text-start text-sm text-white flex items-end justify-between space-between">
                     <div>
-                        <p>© {new Date().getFullYear()} BGTK NTT</p>
+                        <p>© {new Date().getFullYear()} BGTK Provinsi NTT</p>
                     </div>
                     <div className="ml-4 justify-center items-center flex gap-4">
                         <Link href="https://www.facebook.com/balaigurupenggerakntt/" target="_blank" rel="noopener noreferrer">

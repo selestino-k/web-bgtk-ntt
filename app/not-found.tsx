@@ -18,7 +18,7 @@ const NotFound = () => {
                         src="/images/bgtk-background.png"
                         alt="Background"
                         fill
-                        className="object-cover opacity-95 grayscale"
+                        className="object-cover opacity-95 grayscale dark:brightness-30"
                         priority
                     />
                 </div>
@@ -28,6 +28,14 @@ const NotFound = () => {
                         alt="Logo BGTK"
                         width={500}
                         height={100}
+                        className="dark:hidden"
+                    />
+                    <Image
+                        src="/logo/logo-web-bgtk-ntt-dark.svg"
+                        alt="Logo BGTK"
+                        width={500}
+                        height={100}
+                        className="hidden dark:block"
                     />
                     <div className="text-center w-full">
                         <h1 className="sm:text:2xl text-4xl  md:text-4xl lg:text-9xl font-bold font-montserrat sm:tracking-tight mt-2 text-primary">
@@ -36,7 +44,7 @@ const NotFound = () => {
                         <h3 className="text-2xl lg:text-4xl mt-2 text-primary font-bold font-montserrat">
                             Error
                         </h3>
-                        <h2 className="text-2xl mt-4 mb-6 font-semibold text-gray-700 font-montserrat">
+                        <h2 className="text-2xl mt-4 mb-6 font-semibold text-black dark:text-white font-montserrat">
                             Maaf, halaman yang Anda  cari tidak ditemukan.
                         </h2>
                     </div>

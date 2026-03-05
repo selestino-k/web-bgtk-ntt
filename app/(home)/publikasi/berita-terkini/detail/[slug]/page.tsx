@@ -570,13 +570,11 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  const postDescriptionTruncated = (content: Prisma.JsonValue): string => {
-    const text = typeof content === 'string' ? content : JSON.stringify(content);
-    const plainText = text.replace(/<[^>]*>/g, '');
-    return plainText.length > 100 ? plainText.slice(0, 100) + "..." : plainText;
-  }
-  const metadescription = post ? postDescriptionTruncated(post.content) : "Berita terkini dari BGTK Provinsi NTT. Dapatkan informasi terbaru seputar kegiatan, program, dan inisiatif kami untuk meningkatkan kualitas pendidikan di NTT."  
   
+  const metadescription = post && typeof post.content === 'string'
+    ? post.content.replace(/<[^>]*>/g, '').slice(0, 160)
+    : "Baca berita terkini dan informasi terbaru seputar pendidikan di NTT hanya di Website BGTK Provinsi NTT.";  
+    
   if (!post) {
     return {
       title: "Postingan Tidak Ditemukan | BGTK Provinsi NTT",

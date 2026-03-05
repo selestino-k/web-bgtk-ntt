@@ -22,7 +22,7 @@ type NewsPost = {
   id: string;
   title: string;
   slug: string;
-  content : Prisma.JsonValue;
+  content: Prisma.JsonValue;
   thumbnail: string | null;
   createdAt: Date;
   author?: {
@@ -42,36 +42,36 @@ interface NewsCarouselProps {
 
 function extractTextFromContent(content: Prisma.JsonValue): string {
   if (!content) return "Tidak ada konten"
-  
+
   try {
     let contentObj: any
-    
+
     if (typeof content === 'string') {
       contentObj = JSON.parse(content)
     } else {
       contentObj = content
     }
-    
+
     if (!contentObj.content || !Array.isArray(contentObj.content)) {
       return "Tidak ada konten"
     }
-    
+
     const extractText = (node: any): string => {
       if (node.type === 'text' && node.text) {
         return node.text
       }
-      
+
       if (node.content && Array.isArray(node.content)) {
         return node.content.map(extractText).join(' ')
       }
-      
+
       return ''
     }
-    
+
     const fullText = contentObj.content.map(extractText).join(' ').trim()
 
     return fullText || "Tidak ada konten"
-  } catch  {
+  } catch {
     return "Gagal memuat konten"
   }
 }
@@ -102,9 +102,10 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
 
   if (isLoading) {
     return (
-      <Carousel 
+      <Carousel
         opts={{
           align: "start",
+          loop: true,
         }}
         className="w-full"
       >
@@ -127,8 +128,8 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="relative bg-white/20 hover:bg-white/50 text-white border-white/50 left-0 translate-y-0" />
-        <CarouselNext className="relative bg-white/20 hover:bg-white/50 text-white border-white/50 right-0 bottom-0 translate-y-0" />
+        <CarouselPrevious className="-left-10" />
+        <CarouselNext className="-right-10" />
       </Carousel>
     );
   }
@@ -143,6 +144,9 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
 
   return (
     <Carousel
+      opts={{
+        align: "start"
+      }}
       className="max-w-7xl mx-auto"
     >
       <CarouselContent className="-ml-2 md:-ml-4">
@@ -164,28 +168,27 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                     >
                       <CardContent className="flex flex-col p-0 h-full max-w-4xl">
                         {post.thumbnail ? (
-                          <div className="relative max-w-sm h-52 overflow-hidden rounded-t-lg items-center justify-center mx-auto">
+                          <div className="relative max-w-sm h-52 overflow-hidden items-center justify-center mx-auto">
                             <Image
                               src={post.thumbnail}
                               alt={post.title}
                               width={800}
                               height={450}
-                              className="aspect-video object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-lg"
-                              
+                              className="aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>
                         ) : (
-                          <div className="relative max-w-sm h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                          <div className="relative max-w-sm h-41 bg-gray-200 flex items-center justify-center">
                             <Image
-                            src="/images/placeholder.svg"
-                            alt="No Image"
-                            fill
-                            className="object-cover rounded-t-lg"
+                              src="/images/placeholder.svg"
+                              alt="No Image"
+                              fill
+                              className="object-cover"
                             />
                             <span className="text-gray-400">No Image</span>
                           </div>
                         )}
-                        
+
                         <div className="flex flex-col flex-1 p-4">
                           <div className="flex flex-wrap gap-2 text-xs text-gray-500 mb-3">
                             <span className="flex items-center gap-1">
@@ -201,16 +204,15 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
                           <h3 className="text-base font-montserrat font-bold mb-1 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
                             {post.title}
                           </h3>
-                          <p className="text-sm text-gray-600 flex-1 font-inter mb-4 line-clamp-3">
+                          <p className="text-sm text-gray-600 flex-1 font-inter mb-4 line-clamp-3 dark:text-gray-400">
                             {extractTextFromContent(post.content)}...
                           </p>
-                          
+
                           <div className="flex flex-wrap gap-1 mt-auto">
                             {post.tags.slice(0, 3).map((tagRelation) => (
                               <Badge key={tagRelation.tag.id} variant="default" className="text-xs font-montserrat font-semibold">
                                 {tagRelation.tag.name}
                               </Badge>
-                              
                             ))
                             }
                             {post.tags.length - 2 > 0 && (
@@ -231,8 +233,8 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
         })}
       </CarouselContent>
 
-      <CarouselPrevious className="-left-10" />
-      <CarouselNext className="-right-10" />
+      <CarouselPrevious className="-left-10 md:hidden" />
+      <CarouselNext className="-right-10 md:hidden" />
     </Carousel>
   );
 }

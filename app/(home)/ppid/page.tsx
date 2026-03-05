@@ -23,20 +23,12 @@ export default function PPIDPage() {
 
                         <div className="w-full grid lg:flex mt-10 items-center gap-10">
 
-                            <div className="w-full md:w-1/2 flex justify-center">
-                                <Image
-                                    src="/images/maklumat-pelayanan-bbgtk-jateng1759111258.jpg"
-                                    alt="Maklumat Pelayanan PPID BGTK NTT"
-                                    width={300}
-                                    height={200}
-                                    className="w-[80vw] md:w-full h-auto rounded-lg shadow-md mt-10"
-                                />
-                            </div>
+                            
                             <div className="w-full md:w-1/2 pr-4 grid">
                                 <h2 className="text-2xl lg:text-5xl font-bold font-montserrat sm:tracking-tight mb-1 text-primary">
                                     Maklumat Pelayanan
                                 </h2>
-                                <h3 className="text-md lg:text-2xl font-semibold font-montserrat sm:tracking-tight mb-1 md:mb-5 pr-3  text-primary">
+                                <h3 className="text-md lg:text-2xl font-semibold font-montserrat sm:tracking-tight mb-3 md:mb-5 pr-3  text-primary">
                                     Balai Guru dan Tenaga Kependidikan (BGTK) Provinsi NTT
                                 </h3>
                                 <Button variant="default" className="w-max flex">
@@ -45,6 +37,15 @@ export default function PPIDPage() {
                                         Unduh Maklumat Pelayanan
                                     </Link>
                                 </Button>
+                            </div>
+                            <div className="w-full md:w-1/2 flex justify-center mt-5 md:mt-0 mb-5 md:mb-0">
+                                <Image
+                                    src="/images/maklumat-pelayanan-bbgtk-jateng1759111258.jpg"
+                                    alt="Maklumat Pelayanan PPID BGTK NTT"
+                                    width={300}
+                                    height={200}
+                                    className="w-[80vw] md:w-full h-auto rounded-lg shadow-md"
+                                />
                             </div>
                         </div>
 

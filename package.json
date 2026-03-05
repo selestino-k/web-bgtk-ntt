@@ -14,14 +14,18 @@
     "ajv": "^8.18.0",
     "hono": "^4.11.10",
     "@prisma/dev": {
-      "hono": "^4.11.10"
-    }
+      "hono": "^4.11.10",
+      "@hono/node-server": "^1.19.10"
+    },
+    "@hono/node-server": "^1.19.10"
+    
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
     "@aws-sdk/client-s3": "^3.1000.0",
     "@aws-sdk/s3-request-presigner": "^3.1000.0",
     "@floating-ui/react": "^0.27.16",
+    "@hono/node-server": "^1.19.10",
     "@hookform/resolvers": "^5.2.2",
     "@lexical/link": "^0.39.0",
     "@lexical/markdown": "^0.39.0",
