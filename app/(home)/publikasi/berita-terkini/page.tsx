@@ -155,8 +155,8 @@ export default async function BeritaTerkini({
     return (
         <div id="berita-terkini" className="mt-20 flex place-items-start w-full px-10">
             <main className="relative z-10 gap-20 p-8 md:flex w-full block">
-                <div className="text-left md:w-5/6 pl-5">
-                    <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
+                <div className="text-left md:w-5/6 md:pl-5">
+                    <h2 className="text-3xl md:text-5xl font-bold sm:tracking-tight mb-10 md:mb-5 font-montserrat text-primary">
                         Berita Terkini
                     </h2>
                     
@@ -212,11 +212,11 @@ export default async function BeritaTerkini({
                         </div>
                     )}
                 </div>
-                <div className="mb-5 md:w-1/6">
+                <div className="mb-5 md:w-1/6 mt-10 md:mt-0">
                     <h2 className="text-md md:text-xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Tag Berita
                     </h2>
-                    <div className="flex w-full flex-wrap gap-2 px-3 font-montserrat">
+                    <div className="flex w-full mt-5 md:mt-0 flex-wrap gap-2 px-3 font-montserrat">
                         <Badge
                             variant={!tagId ? "default" : "secondary"}
                             asChild 

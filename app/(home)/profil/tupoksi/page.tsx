@@ -37,13 +37,13 @@ export default function TuPoksi() {
                             <h3 className="text-md md:text-xl sm:tracking-tight mb-1 md:mb-3 font-montserrat">
                                 Tugas
                             </h3>
-                            <p className="mt-3 text-sm md:text-base font-medium font-inter text-wrap text-justify mb-3 md:mb-6 ">
+                            <p className="mt-3 text-sm md:text-base font-inter text-wrap text-justify mb-3 md:mb-6 ">
                                 Melaksanakan pengembangan dan pemberdayaan guru, pendidik lainnya, tenaga kependidikan, calon kepala sekolah, kepala sekolah, calon pengawas sekolah, dan pengawas sekolah.
                             </p>
                             <h3 className="text-md md:text-xl sm:tracking-tight mb-1 md:mb-3 font-montserrat">
                                 Fungsi
                             </h3>
-                            <ul className="list-disc ml-5 mt-3 text-sm md:text-base font-medium font-inter text-wrap text-justify">
+                            <ul className="list-disc ml-5 mt-3 text-sm md:text-base font-inter text-wrap text-justify">
                                 <li>
                                     Pelaksanaan pemetaan kompetensi guru, pendidik lainnya, tenaga kependidikan, calon kepala sekolah, kepala sekolah, calon pengawas sekolah, dan pengawas sekolah.
                                 </li>

@@ -64,7 +64,7 @@ export default async function RencanaStrategisPage() {
                     <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Rencana Strategis
                     </h2>
-                    <div className="mb-10 text-md md:text-lg">
+                    <div className="mb-10 text-md md:text-lg font-inter">
                         Halaman ini menyajikan dokumen perencanaan strategis yang menjadi panduan utama dalam menentukan arah, tujuan, dan prioritas kami dalam menjalankan program dan layanan. Rencana strategis ini disusun dengan cermat untuk memastikan bahwa setiap langkah yang kami ambil selaras dengan visi, misi, dan nilai-nilai yang kami pegang, serta responsif terhadap kebutuhan dan harapan masyarakat. Melalui dokumen ini, kami berkomitmen untuk meningkatkan kinerja, inovasi, dan akuntabilitas dalam setiap aspek pelayanan.
                     </div>
                     <div className="w-full flex-wrap">

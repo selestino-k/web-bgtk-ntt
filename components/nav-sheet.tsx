@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import {
     Sheet,
@@ -16,10 +18,17 @@ import {
 } from "@/components/ui/accordion"
 import Link from "next/link"
 import { AdminModeToggle } from "./admin/admin-dark-switch"
+import { useState } from "react"
 
 export function NavSheet() {
+    const [open, setOpen] = useState(false)
+
+    const handleLinkClick = () => {
+        setOpen(false)
+    }
+
     return (
-            <Sheet> 
+            <Sheet open={open} onOpenChange={setOpen}> 
                 <SheetTrigger asChild>
                     <Button variant="outline" size="lg"><Menu size="50" /></Button>
                 </SheetTrigger>
@@ -41,6 +50,7 @@ export function NavSheet() {
                                     <Link
                                         href="/profil/sambutan-kata"
                                         className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Sambutan Kata
                                     </Link>
@@ -49,6 +59,7 @@ export function NavSheet() {
                                     <Link
                                         href="/profil/sejarah"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Sejarah
                                     </Link>
@@ -57,6 +68,7 @@ export function NavSheet() {
                                     <Link
                                         href="/profil/struktur-organisasi"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Struktur Organisasi
                                     </Link>
@@ -65,6 +77,7 @@ export function NavSheet() {
                                     <Link
                                         href="/profil/tupoksi"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Tugas Pokok dan Fungsi
                                     </Link>
@@ -73,6 +86,7 @@ export function NavSheet() {
                                     <Link
                                         href="/profil/visi-misi"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Visi Misi
                                     </Link>
@@ -85,6 +99,7 @@ export function NavSheet() {
                                     <Link
                                         href="/publikasi/berita-terkini"
                                         className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Berita Terkini
                                     </Link>
@@ -93,6 +108,7 @@ export function NavSheet() {
                                     <Link
                                         href="/publikasi/pengumuman"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Pengumuman
                                     </Link>
@@ -101,6 +117,7 @@ export function NavSheet() {
                                     <Link
                                         href="/publikasi/dokumen"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Dokumen
                                     </Link>
@@ -109,6 +126,7 @@ export function NavSheet() {
                                     <Link
                                         href="/publikasi/sakip"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         SAKIP
                                     </Link>
@@ -117,6 +135,7 @@ export function NavSheet() {
                                     <Link
                                         href="https://kemendikdasmen.go.id/pencarian/siaran-pers" target="_blank" rel="noopener noreferrer"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Siaran Pers Kemendikdasmen
                                     </Link>
@@ -129,6 +148,7 @@ export function NavSheet() {
                                     <Link
                                         href="/ult/sarana-prasarana"
                                         className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Sarana dan Prasarana
                                     </Link>
@@ -137,6 +157,7 @@ export function NavSheet() {
                                     <Link
                                         href="https://s.id/ult-bgtkntt" target="_blank" rel="noopener noreferrer"
                                         className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Survei Kepuasan Masyarakat (SKM)
                                     </Link>
@@ -146,6 +167,7 @@ export function NavSheet() {
                                         href="https://prod.lapor.go.id"
                                         target="_blank"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         SP4N Lapor
                                     </Link>
@@ -153,6 +175,7 @@ export function NavSheet() {
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
                                     <Link
                                         href="https://wbs.kemendikdasmen.go.id" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         WBS Itjen
                                     </Link>
@@ -161,6 +184,7 @@ export function NavSheet() {
                                     <Link
                                         href="https://posko-pengaduan.itjen.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         Aduan Itjen
                                     </Link>
@@ -169,82 +193,69 @@ export function NavSheet() {
                                     <Link
                                         href="https://posko-pengaduan.itjen.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer"
                                         className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md"
+                                        onClick={handleLinkClick}
                                     >
                                         SIPPN
                                     </Link>
                                 </AccordionContent>
                             </AccordionItem>
 
-                            <AccordionItem value="item-4">
-                                <AccordionTrigger className="text-lg font-bold">PPID</AccordionTrigger>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://ppid.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary font-semibold text-md bg-secondary/10 p-2 rounded-md">PPID Kemendikdasmen</Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/ppid/rencana-strategis" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rencana Strategis</Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/ppid/laporan-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Laporan Kinerja</Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/ppid/perjanjian-kinerja" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Perjanjian Kinerja</Link>
-                                </AccordionContent>
-                                <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="/ppid/penghargaan" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Penghargaan</Link>
-                                </AccordionContent>
-                            </AccordionItem>
+                            <AccordionItem value="item-4" className="py-4">
+                                <Link href="/ppid" className="text-lg font-bold" onClick={handleLinkClick}>
+                                PPID
+                                </Link>
+                            </AccordionItem>   
+
 
                             <AccordionItem value="item-5">
                                 <AccordionTrigger className="text-lg font-bold">Aplikasi</AccordionTrigger>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Dapodik</Link>
+                                    <Link href="https://dapo.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>Dapodik</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">e-Mail Kemendikdasmen</Link>
+                                    <Link href="https://mail.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>e-Mail Kemendikdasmen</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Portal Data Kemendikdasmen</Link>
+                                    <Link href="https://data.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>Portal Data Kemendikdasmen</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rumah Pendidikan</Link>
+                                    <Link href="https://rumah.pendidikan.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>Rumah Pendidikan</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Info GTK</Link>
+                                    <Link href="https://info.gtk.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>Info GTK</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://raporpendidikan.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">Rapor Pendidikan</Link>
+                                    <Link href="https://raporpendidikan.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>Rapor Pendidikan</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://sinde.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SINDE</Link>
+                                    <Link href="https://sinde.kemendikdasmen.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>SINDE</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://skp.sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">e-SKP</Link>
+                                    <Link href="https://skp.sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>e-SKP</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SIPdasmen</Link>
+                                    <Link href="https://data-sdm.kemdikbud.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>SIPdasmen</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">SAKTI Kemenkeu</Link>
+                                    <Link href="https://sakti.kemenkeu.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>SAKTI Kemenkeu</Link>
                                 </AccordionContent>
                                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                                    <Link href="https://djponline.pajak.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md">DJP Online</Link>
+                                    <Link href="https://djponline.pajak.go.id/" target="_blank" rel="noopener noreferrer" className="hover:text-primary text-md font-semibold bg-secondary/10 p-2 rounded-md" onClick={handleLinkClick}>DJP Online</Link>
                                 </AccordionContent>
                             </AccordionItem>
 
                             <AccordionItem value="item-6" className="py-4">
-                                <Link href="/zi-wbk" className="text-lg font-bold">
+                                <Link href="/zi-wbk" className="text-lg font-bold" onClick={handleLinkClick}>
                                 ZI-WBK
                                 </Link>
-                            </AccordionItem>
+                            </AccordionItem>   
 
                             <AccordionItem value="item-7" className="py-4">
-                                <Link href="/ssd" className="text-lg font-bold">
+                                <Link href="/ssd" className="text-lg font-bold" onClick={handleLinkClick}>
                                 SSD
                                 </Link>
                             </AccordionItem>
-
-                           
-
+                            
                         </Accordion>
                     </div>
                 </SheetContent>

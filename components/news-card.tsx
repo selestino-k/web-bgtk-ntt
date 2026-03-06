@@ -90,12 +90,12 @@ function NewsCard({
             <div className="flex flex-col md:flex-row">
               {/* Image Section - Left */}
               {thumbnail ? (
-                <div className="relative w-full md:w-80 h-48 md:h-64 flex-shrink-0 ml-5">
+                <div className="relative w-full justify-content-center md:w-80 h-48 md:h-64 px-20 flex-shrink-0 md:ml-5">
                   <Image
                     src={thumbnail}
                     alt={title}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-md"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-sm"
                   />
                 </div>
               ) : (

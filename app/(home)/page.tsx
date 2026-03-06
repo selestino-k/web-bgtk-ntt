@@ -10,6 +10,7 @@ import Link from "next/link";
 import PengumumanSidebar from "@/components/pengumuman-sidebar";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "@/app/(home)/publikasi/dokumen/home-columns";
+import { ArrowRightIcon } from "lucide-react";
 
 async function getDocsData() {
   return await prisma.document.findMany({
@@ -151,16 +152,16 @@ export default async function Home() {
                 </div>
 
                 <div id="sambutan-text" className="lg:grid xl:flex mb-6 flex-1">
-                <div className="w-full xs:sm:grid md:lg:px-8 xs:sm:max-w-md lg:max-w-full justify-items-center items-center">
-                  <Image
-                    src="/images/foto-pak-kepala+textbox.png"
-                    alt="Kepala BGTK NTT"
-                    width={400}
-                    height={400}
-                    className="rounded-lg md:float-start lg:float-start mr-4 mb-1 md:lg:mb-4 md:w-[20vw] xs:sm:w-[80vw] h-auto sm:items-center object-cover"
-                  />
-                  <KataSambutan />
-                </div>
+                  <div className="w-full xs:sm:grid md:lg:px-8 xs:sm:max-w-md lg:max-w-full justify-items-center items-center">
+                    <Image
+                      src="/images/foto-pak-kepala+textbox.png"
+                      alt="Kepala BGTK NTT"
+                      width={400}
+                      height={400}
+                      className="rounded-lg md:float-start w-[50vw] lg:float-start mr-4 mb-1 md:lg:mb-4 md:w-[20vw] h-auto items-center object-cover"
+                    />
+                    <KataSambutan />
+                  </div>
                 </div>
 
                 <div id="sambutan-video-desktop" className="hidden xl:w-2/5 xl:ml-2 xl:flex justify-center items-start">
@@ -184,10 +185,8 @@ export default async function Home() {
         </div>
       </PrescenceMotion>
 
-
-
       <PrescenceMotion>
-        <div id="program" className="xl:mt-5 mt-10 flex relative max-w-7xl items-center min-h-dvh">
+        <div id="program" className="xl:mt-5 mt-10 mb-5 lg:mb-10 flex relative max-w-7xl items-center">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center mb-8">
               <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold font-montserrat sm:tracking-tight font-montserrat text-primary">
@@ -204,12 +203,19 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="flex" >
               <div className="w-3/4 pr-6">
-                <h2 className="text-5xl font-semibold font-montserrat sm:tracking-tight mt-2 font-montserrat text-primary mb-5">
-                  <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
-                    Berita Terkini
-                  </Link>
+                <h2 className="text-5xl font-semibold font-montserrat sm:tracking-tight mt-2 font-montserrat text-primary mb-3">
+                  Berita Terkini
                 </h2>
+                <h4 className="text-lg text-gray-500 mb-6 font-inter dark:text-gray-400">
+                  Dapatkan informasi terbaru seputar kegiatan, program, dan inovasi BGTK Provinsi NTT.
+                </h4>
                 <NewsCarousel initialPosts={latestPosts} />
+                <h4 className="text-md font-semibold font-montserrat text-primary hover:text-primary/70 transition-colors mb-6 items-center gap-2 mt-5 flex justify-center">
+                  <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors flex items-center gap-2">
+                    Lainnya
+                    <ArrowRightIcon className="h-5 w-5 text-primary hover:text-primary/70" />
+                  </Link>
+                </h4>
               </div>
               <div className="flex w-1/4 gap-6">
                 <PengumumanSidebar />
@@ -224,11 +230,15 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center">
             <div className="text-center">
               <h2 className="text-3xl font-semibold sm:tracking-tight mt-2 font-montserrat text-primary">
-                <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors">
-                  Berita Terkini
-                </Link>
+                Berita Terkini
               </h2>
               <MobileNewsCarousel initialPosts={latestPosts} />
+              <h4 className="text-md font-semibold font-montserrat text-primary mb-6 items-center gap-2 mt-5 md:hidden flex justify-center">
+                <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors flex items-center gap-2">
+                  Lainnya
+                  <ArrowRightIcon className="h-5 w-5 text-primary hover:text-primary/70" />
+                </Link>
+              </h4>
             </div>
             <div className="mt-6">
               <PengumumanSidebar />
@@ -242,7 +252,9 @@ export default async function Home() {
           <main className="relative z-10 flex flex-col gap-3 p-8 justify-center w-full">
             <div className="text-center">
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-montserrat text-primary">
+                <Link href="/publikasi/dokumen" className="hover:text-primary/70 transition-colors flex items-center gap-2 justify-center">
                 Dokumen
+                </Link>
               </h2>
             </div>
             <div className="md:max-w-full max-w-xs mx-auto overflow-x-scroll xl:overflow-x-hidden">

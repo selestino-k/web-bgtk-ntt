@@ -17,7 +17,7 @@ const inter = Inter({
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PROD_BASE_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PROD_APP_URL || "http://localhost:3000"),
   title: "Balai GTK Provinsi NTT",
   description: "Website Resmi Balai GTK Provinsi NTT",
 };

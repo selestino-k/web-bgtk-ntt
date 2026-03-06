@@ -9,7 +9,7 @@ export default function ZIWBKPage() {
         <PrescenceMotion>
             <div id="faq" className="mt-20 w-full max-w-7xl place-items-start px-10">
                 <main className="relative z-10 flex flex-col gap-3 p-8 w-full">
-                    <Breadcrumb>
+                    <Breadcrumb className="font-montserrat">
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
@@ -27,7 +27,7 @@ export default function ZIWBKPage() {
                         </BreadcrumbList>
                     </Breadcrumb>
                     <div className="text-left">
-                        <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+                        <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                             Area Perubahan ZI-WBK
                         </h2>
 

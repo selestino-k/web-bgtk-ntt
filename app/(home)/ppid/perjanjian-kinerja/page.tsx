@@ -61,14 +61,10 @@ export default async function PerjanjianKinerjaPage() {
                         </BreadcrumbList>
                     </Breadcrumb>
 
-
-
-
-
                     <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Perjanjian Kinerja
                     </h2>
-                    <div className="mb-10 text-md md:text-lg">
+                    <div className="mb-10 text-md md:text-lg font-inter">
                         Halaman ini menyediakan akses kepada dokumen-dokumen perjanjian kinerja yang menjadi landasan dalam menjalankan tugas dan tanggung jawab kami sebagai lembaga penggerak pendidikan di Nusa Tenggara Timur. Perjanjian kinerja ini disusun sebagai komitmen resmi untuk mencapai target dan indikator kinerja yang telah ditetapkan, sejalan dengan visi, misi, dan tujuan strategis kami. Dokumen ini juga mencerminkan upaya kami dalam meningkatkan akuntabilitas, transparansi, dan kualitas pelayanan kepada masyarakat
                     </div>
                     <div className="w-full flex-wrap">
