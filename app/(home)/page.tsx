@@ -2,7 +2,6 @@ import MobileNewsCarousel from "@/components/mobile-news-carousel";
 import { PrescenceMotion } from "@/components/motion/presence-motion";
 import NewsCarousel from "@/components/news-carousel";
 import ProgramCardList from "@/components/program-card";
-import prisma from "@/lib/prisma";
 import { HomeCarousel } from "@/components/home-carousel";
 import { KataSambutan } from "./profil/sambutan-kata/page";
 import Image from "next/image";
@@ -11,50 +10,56 @@ import PengumumanSidebar from "@/components/pengumuman-sidebar";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "@/app/(home)/publikasi/dokumen/home-columns";
 import { ArrowRightIcon } from "lucide-react";
+import { db } from "@/lib/db/db";
+import { document, postTag, tag, user, carouselPhoto } from "@/lib/db/schema";
+import { desc, asc, exists } from "drizzle-orm";
 
 async function getDocsData() {
-  return await prisma.document.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  return await db
+    .select()
+    .from(document)
+    .orderBy(desc(document.createdAt));
 }
 
 async function getLatestNews() {
   try {
-    const posts = await prisma.post.findMany({
-      where: {
-        published: true,
+    const posts = await db.query.post.findMany({
+      where: (post, { eq, and }) =>
+        and(
+          eq(post.published, true),
+          exists(
+            db
+              .select()
+              .from(postTag)
+              .innerJoin(tag, eq(postTag.tagId, tag.id))
+              .where(
+                and(
+                  eq(postTag.postId, post.id),
+                  eq(tag.type, "CATEGORY")
+                )
+              )
+          )
+        ),
+      orderBy: (post, { desc }) => [desc(post.createdAt)],
+      limit: 3,
+      with: {
         tags: {
-          some: {
-            tag: {
-              type: 'CATEGORY',
-            },
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 3,
-      include: {
-        tags: {
-          include: {
+          with: {
             tag: true,
           },
         },
         author: {
-          select: {
+          columns: {
             name: true,
           },
         },
       },
     });
 
-    return posts.map(post => ({
-      ...post,
-      id: post.id.toString(),
-      tags: post.tags.map(tagRelation => ({
+    return posts.map((p) => ({
+      ...p,
+      id: p.id.toString(),
+      tags: p.tags.map((tagRelation) => ({
         ...tagRelation,
         postId: tagRelation.postId.toString(),
         tag: tagRelation.tag,
@@ -66,17 +71,10 @@ async function getLatestNews() {
 }
 
 async function getCarouselPhotos() {
-  try {
-    const photos = await prisma.carouselPhoto.findMany({
-      orderBy: {
-        order: 'asc',
-      },
-    });
-
-    return photos;
-  } catch {
-    return [];
-  }
+  return await db
+    .select()
+    .from(carouselPhoto)
+    .orderBy(asc(carouselPhoto.order));
 }
 
 

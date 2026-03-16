@@ -39,9 +39,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "**",
-        pathname: "/**",
-        port: "",
       },
+      {
+        protocol: "http",
+        hostname: "**",
+        pathname: "/**",
+      }
     ],
   },
   compress:false,

@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/carousel"
 
 interface CarouselPhoto {
-    id: bigint
+    id: number
     caption: string | null
     imageUrl: string
-    createdAt: Date
+    createdAt: Date | null
 }
 
 interface HomeCarouselProps {
@@ -54,20 +54,27 @@ export function HomeCarousel({ photos }: HomeCarouselProps) {
             }}
         >
             <CarouselContent>
-                {photos.map((photo) => (
-                    <CarouselItem key={photo.id}>
-                        <div className="relative w-full lg:h-[60vh] h-[70vh] overflow-hidden flex items-center justify-center">
-                            <Image
-                                src={photo.imageUrl}
-                                alt={photo.caption || `Carousel image ${photo.id}`}
-                                fill
-                                className="absolute object-cover carousel-item-zoom opacity-80"
-                                priority={photo.id === photos[0]?.id}
-                            />
-
+                {photos.length === 0 ? (
+                    <CarouselItem>
+                        <div className="relative w-full lg:h-[60vh] h-[70vh] flex items-center justify-center bg-gray-200">
+                            <p className="text-gray-500">No photos available</p>
                         </div>
                     </CarouselItem>
-                ))}
+                ) : (
+                    photos.map((photo) => (
+                        <CarouselItem key={photo.id}>
+                            <div className="relative w-full lg:h-[60vh] h-[70vh] overflow-hidden flex items-center justify-center">
+                                <Image
+                                    src={photo.imageUrl}
+                                    alt={photo.caption || `Carousel image ${photo.id}`}
+                                    fill
+                                    className="absolute object-cover carousel-item-zoom opacity-80"
+                                    priority={photo.id === photos[0]?.id}
+                                />
+                            </div>
+                        </CarouselItem>
+                    ))
+                )}
             </CarouselContent>
             {/* Navigation Arrows and Pagination Dots Container */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 max-w-xs mx-auto">

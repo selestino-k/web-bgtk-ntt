@@ -1,6 +1,8 @@
 "use server"
 
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { user } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
@@ -39,17 +41,18 @@ export async function getUserById(input: GetUserByIdInput) {
   try {
     const validatedData = getUserByIdSchema.parse(input);
 
-    const user = await prisma.user.findUnique({
-      where: { id: validatedData.id },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-      },
-    });
+    const [foundUser] = await db
+      .select({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      })
+      .from(user)
+      .where(eq(user.id, validatedData.id))
+      .limit(1);
 
-    if (!user) {
+    if (!foundUser) {
       return {
         success: false,
         error: "User tidak ditemukan",
@@ -58,7 +61,7 @@ export async function getUserById(input: GetUserByIdInput) {
 
     return {
       success: true,
-      data: user,
+      data: foundUser,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -79,9 +82,11 @@ export async function createUser(userData: CreateUserInput) {
   try {
     const validatedData = createUserSchema.parse(userData);
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.email },
-    });
+    const [existingUser] = await db
+      .select({ id: user.id })
+      .from(user)
+      .where(eq(user.email, validatedData.email))
+      .limit(1);
 
     if (existingUser) {
       return {
@@ -92,25 +97,26 @@ export async function createUser(userData: CreateUserInput) {
 
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
-    const user = await prisma.user.create({
-      data: {
+    const [createdUser] = await db
+      .insert(user)
+      .values({
         email: validatedData.email,
         password: hashedPassword,
         name: validatedData.name,
         role: validatedData.role,
-      },
-    });
+      })
+      .returning({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
 
     revalidatePath("/admin/users");
 
     return {
       success: true,
-      data: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-      },
+      data: createdUser,
       message: "User berhasil dibuat",
     };
   } catch (error) {
@@ -132,9 +138,11 @@ export async function updateUser(data: UpdateUserInput) {
   try {
     const validatedData = updateUserSchema.parse(data);
 
-    const userExists = await prisma.user.findUnique({
-      where: { id: validatedData.id },
-    });
+    const [userExists] = await db
+      .select({ id: user.id })
+      .from(user)
+      .where(eq(user.id, validatedData.id))
+      .limit(1);
 
     if (!userExists) {
       return {
@@ -155,9 +163,12 @@ export async function updateUser(data: UpdateUserInput) {
     }
 
     if (validatedData.email !== undefined) {
-      const existingUser = await prisma.user.findUnique({
-        where: { email: validatedData.email },
-      });
+      const [existingUser] = await db
+        .select({ id: user.id })
+        .from(user)
+        .where(eq(user.email, validatedData.email))
+        .limit(1);
+
       if (existingUser && existingUser.id !== validatedData.id) {
         return {
           success: false,
@@ -182,21 +193,22 @@ export async function updateUser(data: UpdateUserInput) {
       };
     }
 
-    const updatedUser = await prisma.user.update({
-      where: { id: validatedData.id },
-      data: updateData,
-    });
+    const [updatedUser] = await db
+      .update(user)
+      .set(updateData)
+      .where(eq(user.id, validatedData.id))
+      .returning({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
 
     revalidatePath("/admin/users");
 
     return {
       success: true,
-      data: {
-        id: updatedUser.id,
-        email: updatedUser.email,
-        name: updatedUser.name,
-        role: updatedUser.role,
-      },
+      data: updatedUser,
       message: "User berhasil diperbarui",
     };
   } catch (error) {
@@ -218,9 +230,11 @@ export async function deleteUser(input: DeleteUserInput) {
   try {
     const validatedData = deleteUserSchema.parse(input);
 
-    const userExists = await prisma.user.findUnique({
-      where: { id: validatedData.userId },
-    });
+    const [userExists] = await db
+      .select({ id: user.id })
+      .from(user)
+      .where(eq(user.id, validatedData.userId))
+      .limit(1);
 
     if (!userExists) {
       return {
@@ -229,9 +243,7 @@ export async function deleteUser(input: DeleteUserInput) {
       };
     }
 
-    await prisma.user.delete({
-      where: { id: validatedData.userId },
-    });
+    await db.delete(user).where(eq(user.id, validatedData.userId));
 
     revalidatePath("/admin/users");
 

@@ -1,9 +1,10 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import prisma from "@/lib/prisma"
+import { db } from "@/lib/db/db"
+import { document } from "@/lib/db/schema"
+import { eq } from "drizzle-orm"
 import { uploadDocumentToAssets, deleteDocumentFromAssets } from "./file-actions"
-import { toast } from "sonner"
 
 // Upload document
 export async function uploadDocument(formData: FormData) {
@@ -25,20 +26,21 @@ export async function uploadDocument(formData: FormData) {
     }
 
     // Save to database with actual filename
-    const document = await prisma.document.create({
-      data: {
+    const [newDocument] = await db
+      .insert(document)
+      .values({
         title,
         description,
         category,
         fileUrl: uploadResult.url,
-        fileName: file.name, // Store actual filename
+        fileName: file.name,
         fileSize: file.size,
         fileType: file.type,
-      },
-    })
+      })
+      .returning()
 
     revalidatePath("/admin/documents")
-    return { success: true, document }
+    return { success: true, document: newDocument }
   } catch (error) {
     return {
       success: false,
@@ -51,25 +53,26 @@ export async function uploadDocument(formData: FormData) {
 export async function deleteDocument(id: number) {
   try {
     // Get document from database
-    const document = await prisma.document.findUnique({
-      where: { id },
-    })
+    const [existingDocument] = await db
+      .select()
+      .from(document)
+      .where(eq(document.id, id))
+      .limit(1)
 
-    if (!document) {
+    if (!existingDocument) {
       return { success: false, error: "Dokumen tidak ditemukan" }
     }
 
     // Delete from Assets
-    const deleteResult = await deleteDocumentFromAssets(document.fileUrl)
+    const deleteResult = await deleteDocumentFromAssets(existingDocument.fileUrl)
 
     if (!deleteResult.success) {
-        toast.error(deleteResult.error || "Gagal menghapus dokumen dari Server")      // Continue with database deletion even if Assets deletion fails
+      console.error(deleteResult.error || "Gagal menghapus dokumen dari Server")
+      // Continue with database deletion even if Assets deletion fails
     }
 
     // Delete from database
-    await prisma.document.delete({
-      where: { id },
-    })
+    await db.delete(document).where(eq(document.id, id))
 
     revalidatePath("/admin/documents")
     return { success: true }
@@ -84,11 +87,10 @@ export async function deleteDocument(id: number) {
 // Get all documents
 export async function getDocuments() {
   try {
-    const documents = await prisma.document.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
+    const documents = await db
+      .select()
+      .from(document)
+      .orderBy(document.createdAt)
 
     return { success: true, documents }
   } catch (error) {
@@ -102,17 +104,18 @@ export async function getDocuments() {
 // Get single document
 export async function getDocument(id: number) {
   try {
-    const document = await prisma.document.findUnique({
-      where: { id },
-    })
+    const [existingDocument] = await db
+      .select()
+      .from(document)
+      .where(eq(document.id, id))
+      .limit(1)
 
-    if (!document) {
+    if (!existingDocument) {
       return { success: false, error: "Dokumen tidak ditemukan" }
     }
 
-    return { success: true, document }
+    return { success: true, document: existingDocument }
   } catch (error) {
-    toast.error("Gagal mengambil dokumen")
     return {
       success: false,
       error: error instanceof Error ? error.message : "Gagal mengambil dokumen",
@@ -121,15 +124,23 @@ export async function getDocument(id: number) {
 }
 
 // Update document metadata (without changing file)
-export async function updateDocument(id: number, data: { title?: string; description?: string | null; category?: string | null }) {
+export async function updateDocument(
+  id: number,
+  data: { title?: string; description?: string | null; category?: string | null }
+) {
   try {
-    const document = await prisma.document.update({
-      where: { id },
-      data,
-    })
+    const [updatedDocument] = await db
+      .update(document)
+      .set(data)
+      .where(eq(document.id, id))
+      .returning()
+
+    if (!updatedDocument) {
+      return { success: false, error: "Dokumen tidak ditemukan" }
+    }
 
     revalidatePath("/admin/documents")
-    return { success: true, document }
+    return { success: true, document: updatedDocument }
   } catch (error) {
     return {
       success: false,

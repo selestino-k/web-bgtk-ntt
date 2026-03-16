@@ -15,14 +15,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import { Prisma } from "@/lib/generated/prisma/browser"
 import { toast } from "sonner"
 
 type NewsPost = {
   id: string;
   title: string;
   slug: string;
-  content: Prisma.JsonValue;
+  content: unknown;
   thumbnail: string | null;
   createdAt: Date;
   author?: {
@@ -40,7 +39,7 @@ interface MobileNewsCarouselProps {
   initialPosts?: NewsPost[];
 }
 
-function extractTextFromContent(content: Prisma.JsonValue): string {
+function extractTextFromContent(content: unknown): string {
   if (!content) return "Tidak ada konten";
   
   try {

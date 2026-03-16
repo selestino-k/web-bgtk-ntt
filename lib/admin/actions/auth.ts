@@ -1,12 +1,12 @@
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/db";
+import { user } from "@/lib/db/schema";
 import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
     maxAge: 2 * 60 * 60, // 2 hours
@@ -26,19 +26,19 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        const [foundUser] = await db
+          .select()
+          .from(user)
+          .where(eq(user.email, credentials.email))
+          .limit(1);
 
-        if (!user || !user.password) {
+        if (!foundUser || !foundUser.password) {
           throw new Error("Invalid credentials");
         }
 
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
-          user.password
+          foundUser.password
         );
 
         if (!isPasswordValid) {
@@ -46,10 +46,10 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          id: foundUser.id,
+          email: foundUser.email,
+          name: foundUser.name,
+          role: foundUser.role,
         };
       },
     }),

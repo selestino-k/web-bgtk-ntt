@@ -1,29 +1,31 @@
 'use server';
 
-import prisma from '@/lib/prisma';
+import { db } from '@/lib/db/db';
+import { carouselPhoto } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 import { uploadCarouselImageToAssets, deleteCarouselImageFromAssets } from './file-actions';
 import { revalidatePath } from 'next/cache';
 
 export async function getCarouselPhotos() {
   try {
-    const carouselPhotos = await prisma.carouselPhoto.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const carouselPhotos = await db
+      .select()
+      .from(carouselPhoto)
+      .orderBy(carouselPhoto.createdAt);
     return carouselPhotos;
-  } catch  {
+  } catch {
     return [];
   }
 }
 
 export async function getCarouselPhotoById(id: string) {
   try {
-    const carouselPhoto = await prisma.carouselPhoto.findUnique({
-      where: { id: parseInt(id) },
-    });
-    return carouselPhoto;
-  } catch  {
+    const [photo] = await db
+      .select()
+      .from(carouselPhoto)
+      .where(eq(carouselPhoto.id, Number(id)));
+    return photo ?? null;
+  } catch {
     return null;
   }
 }
@@ -31,7 +33,7 @@ export async function getCarouselPhotoById(id: string) {
 export async function createCarouselPhoto(formData: FormData) {
   try {
     const file = formData.get('file') as File;
-    const caption = formData.get('caption') as string | null
+    const caption = formData.get('caption') as string | null;
     const order = parseInt(formData.get('order') as string);
     const externalUrl = formData.get('externalUrl') as string | null;
 
@@ -41,11 +43,9 @@ export async function createCarouselPhoto(formData: FormData) {
 
     let imageUrl = '';
 
-    // Check if using external URL or file upload
     if (externalUrl) {
       imageUrl = externalUrl;
     } else if (file) {
-      // Upload image to Assets
       const uploadResult = await uploadCarouselImageToAssets(file);
 
       if (!uploadResult.success || !uploadResult.url) {
@@ -57,17 +57,17 @@ export async function createCarouselPhoto(formData: FormData) {
       return { success: false, error: 'No image provided' };
     }
 
-    // Create photo record in database
-    const carouselPhoto = await prisma.carouselPhoto.create({
-      data: {
+    const [photo] = await db
+      .insert(carouselPhoto)
+      .values({
         caption: caption || null,
         order,
         imageUrl,
-      },
-    });
+      })
+      .returning();
 
     revalidatePath('/');
-    return { success: true, carouselPhoto };
+    return { success: true, carouselPhoto: photo };
   } catch (error) {
     return {
       success: false,
@@ -78,23 +78,21 @@ export async function createCarouselPhoto(formData: FormData) {
 
 export async function updateCarouselPhoto(formData: FormData) {
   try {
-    const id = parseInt(formData.get('id') as string);
+    const id = Number(formData.get('id') as string);
     const caption = formData.get('caption') as string;
     const order = parseInt(formData.get('order') as string);
     const file = formData.get('file') as File | null;
     const externalUrl = formData.get('externalUrl') as string | null;
     const existingImageUrl = formData.get('existingImageUrl') as string | null;
 
-    if (isNaN(id) || !caption || isNaN(order)) {
+    if (!id || !caption || isNaN(order)) {
       return { success: false, error: 'Missing required fields' };
     }
 
-
-
-    // Get existing photo
-    const existingPhoto = await prisma.carouselPhoto.findUnique({
-      where: { id: id },
-    });
+    const [existingPhoto] = await db
+      .select()
+      .from(carouselPhoto)
+      .where(eq(carouselPhoto.id, id));
 
     if (!existingPhoto) {
       return { success: false, error: 'Photo not found' };
@@ -102,42 +100,39 @@ export async function updateCarouselPhoto(formData: FormData) {
 
     let imageUrl = existingPhoto.imageUrl;
 
-    // Handle image update logic
     if (file && file.size > 0) {
-      // New file uploaded - upload to Assets
       const uploadResult = await uploadCarouselImageToAssets(file);
 
       if (!uploadResult.success || !uploadResult.url) {
         return { success: false, error: uploadResult.error || 'Failed to upload image' };
       }
 
-      // Delete old image from Assets if it's not an external URL
       if (!existingPhoto.imageUrl.startsWith('http://') && !existingPhoto.imageUrl.startsWith('https://')) {
         await deleteCarouselImageFromAssets(existingPhoto.imageUrl);
       }
-      
+
       imageUrl = uploadResult.url;
     } else if (externalUrl) {
-      // Using external URL - delete old image from Assets if needed
       if (!existingPhoto.imageUrl.startsWith('http://') && !existingPhoto.imageUrl.startsWith('https://')) {
         await deleteCarouselImageFromAssets(existingPhoto.imageUrl);
       }
       imageUrl = externalUrl;
     } else if (existingImageUrl) {
-      // Keep existing image URL
       imageUrl = existingImageUrl;
     }
-    // Update photo record in database
-    const carouselPhoto = await prisma.carouselPhoto.update({
-      where: { id },
-      data: {
+
+    const [updatedPhoto] = await db
+      .update(carouselPhoto)
+      .set({
         caption: caption || null,
         order,
         imageUrl,
-      },
-    });
+      })
+      .where(eq(carouselPhoto.id, id))
+      .returning();
+
     revalidatePath('/');
-    return { success: true, carouselPhoto };
+    return { success: true, carouselPhoto: updatedPhoto };
   } catch (error) {
     return {
       success: false,
@@ -148,27 +143,22 @@ export async function updateCarouselPhoto(formData: FormData) {
 
 export async function deleteCarouselPhoto(id: number) {
   try {
-    // Get photo to retrieve image URL
-    const carouselPhoto = await prisma.carouselPhoto.findUnique({
-      where: { id },
-    });
+    const [photo] = await db
+      .select()
+      .from(carouselPhoto)
+      .where(eq(carouselPhoto.id, id));
 
-    if (!carouselPhoto) {
+    if (!photo) {
       return { success: false, error: 'Photo not found' };
     }
 
-    // Delete image from Assets
-    const deleteResult = await deleteCarouselImageFromAssets(carouselPhoto.imageUrl);
+    const deleteResult = await deleteCarouselImageFromAssets(photo.imageUrl);
 
     if (!deleteResult.success) {
       return { success: false, error: deleteResult.error };
-      // Continue with database deletion even if Assets deletion fails
     }
 
-    // Delete photo record from database
-    await prisma.carouselPhoto.delete({
-      where: { id },
-    });
+    await db.delete(carouselPhoto).where(eq(carouselPhoto.id, id));
 
     revalidatePath('/');
     return { success: true };
@@ -184,11 +174,12 @@ export async function reorderCarouselPhotos(photoIds: number[]) {
   try {
     for (let index = 0; index < photoIds.length; index++) {
       const id = photoIds[index];
-      await prisma.carouselPhoto.update({
-        where: { id },
-        data: { order: index },
-      });
-    }   
+      await db
+        .update(carouselPhoto)
+        .set({ order: index })
+        .where(eq(carouselPhoto.id, id));
+    }
+
     revalidatePath('/');
     return { success: true };
   } catch (error) {
