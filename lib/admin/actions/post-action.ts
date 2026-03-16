@@ -26,7 +26,6 @@ export async function createPost(formData: FormData) {
       }
     }
 
-    // Validate authorId is a valid UUID
     if (!authorId || !isValidUUID(authorId)) {
       return { 
         success: false, 
@@ -34,7 +33,6 @@ export async function createPost(formData: FormData) {
       }
     }
 
-    // Check if slug already exists
     const existingPost = await prisma.post.findUnique({
       where: { slug }
     })
@@ -46,7 +44,6 @@ export async function createPost(formData: FormData) {
       }
     }
 
-    // Upload thumbnail to Assets if provided
     let thumbnailUrl = ""
     if (thumbnailFile && thumbnailFile.size > 0) {
       const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
@@ -61,18 +58,14 @@ export async function createPost(formData: FormData) {
       thumbnailUrl = uploadResult.url || ""
     }
 
-    // Parse content as JSON (same as updatePost)
     const contentJson = JSON.parse(content) as Prisma.InputJsonValue
 
-    // Process tags
     const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean);
     const tagConnections = [];
 
     for (const tagName of tagNames) {
-      // Determine tag type based on tag name
       const tagType = tagName.toLowerCase() === 'pengumuman' ? 'ANNOUNCEMENT' : 'CATEGORY';
       
-      // Find or create tag with appropriate type
       const tag = await prisma.tag.upsert({
         where: { name: tagName },
         update: {
@@ -90,7 +83,6 @@ export async function createPost(formData: FormData) {
       });
     }
 
-    // Create post with tags
     const post = await prisma.post.create({
       data: {
         title,
@@ -113,7 +105,6 @@ export async function createPost(formData: FormData) {
       },
     })
 
-    // Revalidate pages
     revalidatePath("/admin/posts")
     revalidatePath("/posts")
     if (published) {
@@ -126,7 +117,6 @@ export async function createPost(formData: FormData) {
       message: published ? "Post published successfully" : "Draft saved successfully"
     }
   } catch (error) {
-    console.error("Create post error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to create post" 
@@ -146,7 +136,6 @@ export async function updatePost(postId: string, formData: FormData) {
     const thumbnailFile = formData.get("thumbnail") as File | null
     const existingThumbnail = formData.get("existingThumbnail") as string
 
-    // Get existing post
     const existingPost = await prisma.post.findUnique({
       where: { id: BigInt(postId) }
     })
@@ -158,7 +147,6 @@ export async function updatePost(postId: string, formData: FormData) {
       }
     }
 
-    // Check if slug is taken by another post
     if (slug !== existingPost.slug) {
       const slugExists = await prisma.post.findFirst({
         where: {
@@ -175,16 +163,13 @@ export async function updatePost(postId: string, formData: FormData) {
       }
     }
 
-    // Handle thumbnail upload
     let thumbnailUrl = existingThumbnail || existingPost.thumbnail
 
     if (thumbnailFile && thumbnailFile.size > 0) {
-      // Delete old thumbnail from Assets if exists
       if (existingPost.thumbnail) {
         await deleteFileFromAssets(existingPost.thumbnail)
       }
 
-      // Upload new thumbnail
       const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
       
       if (!uploadResult.success) {
@@ -197,13 +182,11 @@ export async function updatePost(postId: string, formData: FormData) {
       thumbnailUrl = uploadResult.url || ""
     }
 
-    // Parse content as JSON
+    //Parse content JSON string to object before saving to database
     const contentJson = JSON.parse(content) as Prisma.InputJsonValue
 
-    // Parse tags
     const tagsArray = tags ? tags.split(",").map(t => t.trim()) : []
 
-    // Update post
     const post = await prisma.post.update({
       where: { id: BigInt(postId) },
       data: {
@@ -232,7 +215,6 @@ export async function updatePost(postId: string, formData: FormData) {
       }
     })
 
-    // Revalidate pages
     revalidatePath("/admin/posts")
     revalidatePath("/posts")
     revalidatePath(`/posts/${existingPost.slug}`)
@@ -246,7 +228,6 @@ export async function updatePost(postId: string, formData: FormData) {
       message: "Post updated successfully"
     }
   } catch (error) {
-    console.error("Update post error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to update post" 
@@ -257,7 +238,6 @@ export async function updatePost(postId: string, formData: FormData) {
 // Delete post
 export async function deletePost(postId: string) {
   try {
-    // Get post to delete thumbnail from Assets
     const post = await prisma.post.findUnique({
       where: { id: BigInt(postId) }
     })
@@ -269,17 +249,14 @@ export async function deletePost(postId: string) {
       }
     }
 
-    // Delete thumbnail from Assets if exists
     if (post.thumbnail) {
       await deleteFileFromAssets(post.thumbnail)
     }
 
-    // Delete post from database
     await prisma.post.delete({
       where: { id: BigInt(postId) }
     })
 
-    // Revalidate pages
     revalidatePath("/admin/posts")
     revalidatePath("/posts")
     if (post.slug) {
@@ -291,7 +268,6 @@ export async function deletePost(postId: string) {
       message: "Post deleted successfully"
     }
   } catch (error) {
-    console.error("Delete post error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to delete post" 
@@ -318,7 +294,6 @@ export async function getPost(postId: string) {
       post 
     }
   } catch (error) {
-    console.error("Get post error:", error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to fetch post" 

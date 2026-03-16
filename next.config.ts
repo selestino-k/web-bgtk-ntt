@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-    images: {
+/*config options here*/
+  images: {
+    unoptimized: true,
     formats: ["image/webp"],
     remotePatterns: [
       {
@@ -11,9 +12,9 @@ const nextConfig: NextConfig = {
         pathname: "/thumbnails/**",
       },
       {
-        protocol : "https",
-        hostname : "web-bgtk-ntt-s3-bucket.s3.ap-southeast-2.amazonaws.com",
-        pathname : "/carousel/**",
+        protocol: "https",
+        hostname: "web-bgtk-ntt-s3-bucket.s3.ap-southeast-2.amazonaws.com",
+        pathname: "/carousel/**",
       },
       {
         protocol: "https",
@@ -39,22 +40,20 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**",
         pathname: "/**",
-        port : "",
+        port: "",
       },
     ],
   },
+  compress:false,
   productionBrowserSourceMaps: false,
+  output: "standalone",
   experimental: {
     optimizePackageImports: ["@radix-ui/react-*"],
     serverActions: {
       bodySizeLimit: "31mb",
     },
   },
-  allowedDevOrigins: [
-    "http://localhost:3000",
-    "https://web-bgtk-ntt.vercel.app",
-    "https://bgtkntt.kemendikdasmen.go.id",
-  ],
+  serverExternalPackages: ["sharp"],
 };
 
 export default nextConfig;

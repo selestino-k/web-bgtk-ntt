@@ -7,7 +7,6 @@ import { existsSync } from "fs"
 const PUBLIC_DIR = path.join(process.cwd(), "public")
 const ASSETS_DIR = path.join(PUBLIC_DIR, "assets")
 
-// Ensure directory exists
 async function ensureDirectoryExists(dirPath: string) {
   if (!existsSync(dirPath)) {
     await mkdir(dirPath, { recursive: true })
@@ -23,7 +22,6 @@ export async function uploadImageToAssets(
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Validate file type
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]
     if (!allowedTypes.includes(file.type)) {
       return {
@@ -32,7 +30,6 @@ export async function uploadImageToAssets(
       }
     }
 
-    // Check file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       return {
         success: false,
@@ -40,20 +37,16 @@ export async function uploadImageToAssets(
       }
     }
 
-    // Generate unique filename
     const timestamp = Date.now()
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-")
     const filename = `${timestamp}-${sanitizedName}`
 
-    // Prepare directory
     const targetDir = path.join(ASSETS_DIR, subfolder)
     await ensureDirectoryExists(targetDir)
 
-    // Write file
     const filePath = path.join(targetDir, filename)
     await writeFile(filePath, buffer)
 
-    // Return public URL
     const url = `/assets/${subfolder}/${filename}`
 
     return { success: true, url }
@@ -93,28 +86,24 @@ export async function uploadDocumentToAssets(
       }
     }
 
-    // Check file size (50MB limit)
-    if (file.size > 50 * 1024 * 1024) {
+    // Check file size (30MB limit)
+    if (file.size > 30 * 1024 * 1024) {
       return {
         success: false,
-        error: "Ukuran file harus kurang dari 50MB",
+        error: "Ukuran file harus kurang dari 30MB",
       }
     }
 
-    // Generate unique filename
     const timestamp = Date.now()
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-")
     const filename = `${timestamp}-${sanitizedName}`
 
-    // Prepare directory
     const targetDir = path.join(ASSETS_DIR, subfolder)
     await ensureDirectoryExists(targetDir)
 
-    // Write file
     const filePath = path.join(targetDir, filename)
     await writeFile(filePath, buffer)
 
-    // Return public URL
     const url = `/assets/${subfolder}/${filename}`
 
     return { success: true, url }
@@ -140,10 +129,8 @@ export async function deleteFileFromAssets(
   fileUrl: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    // Extract path from URL (remove leading slash)
     const relativePath = fileUrl.startsWith("/") ? fileUrl.slice(1) : fileUrl
 
-    // Validate path starts with assets/
     if (!relativePath.startsWith("assets/")) {
       return {
         success: false,
@@ -151,10 +138,8 @@ export async function deleteFileFromAssets(
       }
     }
 
-    // Construct full path
     const filePath = path.join(PUBLIC_DIR, relativePath)
 
-    // Security check: ensure file is within public directory
     if (!filePath.startsWith(PUBLIC_DIR)) {
       return {
         success: false,
@@ -162,7 +147,6 @@ export async function deleteFileFromAssets(
       }
     }
 
-    // Check if file exists
     if (!existsSync(filePath)) {
       return {
         success: false,
@@ -195,7 +179,6 @@ export async function uploadFileToAssets(
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Validate file type if specified
     if (options?.allowedTypes && !options.allowedTypes.includes(file.type)) {
       return {
         success: false,
@@ -203,7 +186,6 @@ export async function uploadFileToAssets(
       }
     }
 
-    // Check file size
     const maxSize = options?.maxSize || 10 * 1024 * 1024 // Default 10MB
     if (file.size > maxSize) {
       const maxSizeMB = Math.floor(maxSize / (1024 * 1024))
@@ -213,21 +195,17 @@ export async function uploadFileToAssets(
       }
     }
 
-    // Generate unique filename
     const timestamp = Date.now()
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-")
     const filename = `${timestamp}-${sanitizedName}`
 
-    // Prepare directory - sanitize subfolder path
     const sanitizedSubfolder = subfolder.replace(/[^a-zA-Z0-9/_-]/g, "-")
     const targetDir = path.join(ASSETS_DIR, sanitizedSubfolder)
     await ensureDirectoryExists(targetDir)
 
-    // Write file
     const filePath = path.join(targetDir, filename)
     await writeFile(filePath, buffer)
 
-    // Return public URL
     const url = `/assets/${sanitizedSubfolder}/${filename}`
 
     return { success: true, url }
@@ -246,7 +224,6 @@ export async function replaceImageInAssets(
   subfolder: string = "images"
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
-    // First, delete the old image
     const deleteResult = await deleteFileFromAssets(oldImageUrl)
     if (!deleteResult.success) {
       return {
@@ -255,7 +232,6 @@ export async function replaceImageInAssets(
       }
     }
 
-    // Then upload the new image
     const uploadResult = await uploadImageToAssets(newFile, subfolder)
     if (!uploadResult.success) {
       return {
@@ -283,7 +259,6 @@ export async function replaceDocumentInAssets(
   subfolder: string = "documents"
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
-    // First, delete the old document
     const deleteResult = await deleteFileFromAssets(oldDocumentUrl)
     if (!deleteResult.success) {
       return {
@@ -292,7 +267,6 @@ export async function replaceDocumentInAssets(
       }
     }
 
-    // Then upload the new document
     const uploadResult = await uploadDocumentToAssets(newFile, subfolder)
     if (!uploadResult.success) {
       return {
@@ -361,7 +335,6 @@ export async function replaceFileInAssets(
   }
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
-    // First, delete the old file
     const deleteResult = await deleteFileFromAssets(oldFileUrl)
     if (!deleteResult.success) {
       return {
@@ -370,7 +343,6 @@ export async function replaceFileInAssets(
       }
     }
 
-    // Then upload the new file
     const uploadResult = await uploadFileToAssets(newFile, subfolder, options)
     if (!uploadResult.success) {
       return {

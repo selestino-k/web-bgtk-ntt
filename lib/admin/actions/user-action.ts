@@ -77,10 +77,8 @@ export async function getUserById(input: GetUserByIdInput) {
 // Create user action
 export async function createUser(userData: CreateUserInput) {
   try {
-    // Validate input
     const validatedData = createUserSchema.parse(userData);
 
-    // Check if user with this email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: validatedData.email },
     });
@@ -92,10 +90,8 @@ export async function createUser(userData: CreateUserInput) {
       };
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
-    // Create the user
     const user = await prisma.user.create({
       data: {
         email: validatedData.email,
@@ -134,10 +130,8 @@ export async function createUser(userData: CreateUserInput) {
 // Update user action
 export async function updateUser(data: UpdateUserInput) {
   try {
-    // Validate input
     const validatedData = updateUserSchema.parse(data);
 
-    // Verify user exists
     const userExists = await prisma.user.findUnique({
       where: { id: validatedData.id },
     });
@@ -161,7 +155,6 @@ export async function updateUser(data: UpdateUserInput) {
     }
 
     if (validatedData.email !== undefined) {
-      // Check if new email is already taken by another user
       const existingUser = await prisma.user.findUnique({
         where: { email: validatedData.email },
       });
@@ -178,7 +171,6 @@ export async function updateUser(data: UpdateUserInput) {
       updateData.role = validatedData.role;
     }
 
-    // If password is provided, hash it
     if (validatedData.password) {
       updateData.password = await bcrypt.hash(validatedData.password, 10);
     }
@@ -224,10 +216,8 @@ export async function updateUser(data: UpdateUserInput) {
 // Delete user action
 export async function deleteUser(input: DeleteUserInput) {
   try {
-    // Validate input
     const validatedData = deleteUserSchema.parse(input);
 
-    // Verify user exists
     const userExists = await prisma.user.findUnique({
       where: { id: validatedData.userId },
     });
