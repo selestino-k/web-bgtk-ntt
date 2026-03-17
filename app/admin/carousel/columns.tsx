@@ -7,18 +7,16 @@ import { Edit } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { DeleteFotoDialog } from "./delete-foto-dialog"
-import { CarouselPhoto } from "@/lib/generated/prisma/client"
-
 // Update your Foto type to match the database schema
 export type carouselPhoto = {
   id: number
   imageUrl: string
   caption : string | null
-  createdAt: Date
+  createdAt: Date | null
   order : number
 }
 
-export const columns: ColumnDef<CarouselPhoto>[] = [
+export const columns: ColumnDef<carouselPhoto>[] = [
   {
     accessorKey: "order",
     header: "Urutan",

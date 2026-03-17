@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
-import {oprColumns} from "./opr-columns";
-import prisma from "@/lib/prisma";
+import { oprColumns } from "./opr-columns";
+import { db } from "@/lib/db/db";
+import { user } from "@/lib/db/schema";
+import { desc } from "drizzle-orm";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
 import { authOptions } from "@/lib/admin/actions/auth";
@@ -10,19 +12,17 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 async function getUserData() {
-  const users = await prisma.user.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      role: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
+  const users = await db
+    .select({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    })
+    .from(user)
+    .orderBy(desc(user.createdAt));
 
   return users;
 }

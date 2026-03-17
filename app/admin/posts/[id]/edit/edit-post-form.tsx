@@ -11,7 +11,6 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { Prisma } from "@/lib/generated/prisma/client";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { updatePost } from "@/lib/admin/actions/post-action";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
@@ -20,16 +19,10 @@ import { JSONContent } from "@tiptap/react";
 type Post = {
   id: string;
   title: string;
-  content: Prisma.JsonValue | null;
+  content: JSONContent | null;
   thumbnail: string | null;
   published: boolean;
-  tags: Array<{
-    tag: {
-      id: number;
-      name: string;
-      slug: string;
-    };
-  }>;
+  tags: string[]; // flat array of tag names from Drizzle query
 };
 
 type Tag = {
@@ -54,9 +47,12 @@ export default function EditPostForm({
   const [thumbnailPreview, setThumbnailPreview] = useState(post.thumbnail || "");
   const [published, setPublished] = useState(post.published);
   const [selectedTags, setSelectedTags] = useState<string[]>(
-    post.tags.map((t) => t.tag.id.toString())
+    // Match tag names to availableTags to get ids, since Drizzle returns flat tag names
+    post.tags
+      .map((tagName) => availableTags.find((t) => t.name === tagName)?.id.toString())
+      .filter((id): id is string => Boolean(id))
   );
-  
+
   // Parse initial content properly
   const parseInitialContent = useCallback((): JSONContent => {
     try {

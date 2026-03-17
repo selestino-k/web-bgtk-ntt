@@ -7,32 +7,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Edit } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Prisma } from "@/lib/generated/prisma/client"
 import { Badge } from "@/components/ui/badge"
 import { DeletePostDialog } from "./delete-post-dialog"
 import { JSX } from "react"
+import type { PostWithRelations } from "./page"
 
-// Update your Post type to include author information
-export type Post = {
-  id: bigint
-  title: string
-  content: Prisma.JsonValue | null
-  thumbnail: string | null
-  published: boolean
-  tags: Array<{ tag: { name: string } }>
-  authorId: string
-  author?: {
-    name: string | null
-    email: string | null
-  }
-  createdAt: Date
-  updatedAt: Date
-}
+// Use PostWithRelations from page.tsx instead of a local Post type
+export type Post = PostWithRelations
 
-
+// JsonValue type replacing Prisma.JsonValue
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
 // Helper function to render TipTap JSON as HTML (matching berita detail page)
-function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
+function renderTipTapContent(content: JsonValue): JSX.Element {
   if (!content) {
     return <p className="text-gray-400">No content</p>
   }
@@ -325,7 +312,7 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
-function extractTextFromContent(content: Prisma.JsonValue): string {
+function extractTextFromContent(content: JsonValue): string {
   if (!content) return "No content"
   
   try {
@@ -354,19 +341,18 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
     }
     
     const fullText = contentObj.content.map(extractText).join(' ').trim()
-
     return fullText || "No content"
   } catch (error) {
     return "Error reading content"
   }
 }
 
-
 export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "id",
     header: "ID",
     cell: ({ row }) => {
+      // id is number (bigint mode: 'number') not BigInt
       const id = row.original.id.toString()
       return <span className="text-xs font-mono">{id}</span>
     },
@@ -457,7 +443,8 @@ export const columns: ColumnDef<Post>[] = [
     accessorKey: "content",
     header: "Konten",
     cell: ({ row }) => {
-      const content = row.getValue("content") as Prisma.JsonValue
+      // Use local JsonValue instead of Prisma.JsonValue
+      const content = row.getValue("content") as JsonValue
       const preview = extractTextFromContent(content)
       const truncatedPreview = preview.length > 100
         ? preview.substring(0, 100) + "..."

@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { document } from "@/lib/db/schema";
+import { desc } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
 import { authOptions } from "@/lib/admin/actions/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-async function getDocsData() {
-   return await prisma.document.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+export type Document = InferSelectModel<typeof document>;
 
+async function getDocsData(): Promise<Document[]> {
+  return await db
+    .select()
+    .from(document)
+    .orderBy(desc(document.createdAt));
 }
 
 export default async function DocsPage() {

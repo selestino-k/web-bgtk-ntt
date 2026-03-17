@@ -1,32 +1,53 @@
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { post, postTag, tag, user } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/admin/actions/auth";
 import { EditPostClient } from "./edit-post-client";
 
 async function getPost(id: string) {
-  const post = await prisma.post.findUnique({
-    where: { id: BigInt(id) },
-    include: {
-      tags: {
-        include: {
-          tag: true,
-        },
-      },
-      author: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
-    },
-  });
+  const result = await db
+    .select({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      content: post.content,
+      thumbnail: post.thumbnail,
+      document: post.document,
+      published: post.published,
+      authorName: user.name,
+      authorEmail: user.email,
+      tagName: tag.name,
+    })
+    .from(post)
+    .leftJoin(user, eq(post.authorId, user.id))
+    .leftJoin(postTag, eq(post.id, postTag.postId))
+    .leftJoin(tag, eq(postTag.tagId, tag.id))
+    .where(eq(post.id, Number(id)));
 
-  if (!post) {
+  if (!result || result.length === 0) {
     notFound();
   }
 
-  return post;
+  const basePost = result[0];
+
+  return {
+    id: basePost.id,
+    title: basePost.title,
+    slug: basePost.slug,
+    content: basePost.content,
+    thumbnail: basePost.thumbnail,
+    document: basePost.document,
+    published: basePost.published,
+    author: {
+      name: basePost.authorName,
+      email: basePost.authorEmail,
+    },
+    tags: result
+      .filter((r) => r.tagName !== null)
+      .map((r) => r.tagName as string),
+  };
 }
 
 export default async function EditPostPage({
@@ -49,7 +70,7 @@ export default async function EditPostPage({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     content: post.content as any,
     thumbnail: post.thumbnail || "",
-    tags: post.tags.map((t) => t.tag.name),
+    tags: post.tags,
     document: post.document,
     published: post.published,
   };

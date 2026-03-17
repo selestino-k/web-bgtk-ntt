@@ -15,16 +15,18 @@ import { DocumentDialog } from "@/components/cms/document-dialog"
 import { toast } from "sonner"
 import Link from "next/link"
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
-import { Prisma } from "@/lib/generated/prisma/client"
 import { JSONContent } from "@tiptap/core"
 
 // TipTap content type
 type TipTapContent = JSONContent
 
+// Replace Prisma.JsonValue with a Drizzle-compatible JSON type
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
+
 export interface PostData {
   title: string
   slug: string
-  content: Prisma.JsonValue
+  content: JsonValue
   thumbnail: string
   thumbnailFile?: File
   tags: string[]
@@ -37,7 +39,7 @@ interface PostEditorProps {
     id?: string
     title?: string
     slug?: string
-    content?: Prisma.JsonValue
+    content?: JsonValue
     thumbnail?: string
     tags?: string[]
     document?: string | null
@@ -173,7 +175,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     const postData: PostData = {
       title,
       slug,
-      content: editorContent as Prisma.JsonValue,
+      content: editorContent as JsonValue,
       thumbnail,
       thumbnailFile: thumbnailFile || undefined,
       tags: selectedTags,

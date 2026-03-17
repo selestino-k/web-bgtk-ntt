@@ -2,23 +2,19 @@ import { Button } from "@/components/ui/button";
 import { FotoDataTable } from "./foto-data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { carouselPhoto } from "@/lib/db/schema";
+import { asc } from "drizzle-orm";
 import Link from "next/link";
 import { authOptions } from "@/lib/admin/actions/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-
-
-
 async function getCarouselPhotoData() {
-
-    return await prisma.carouselPhoto.findMany({
-        orderBy: { order : 'asc' },
-        
-    },
-    );
-
+    return await db
+        .select()
+        .from(carouselPhoto)
+        .orderBy(asc(carouselPhoto.order));
 }
 
 export default async function DaftarFotoPage() {

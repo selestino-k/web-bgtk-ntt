@@ -2,38 +2,54 @@ import { Button } from "@/components/ui/button";
 import { PostDataTable } from "@/app/admin/posts/post-data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { post, postTag, tag } from "@/lib/db/schema";
+import { desc, eq, ilike, and } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
 import Link from "next/link";
 import { authOptions } from "@/lib/admin/actions/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-async function getPostData() {
-  const posts = await prisma.post.findMany({
-    where: {
+export type PostWithRelations = InferSelectModel<typeof post> & {
+  thumbnail: string;
+  tags: {
+    tag: InferSelectModel<typeof tag>;
+    assignedAt: Date;
+    postId: number;
+    tagId: number;
+  }[];
+  author: {
+    name: string;
+    email: string;
+  };
+};
+
+async function getPostData(): Promise<PostWithRelations[]> {
+  const pengumumanPosts = await db.query.post.findMany({
+    where: (post, { exists }) =>
+      exists(
+        db
+          .select()
+          .from(postTag)
+          .innerJoin(tag, eq(postTag.tagId, tag.id))
+          .where(
+            and(
+              eq(postTag.postId, post.id),
+              eq(tag.type, 'ANNOUNCEMENT'),
+              ilike(tag.name, 'pengumuman')
+            )
+          )
+      ),
+    orderBy: [desc(post.createdAt)],
+    with: {
       tags: {
-        some: {
-          tag: {
-            name: {
-              equals: 'pengumuman',
-              mode: 'insensitive',
-            },
-            type: 'ANNOUNCEMENT',
-          },
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    include: {
-      tags: {
-        include: {
+        with: {
           tag: true,
         },
       },
       author: {
-        select: {
+        columns: {
           name: true,
           email: true,
         },
@@ -41,19 +57,20 @@ async function getPostData() {
     },
   });
 
-  return posts.map(post => ({
-    ...post,
-    thumbnail: post.thumbnail || '', // Convert null to empty string
-  }));
+  return pengumumanPosts.map(p => ({
+    ...p,
+    thumbnail: p.thumbnail ?? '',
+  })) as PostWithRelations[];
 }
 
 export default async function PengumumanPage() {
-  const postData = await getPostData();
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || (session.user.role !== "Admin" && session.user.role !== "Operator")) {
-   redirect('/sign-in');
+    redirect('/sign-in');
   }
+
+  const postData = await getPostData();
 
   return (
     <div className="items-stretch w-full min-h-screen p-8 pb-20">

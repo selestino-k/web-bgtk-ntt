@@ -5,6 +5,7 @@ import { updatePost } from "@/lib/admin/actions/post-action"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { Prisma } from "@/lib/generated/prisma/client"
+import { JSONContent } from "@tiptap/core"
 
 interface EditPostClientProps {
   postId: string
@@ -12,7 +13,7 @@ interface EditPostClientProps {
     id: string
     title: string
     slug: string
-    content: Prisma.JsonValue
+    content: JSONContent | null
     thumbnail: string | null
     tags: string[]
     document: string | null
