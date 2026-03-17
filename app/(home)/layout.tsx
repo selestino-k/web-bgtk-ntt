@@ -3,19 +3,17 @@ import type { Metadata, Viewport } from "next";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { ReportView } from "@/components/view-counter";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { tag } from "@/lib/db/schema";
+import { eq, asc } from "drizzle-orm";
 
 async function getTags() {
-  return await prisma.tag.findMany({
-    where: {
-      type: { equals: 'CATEGORY' },
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
+  return await db
+    .select()
+    .from(tag)
+    .where(eq(tag.type, "CATEGORY"))
+    .orderBy(asc(tag.name));
 }
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PROD_APP_URL || "http://localhost:3000"),

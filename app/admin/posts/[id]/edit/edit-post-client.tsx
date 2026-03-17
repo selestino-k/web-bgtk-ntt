@@ -4,7 +4,6 @@ import { PostEditor, PostData } from "@/components/cms/post-editor"
 import { updatePost } from "@/lib/admin/actions/post-action"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
-import { Prisma } from "@/lib/generated/prisma/client"
 import { JSONContent } from "@tiptap/core"
 
 interface EditPostClientProps {
