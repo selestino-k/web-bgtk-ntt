@@ -15,7 +15,7 @@ interface PengumumanCardProps {
   title: string;
   slug: string;
   thumbnail: string | null;
-  content: Prisma.JsonValue;
+  content: unknown;
   createdAt: Date;
   author?: {
     name: string;
@@ -33,7 +33,7 @@ interface PengumumanListProps {
   itemsPerPage?: number;
 }
 
-function extractTextFromContent(content: Prisma.JsonValue): string {
+function extractTextFromContent(content: unknown): string {
   if (!content) return "Tidak ada konten"
   
   try {

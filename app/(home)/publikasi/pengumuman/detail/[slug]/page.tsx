@@ -2,9 +2,10 @@ import { User, Calendar, Download, FileText, Timer, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { post as postTable } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
 import ImagePreviewDialog from "./image-preview-dialog";
@@ -33,33 +34,45 @@ type TipTapContent = {
 
 async function getPostBySlug(slug: string) {
   try {
-    const post = await prisma.post.findFirst({
-      where: {
-        slug: slug,
-        published: true,
-      },
-      include: {
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
+    const result = await db.query.post.findFirst({
+      where: (p, { eq: eqFn, and: andFn }) =>
+        andFn(eqFn(p.slug, slug), eqFn(p.published, true)),
+      with: {
         author: {
-          select: {
+          columns: {
             name: true,
             email: true,
           },
         },
+        tags: {
+          with: {
+            tag: true,
+          },
+          columns: {
+            postId: true,
+            tagId: true,
+          },
+        },
+      },
+      columns: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        thumbnail: true,
+        document: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        authorId: true,
       },
     });
 
-    if (!post) {
-      return null;
-    }
+    if (!result) return null;
 
     return {
-      ...post,
-      id: post.id.toString(),
+      ...result,
+      id: result.id.toString(),
     };
   } catch {
     return null;
@@ -67,14 +80,13 @@ async function getPostBySlug(slug: string) {
 }
 
 // Helper function to render TipTap JSON as HTML
-function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
+function renderTipTapContent(content: unknown): JSX.Element {
 
   if (!content) {
     return <p className="text-gray-400">No content</p>
   }
 
   try {
-    // Parse content if it's a string
     let contentObj: TipTapContent
 
     if (typeof content === 'string') {
@@ -94,13 +106,10 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         return <span>{text}</span>
       }
 
-      // Check if there's a link mark first
       const linkMark = marks.find(mark => mark.type === "link")
       if (linkMark) {
         const href = linkMark.attrs?.href as string || "#"
         const target = linkMark.attrs?.target as string || "_blank"
-
-        // Apply other marks to the link text
         const otherMarks = marks.filter(mark => mark.type !== "link")
         let className = "text-blue-600 hover:text-blue-800 hover:underline underline-offset-2 transition-colors"
         const style: React.CSSProperties = {}
@@ -108,37 +117,15 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
 
         otherMarks.forEach(mark => {
           switch (mark.type) {
-            case "bold":
-              className += " font-bold"
-              break
-            case "italic":
-              className += " italic"
-              break
-            case "underline":
-              className += " underline"
-              break
-            case "strike":
-              styledText = `<s>${styledText}</s>`
-              break
-            case "code":
-              className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
-              break
-            case "highlight":
-              if (mark.attrs?.color) {
-                style.backgroundColor = mark.attrs.color as string
-              }
-              break
-            case "textStyle":
-              if (mark.attrs?.color) {
-                style.color = mark.attrs.color as string
-              }
-              break
-            case "subscript":
-              styledText = `<sub>${styledText}</sub>`
-              break
-            case "superscript":
-              styledText = `<sup>${styledText}</sup>`
-              break
+            case "bold": className += " font-bold"; break
+            case "italic": className += " italic"; break
+            case "underline": className += " underline"; break
+            case "strike": styledText = `<s>${styledText}</s>`; break
+            case "code": className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"; break
+            case "highlight": if (mark.attrs?.color) style.backgroundColor = mark.attrs.color as string; break
+            case "textStyle": if (mark.attrs?.color) style.color = mark.attrs.color as string; break
+            case "subscript": styledText = `<sub>${styledText}</sub>`; break
+            case "superscript": styledText = `<sup>${styledText}</sup>`; break
           }
         })
 
@@ -156,44 +143,21 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
         )
       }
 
-      // Original code for non-link marks
       let styledText = text
       let className = ""
       const style: React.CSSProperties = {}
 
       marks.forEach(mark => {
         switch (mark.type) {
-          case "bold":
-            styledText = `<strong>${styledText}</strong>`
-            break
-          case "italic":
-            styledText = `<em>${styledText}</em>`
-            break
-          case "underline":
-            styledText = `<u>${styledText}</u>`
-            break
-          case "strike":
-            styledText = `<s>${styledText}</s>`
-            break
-          case "code":
-            className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"
-            break
-          case "highlight":
-            if (mark.attrs?.color) {
-              style.backgroundColor = mark.attrs.color as string
-            }
-            break
-          case "textStyle":
-            if (mark.attrs?.color) {
-              style.color = mark.attrs.color as string
-            }
-            break
-          case "subscript":
-            styledText = `<sub>${styledText}</sub>`
-            break
-          case "superscript":
-            styledText = `<sup>${styledText}</sup>`
-            break
+          case "bold": styledText = `<strong>${styledText}</strong>`; break
+          case "italic": styledText = `<em>${styledText}</em>`; break
+          case "underline": styledText = `<u>${styledText}</u>`; break
+          case "strike": styledText = `<s>${styledText}</s>`; break
+          case "code": className += " bg-gray-100 px-1 py-0.5 rounded font-mono text-sm"; break
+          case "highlight": if (mark.attrs?.color) style.backgroundColor = mark.attrs.color as string; break
+          case "textStyle": if (mark.attrs?.color) style.color = mark.attrs.color as string; break
+          case "subscript": styledText = `<sub>${styledText}</sub>`; break
+          case "superscript": styledText = `<sup>${styledText}</sup>`; break
         }
       })
 
@@ -209,26 +173,19 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
     const renderNode = (node: TipTapNode, index: number): JSX.Element | null => {
       if (!node) return null
 
-      // Text node
       if (node.type === "text" && node.text) {
         return <span key={index}>{applyMarks(node.text, node.marks)}</span>
       }
 
-      // Paragraph node
       if (node.type === "paragraph") {
         const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
         return (
-          <p
-            key={index}
-            className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify"
-            style={{ textAlign: textAlign || "left" }}
-          >
+          <p key={index} className="mb-4 leading-relaxed text-md md:text-base font-inter text-justify" style={{ textAlign: textAlign || "left" }}>
             {node.content?.map((child, i) => renderNode(child, i))}
           </p>
         )
       }
 
-      // Heading nodes
       if (node.type === "heading") {
         const level = (node.attrs?.level as number) || 2
         const textAlign = node.attrs?.textAlign as React.CSSProperties['textAlign'] | undefined
@@ -241,114 +198,61 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
           h5: "text-base font-bold mb-2 mt-2",
           h6: "text-sm font-bold mb-2 mt-2",
         }
-
         return (
-          <HeadingTag
-            key={index}
-            className={headingClasses[HeadingTag] || ""}
-            style={{ textAlign: textAlign || "left" }}
-          >
+          <HeadingTag key={index} className={headingClasses[HeadingTag] || ""} style={{ textAlign: textAlign || "left" }}>
             {node.content?.map((child, i) => renderNode(child, i))}
           </HeadingTag>
         )
       }
 
-      // Bullet list
       if (node.type === "bulletList") {
-        return (
-          <ul key={index} className="list-disc ml-6 mb-4">
-            {node.content?.map((child, i) => renderNode(child, i))}
-          </ul>
-        )
+        return <ul key={index} className="list-disc ml-6 mb-4">{node.content?.map((child, i) => renderNode(child, i))}</ul>
       }
 
-      // Ordered list
       if (node.type === "orderedList") {
-        return (
-          <ol key={index} className="list-decimal ml-6 mb-4">
-            {node.content?.map((child, i) => renderNode(child, i))}
-          </ol>
-        )
+        return <ol key={index} className="list-decimal ml-6 mb-4">{node.content?.map((child, i) => renderNode(child, i))}</ol>
       }
 
-      // List item
       if (node.type === "listItem") {
-        return (
-          <li key={index} className="mb-1">
-            {node.content?.map((child, i) => renderNode(child, i))}
-          </li>
-        )
+        return <li key={index} className="mb-1">{node.content?.map((child, i) => renderNode(child, i))}</li>
       }
 
-      // Task list
       if (node.type === "taskList") {
-        return (
-          <ul key={index} className="space-y-2 mb-4">
-            {node.content?.map((child, i) => renderNode(child, i))}
-          </ul>
-        )
+        return <ul key={index} className="space-y-2 mb-4">{node.content?.map((child, i) => renderNode(child, i))}</ul>
       }
 
-      // Task item
       if (node.type === "taskItem") {
         const checked = node.attrs?.checked as boolean || false
         return (
           <li key={index} className="flex items-start gap-2">
-            <input
-              type="checkbox"
-              checked={checked}
-              disabled
-              className="mt-1"
-            />
-            <div className="flex-1">
-              {node.content?.map((child, i) => renderNode(child, i))}
-            </div>
+            <input type="checkbox" checked={checked} disabled className="mt-1" />
+            <div className="flex-1">{node.content?.map((child, i) => renderNode(child, i))}</div>
           </li>
         )
       }
 
-      // Blockquote
       if (node.type === "blockquote") {
-        return (
-          <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700">
-            {node.content?.map((child, i) => renderNode(child, i))}
-          </blockquote>
-        )
+        return <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700">{node.content?.map((child, i) => renderNode(child, i))}</blockquote>
       }
 
-      // Code block
       if (node.type === "codeBlock") {
         const language = node.attrs?.language as string | undefined
         return (
           <pre key={index} className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
-            <code className={language ? `language-${language}` : ""}>
-              {node.content?.map((child) =>
-                child.type === "text" ? child.text : ""
-              ).join("")}
-            </code>
+            <code className={language ? `language-${language}` : ""}>{node.content?.map((child) => child.type === "text" ? child.text : "").join("")}</code>
           </pre>
         )
       }
 
-      // Hard break
-      if (node.type === "hardBreak") {
-        return <br key={index} />
-      }
-
-      // Horizontal rule
-      if (node.type === "horizontalRule") {
-        return <hr key={index} className="my-6 border-gray-300" />
-      }
+      if (node.type === "hardBreak") return <br key={index} />
+      if (node.type === "horizontalRule") return <hr key={index} className="my-6 border-gray-300" />
 
       return null
     }
 
     return (
       <div className="prose prose-sm max-w-none">
-        {contentObj.content.map((child, index) => {
-          const rendered = renderNode(child, index)
-          return rendered
-        })}
+        {contentObj.content.map((child, index) => renderNode(child, index))}
       </div>
     )
   } catch {
@@ -356,13 +260,12 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
-function calculateReadTime(content: Prisma.JsonValue) {
+function calculateReadTime(content: unknown) {
   const wordsPerMinute = 200;
 
   try {
-    // Parse TipTap JSON content
     let contentObj: TipTapContent;
-    
+
     if (typeof content === 'string') {
       contentObj = JSON.parse(content) as TipTapContent;
     } else if (typeof content === 'object' && content !== null) {
@@ -371,15 +274,10 @@ function calculateReadTime(content: Prisma.JsonValue) {
       return '0 menit baca';
     }
 
-    // Extract text from TipTap nodes recursively
     const extractText = (nodes: TipTapNode[]): string => {
       return nodes.map(node => {
-        if (node.type === 'text' && node.text) {
-          return node.text;
-        }
-        if (node.content) {
-          return extractText(node.content);
-        }
+        if (node.type === 'text' && node.text) return node.text;
+        if (node.content) return extractText(node.content);
         return '';
       }).join(' ');
     };
@@ -387,12 +285,14 @@ function calculateReadTime(content: Prisma.JsonValue) {
     const text = extractText(contentObj.content || []);
     const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
     const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
-    
+
     return `${readingTime} menit baca`;
   } catch {
     return '0 menit baca';
   }
 }
+
+export const dynamic = 'force-dynamic';
 
 export default async function PengumumanDetail({
   params,
@@ -414,26 +314,20 @@ export default async function PengumumanDetail({
 
   const getGoogleDriveDownloadUrl = (url: string | null) => {
     if (!url) return null;
-
     const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
     const match = url.match(driveRegex);
-
     if (match && match[1]) {
       return `https://drive.google.com/uc?export=download&id=${match[1]}`;
     }
-
     return url;
   };
 
-  const downloadUrl = getGoogleDriveDownloadUrl(post.document);
-
+  const downloadUrl = getGoogleDriveDownloadUrl(post.document ?? null);
   const postTitleTruncated = post.title.length > 50 ? post.title.slice(0, 47) + "..." : post.title;
-
   const readingTime = calculateReadTime(post.content);
 
   const redis = Redis.fromEnv();
   const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
-
   await redis.incr(`views:post:${post.slug}`);
 
   return (
@@ -444,28 +338,20 @@ export default async function PengumumanDetail({
             <BreadcrumbList className="flex flex-wrap gap-2">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/" className="hover:underline">
-                    Beranda
-                  </Link>
+                  <Link href="/" className="hover:underline">Beranda</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator/>
-              <BreadcrumbItem>
-                    Publikasi
-              </BreadcrumbItem>
-              <BreadcrumbSeparator/>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>Publikasi</BreadcrumbItem>
+              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/publikasi/pengumuman" className="hover:underline">
-                    Pengumuman
-                  </Link>
+                  <Link href="/publikasi/pengumuman" className="hover:underline">Pengumuman</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator/>
+              <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {postTitleTruncated}
-                </BreadcrumbPage>
+                <BreadcrumbPage>{postTitleTruncated}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -473,6 +359,7 @@ export default async function PengumumanDetail({
           <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
             {post.title}
           </h2>
+
           <div className="mb-4 text-sm text-gray-500 flex space-x-4">
             <span className="flex items-center space-x-1">
               <User className="h-4 w-4 mr-1" />
@@ -492,18 +379,13 @@ export default async function PengumumanDetail({
               <span>{viewCount} kali dilihat</span>
             </span>
           </div>
+
           {post.thumbnail && (
             <div className="relative max-w-2xl h-auto items-center mx-auto">
-              <ImagePreviewDialog
-                src={post.thumbnail}
-                alt={post.title}
-                width={800}
-                height={450}
-              />
+              <ImagePreviewDialog src={post.thumbnail} alt={post.title} width={800} height={450} />
             </div>
           )}
 
-          {/* Document Attachment Section */}
           {post.document && (
             <Card className="mb-6 border-primary/20">
               <CardContent className="p-4">
@@ -532,7 +414,6 @@ export default async function PengumumanDetail({
             {renderTipTapContent(post.content)}
           </div>
 
-          {/* Download Button at Bottom */}
           {post.document && (
             <div className="mt-8 flex justify-center">
               <Button asChild size="lg" className="gap-2">
@@ -562,25 +443,19 @@ export default async function PengumumanDetail({
   );
 }
 
-export const dynamic = 'force-dynamic';
-
-// Generate static params for static generation (optional)
 export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
-    select: {
-      slug: true,
-    },
-  });
+  if (process.env.NODE_ENV !== 'production') return [];
 
-  return posts.map((post) => ({
-    slug: post.slug,
+  const posts = await db
+    .select({ slug: postTable.slug })
+    .from(postTable)
+    .where(eq(postTable.published, true));
+
+  return posts.map((p) => ({
+    slug: p.slug,
   }));
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: {
@@ -591,17 +466,38 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found",
+      title: "Postingan Tidak Ditemukan | BGTK Provinsi NTT",
+      description: "Postingan yang diminta tidak ditemukan.",
     };
   }
 
+  const ogImage = post.thumbnail
+    ? post.thumbnail
+    : `/publikasi/pengumuman/detail/${slug}/opengraph-image`;
+
   return {
     title: post.title + " | Publikasi Pengumuman | BGTK Provinsi NTT",
-    description: post.title,
+    description: "Dapatkan informasi terbaru seputar dunia pendidikan di Nusa Tenggara Timur melalui website BGTK Provinsi NTT.",
     openGraph: {
       title: post.title,
-      description: post.title,
-      images: post.thumbnail ? [post.thumbnail] : [],
+      description: "Dapatkan informasi terbaru seputar dunia pendidikan di Nusa Tenggara Timur melalui website BGTK Provinsi NTT.",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ],
+      type: 'article',
+      publishedTime: post.createdAt.toISOString(),
+      authors: [post.author?.name || 'Admin'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: "Dapatkan informasi terbaru seputar dunia pendidikan di Nusa Tenggara Timur melalui website BGTK Provinsi NTT.",
+      images: [ogImage],
     },
   };
 }

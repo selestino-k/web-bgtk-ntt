@@ -1,6 +1,8 @@
-import { columns } from "./home-columns";
+import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { document } from "@/lib/db/schema";
+import { desc } from "drizzle-orm";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
@@ -9,59 +11,64 @@ export const metadata = {
     description: "Halaman Dokumen BGTK NTT",
 };
 
-
-
 async function getDocsData() {
-    return await prisma.document.findMany({
-        orderBy: {
-            createdAt: 'desc',
-        },
-    });
-
+    return await db
+        .select({
+            id: document.id,
+            title: document.title,
+            description: document.description,
+            category: document.category,
+            fileUrl: document.fileUrl,
+            fileName: document.fileName,
+            fileSize: document.fileSize,
+            fileType: document.fileType,
+            createdAt: document.createdAt,
+            updatedAt: document.updatedAt,
+        })
+        .from(document)
+        .orderBy(desc(document.createdAt));
 }
+
 export const dynamic = 'force-dynamic';
 
 export default async function DokumenPage() {
-    const docsData = await getDocsData()
+    const docsData = await getDocsData();
     const docsDataWithTableNumber = docsData.map((doc, index) => ({
         ...doc,
-        tableNumber: index + 1
-    }))
+        tableNumber: index + 1,
+    }));
+   
 
     return (
-
         <div id="berita-terkini" className="mt-20 flex place-items-start w-full px-10">
-
             <main className="relative z-10 gap-20 p-8 flex w-full">
-
-
                 <div className="text-left w-full">
                     <div className="mb-4 font-montserrat">
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink asChild>
-                                    <Link href="/">Beranda</Link>
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                Publikasi
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Dokumen</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink asChild>
+                                        <Link href="/">Beranda</Link>
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                                <BreadcrumbItem>
+                                    Publikasi
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Dokumen</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
                     </div>
                     <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Dokumen
                     </h2>
-                    <div className="mb-10 text-md md:text-lg">
+                    <div className="mb-10 text-md md:text-lg font-inter">
                         Unduh berbagai regulasi, dokumen, dan buku yang dapat membantu Anda dalam pengembangan profesionalisme.
                     </div>
-                    <div className="w-full flex-wrap">
+                    <div className="w-full flex-wrap font-inter">
                         <DataTable columns={columns} data={docsDataWithTableNumber} />
                     </div>
                 </div>

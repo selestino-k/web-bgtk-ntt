@@ -2,9 +2,10 @@ import { User, Calendar, Download, FileText, Timer, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { post as postTable, tag, postTag } from "@/lib/db/schema";
+import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
@@ -34,33 +35,45 @@ type TipTapContent = {
 
 async function getPostBySlug(slug: string) {
   try {
-    const post = await prisma.post.findFirst({
-      where: {
-        slug: slug,
-        published: true,
-      },
-      include: {
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
+    const result = await db.query.post.findFirst({
+      where: (p, { eq: eqFn, and: andFn }) =>
+        andFn(eqFn(p.slug, slug), eqFn(p.published, true)),
+      with: {
         author: {
-          select: {
+          columns: {
             name: true,
             email: true,
           },
         },
+        tags: {
+          with: {
+            tag: true,
+          },
+          columns: {
+            postId: true,
+            tagId: true,
+          },
+        },
+      },
+      columns: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        thumbnail: true,
+        document: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        authorId: true,
       },
     });
 
-    if (!post) {
-      return null;
-    }
+    if (!result) return null;
 
     return {
-      ...post,
-      id: post.id.toString(),
+      ...result,
+      id: result.id.toString(),
     };
   } catch {
     return null;
@@ -68,7 +81,7 @@ async function getPostBySlug(slug: string) {
 }
 
 // Helper function to render TipTap JSON as HTML
-function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
+function renderTipTapContent(content: unknown): JSX.Element {
 
   if (!content) {
     return <p className="text-gray-400">No content</p>
@@ -362,7 +375,6 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
 
 export const dynamic = 'force-dynamic';
 
-
 export default async function BeritaTerkiniDetail({
   params,
 }: {
@@ -548,17 +560,14 @@ export async function generateStaticParams() {
   if (process.env.NODE_ENV !== 'production') {
     return [];
   }
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
-    select: {
-      slug: true,
-    },
-  });
 
-  return posts.map((post) => ({
-    slug: post.slug,
+  const posts = await db
+    .select({ slug: postTable.slug })
+    .from(postTable)
+    .where(eq(postTable.published, true));
+
+  return posts.map((p) => ({
+    slug: p.slug,
   }));
 }
 
@@ -570,7 +579,6 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  
 
   if (!post) {
     return {
@@ -579,9 +587,8 @@ export async function generateMetadata({
     };
   }
 
-  // Use thumbnail if available, otherwise use the generated opengraph-image
-  const ogImage = post.thumbnail 
-    ? post.thumbnail 
+  const ogImage = post.thumbnail
+    ? post.thumbnail
     : `/publikasi/berita-terkini/detail/${slug}/opengraph-image`;
 
   return {
@@ -608,6 +615,5 @@ export async function generateMetadata({
       description: "Dapatkan informasi terbaru seputar dunia pendidikan di Nusa Tenggara Timur melalui website BGTK Provinsi NTT.",
       images: [ogImage],
     },
-
   };
 }

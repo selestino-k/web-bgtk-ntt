@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PengumumanSidebar from "@/components/pengumuman-sidebar";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "@/app/(home)/publikasi/dokumen/home-columns";
+import { columns } from "@/app/(home)/publikasi/dokumen/columns";
 import { ArrowRightIcon } from "lucide-react";
 import { db } from "@/lib/db/db";
 import { document, postTag, tag, user, carouselPhoto } from "@/lib/db/schema";
@@ -255,7 +255,7 @@ export default async function Home() {
                 </Link>
               </h2>
             </div>
-            <div className="md:max-w-full max-w-xs mx-auto overflow-x-scroll xl:overflow-x-hidden">
+            <div className="md:max-w-full max-w-xs mx-auto overflow-x-scroll xl:overflow-x-hidden font-inter font-light">
               <DataTable columns={columns} data={docsDataWithTableNumber} />
             </div>
           </main>

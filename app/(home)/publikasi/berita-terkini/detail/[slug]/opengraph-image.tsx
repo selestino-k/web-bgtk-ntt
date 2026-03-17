@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import prisma  from "@/lib/prisma";
+import { db } from "@/lib/db/db";
 import { readFile } from "fs/promises";
 import { join } from "path";
 
@@ -13,65 +13,52 @@ export const size = {
 export const contentType = "image/png";
 
 async function getPostBySlug(slug: string) {
-  try {
-    const post = await prisma.post.findFirst({
-      where: {
-        slug: slug,
-        published: true,
-      },
-      include: {
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
-        author: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-      },
-    });
+    try {
+        const result = await db.query.post.findFirst({
+            where: (p, { eq: eqFn, and: andFn }) =>
+                andFn(eqFn(p.slug, slug), eqFn(p.published, true)),
+            columns: {
+                id: true,
+                title: true,
+                thumbnail: true,
+            },
+        });
 
-    if (!post) {
-      return null;
+        if (!result) return null;
+
+        return {
+            ...result,
+            id: result.id.toString(),
+        };
+    } catch {
+        return null;
     }
-
-    return {
-      ...post,
-      id: post.id.toString(),
-    };
-  } catch {
-    return null;
-  }
 }
 
 export default async function OGImage({ params }: { params: { slug: string } }) {
-    const post = await getPostBySlug(params.slug);
+    const postData = await getPostBySlug(params.slug);
 
-    if (!post) {
+    if (!postData) {
         return new Response("Postingan tidak ditemukan", { status: 404 });
     }
 
     // If post has thumbnail, redirect to it instead of generating image
-    if (post.thumbnail) {
-        return Response.redirect(post.thumbnail, 302);
+    if (postData.thumbnail) {
+        return Response.redirect(postData.thumbnail, 302);
     }
 
-    const postTitleTruncated = post.title.length > 100 ? post.title.slice(0, 97) + "..." : post.title;
+    const postTitleTruncated = postData.title.length > 100 ? postData.title.slice(0, 97) + "..." : postData.title;
 
     // Read the background image from public folder
     const imagePath = join(process.cwd(), 'public', 'images', 'bgtk-background.png');
     let backgroundImage = '';
-    
+
     try {
         const imageBuffer = await readFile(imagePath);
         const base64Image = imageBuffer.toString('base64');
         backgroundImage = `data:image/png;base64,${base64Image}`;
     } catch (error) {
         console.error('Error reading background image:', error);
-        // Fallback to solid color if image not found
         backgroundImage = '';
     }
 
@@ -103,7 +90,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
                         display: "flex",
                     }}
                 />
-                
+
                 <h1
                     style={{
                         fontSize: "56px",
@@ -118,7 +105,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
                     }}
                 >
                     {postTitleTruncated}
-                </h1>   
+                </h1>
             </div>
         ),
         {
