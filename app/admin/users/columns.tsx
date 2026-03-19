@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Edit } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
-import { Role } from "@/lib/generated/prisma/client"
 import { DeleteUserDialog } from "./delete-user-dialog"
+
+type Role = "Admin" | "Operator"
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData> {

@@ -60,6 +60,9 @@ function extractTextFromContent(content: unknown): string {
         return node.text
       }
 
+      // Skip script nodes
+      if (node.type === 'script') return ''
+
       if (node.content && Array.isArray(node.content)) {
         return node.content.map(extractText).join(' ')
       }

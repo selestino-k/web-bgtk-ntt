@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#297bbf', 
 };
 
 export default function RootLayout({
@@ -34,8 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <meta name="theme-color" content="#297bbf" />
-      <body className={` ${montserrat.variable} ${inter.variable} antialiased`}>
+      <body className={`${montserrat.variable} ${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

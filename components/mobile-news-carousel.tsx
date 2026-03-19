@@ -6,7 +6,6 @@ import { User, Calendar } from "lucide-react"
 import { motion } from "framer-motion"
 import { Badge } from "./ui/badge"
 import { useEffect, useState } from "react"
-
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
@@ -59,6 +58,9 @@ function extractTextFromContent(content: unknown): string {
       if (node.type === 'text' && node.text) {
         return node.text
       }
+
+      // Skip script nodes
+      if (node.type === 'script') return ''
       
       if (node.content && Array.isArray(node.content)) {
         return node.content.map(extractText).join(' ')

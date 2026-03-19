@@ -1,6 +1,8 @@
 import { columns } from "@/app/(home)/publikasi/dokumen/columns";
 import { DataTable } from "@/components/ui/data-table";
-import prisma from "@/lib/prisma";
+import { db } from "@/lib/db/db";
+import { document } from "@/lib/db/schema";
+import { desc, eq } from "drizzle-orm";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
@@ -10,17 +12,12 @@ export const metadata = {
     description: "Halaman Rencana Strategis BGTK NTT",
 };
 
-
 async function getDocsData() {
-    return await prisma.document.findMany({
-        orderBy: {
-            createdAt: 'desc',
-        },
-        where: {
-            category: 'Rencana Strategis',
-        },
-    });
-
+    return await db
+        .select()
+        .from(document)
+        .where(eq(document.category, 'Rencana Strategis'))
+        .orderBy(desc(document.createdAt));
 }
 
 export default async function RencanaStrategisPage() {

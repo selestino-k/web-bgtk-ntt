@@ -2,7 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
-import { Role } from "@/lib/generated/prisma/client"
+
+type Role = "Admin" | "Operator" 
 
 export type User = {
   id: string

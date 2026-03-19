@@ -6,7 +6,6 @@ import { Badge } from "./ui/badge";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Prisma } from "@/lib/generated/prisma/browser";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
