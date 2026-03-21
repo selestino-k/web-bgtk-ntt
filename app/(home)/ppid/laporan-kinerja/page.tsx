@@ -65,7 +65,7 @@ export default async function LaporanKinerjaPage() {
                     <div className="mb-10 text-md md:text-lg font-inter">
                         Halaman ini menyediakan akses kepada dokumen-dokumen laporan kinerja yang memuat capaian, evaluasi, dan progres dari berbagai program dan inisiatif yang telah kami laksanakan. Laporan kinerja ini disusun sebagai bentuk akuntabilitas dan transparansi kami dalam menjalankan tugas dan fungsi sebagai lembaga yang berdedikasi untuk memajukan dunia pendidikan di Nusa Tenggara Timur. Melalui laporan ini, kami berupaya memberikan gambaran menyeluruh tentang upaya, tantangan, dan keberhasilan yang telah dicapai, serta langkah-langkah strategis ke depan
                     </div>
-                    <div className="w-full flex-wrap">
+                    <div className="w-full flex-wrap font-inter">
                         <DataTable columns={columns} data={docsDataWithTableNumber} />
                     </div>
                 </div>

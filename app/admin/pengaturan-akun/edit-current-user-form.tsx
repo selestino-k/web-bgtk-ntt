@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateUser } from "@/lib/admin/actions/user-action";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const editUserSchema = z.object({
   name: z.string().min(1, "Nama diperlukan"),
@@ -55,6 +55,7 @@ export function EditUserForm({ user, isOwnProfile, isAdmin }: EditUserFormProps)
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<EditUserFormData>({
     resolver: zodResolver(editUserSchema),
@@ -68,7 +69,6 @@ export function EditUserForm({ user, isOwnProfile, isAdmin }: EditUserFormProps)
 
   async function onSubmit(data: EditUserFormData) {
     setIsLoading(true);
-
     try {
       const updateData: any = {
         id: user.id,
@@ -89,14 +89,25 @@ export function EditUserForm({ user, isOwnProfile, isAdmin }: EditUserFormProps)
       const result = await updateUser(updateData);
 
       if (result.success) {
-        toast.success(result.message);
+        toast({
+          title: "Sukses",
+          description: result.message,
+        });
         router.push("/admin/users");
         router.refresh();
       } else {
-        toast.error(result.error);
+        toast({
+          title: "Error",
+          description: result.error,
+          variant: "destructive",
+        });
       }
-    } catch (error) {
-      toast.error("Terjadi kesalahan saat memperbarui user");
+    } catch {
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui user",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -14,13 +14,11 @@ async function getDashboardData() {
 
     const [
         [{ totalPosts }],
-        [{ totalMedia }],
         [{ totalDocuments }],
         [{ totalAdmins }],
         viewStats,
     ] = await Promise.all([
         db.select({ totalPosts: count() }).from(post),
-        db.select({ totalMedia: count() }).from(post).where(isNotNull(post.thumbnail)),
         db.select({ totalDocuments: count() }).from(document),
         db.select({ totalAdmins: count() }).from(user),
         fetch(`${baseUrl}/api/stats?type=summary`, {
@@ -41,7 +39,7 @@ async function getDashboardData() {
             }))
     ]);
 
-    return { totalPosts, totalMedia, totalDocuments, totalAdmins, ...viewStats };
+    return { totalPosts, totalDocuments, totalAdmins, ...viewStats };
 }
 
 export default async function AdminPage() {
@@ -76,13 +74,6 @@ export default async function AdminPage() {
                             <h2 className="text-3xl font-bold">
                                 <Newspaper className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalPosts}
-                            </h2>
-                        </div>
-                        <div className="p-4 border rounded-lg shadow-sm">
-                            <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Media</h4>
-                            <h2 className="text-3xl font-bold">
-                                <ImagePlay className="inline-block mr-2 h-6 w-6 text-primary" />
-                                {dashboardData.totalMedia}
                             </h2>
                         </div>
                         <div className="p-4 border rounded-lg shadow-sm">

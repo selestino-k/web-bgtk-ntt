@@ -17,10 +17,7 @@ import Link from "next/link"
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { JSONContent } from "@tiptap/core"
 
-// TipTap content type
 type TipTapContent = JSONContent
-
-// Replace Prisma.JsonValue with a Drizzle-compatible JSON type
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
 export interface PostData {
@@ -28,7 +25,6 @@ export interface PostData {
   slug: string
   content: JsonValue
   thumbnail: string
-  thumbnailFile?: File
   tags: string[]
   document: string | null
   published: boolean
@@ -53,7 +49,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   const [slug, setSlug] = useState(initialData?.slug || "")
   const [isSlugManuallyEdited] = useState(false)
   const [thumbnail, setThumbnail] = useState(initialData?.thumbnail || "")
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || [])
   const [documentUrl, setDocumentUrl] = useState<string | null>(initialData?.document || null)
   const [isSaving, setIsSaving] = useState(false)
@@ -68,7 +63,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
 
   const isEditMode = !!initialData?.id
 
-
   const availableTags = [
     "Kabar Balai",
     "Kabar Kementerian",
@@ -78,7 +72,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     "Humas",
     "Internasional",
     "Ramah",
-    "Pendidikan Bermutu Untuk Semua", 
+    "Pendidikan Bermutu Untuk Semua",
     "Pengumuman",
   ]
 
@@ -106,16 +100,14 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     setSelectedTags(selectedTags.filter(t => t !== tag))
   }
 
-  const handleThumbnailChange = (url: string, file?: File) => {
+  const handleThumbnailChange = (url: string) => {
+    // ImageUploader uploads the file itself and returns the final URL.
+    // Just store the URL — never re-upload in the server action.
     setThumbnail(url)
-    if (file) {
-      setThumbnailFile(file)
-    }
   }
 
   const handleThumbnailDelete = () => {
     setThumbnail('')
-    setThumbnailFile(null)
   }
 
   const handleAddDocument = (driveUrl: string) => {
@@ -133,40 +125,33 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       if (!content || !content.content || !Array.isArray(content.content)) {
         return false
       }
-      
-      // Check if there's any non-empty content
       return content.content.some((node: any) => {
         if (node.type === "paragraph" && node.content && Array.isArray(node.content)) {
-          return node.content.some((child: any) => 
+          return node.content.some((child: any) =>
             child.type === "text" && child.text && child.text.trim().length > 0
           )
         }
         return node.content && Array.isArray(node.content) && node.content.length > 0
       })
-    } catch  {
+    } catch {
       toast.error('Gagal memeriksa konten editor')
       return false
     }
   }
 
   const handleSave = async (publish: boolean = false) => {
-    // Validation
     if (!title.trim()) {
       toast.error('Judul wajib diisi')
       return
     }
-
     if (!slug.trim()) {
       toast.error('Slug wajib diisi')
       return
     }
-
     if (selectedTags.length === 0) {
       toast.error('Harap pilih setidaknya satu kategori/tag')
       return
     }
-
-    // Validate content
     if (!hasContent(editorContent)) {
       toast.error('Konten berita wajib diisi')
       return
@@ -176,8 +161,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       title,
       slug,
       content: editorContent as JsonValue,
-      thumbnail,
-      thumbnailFile: thumbnailFile || undefined,
+      thumbnail, // Already a fully uploaded URL from ImageUploader
       tags: selectedTags,
       document: documentUrl,
       published: publish,
@@ -191,9 +175,9 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         setIsSaving(true)
         await onSave?.(postData)
       }
-      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil disimpan')
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
+      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil diterbitkan')
+    } catch {
+      toast.error(isEditMode ? 'Gagal memperbarui postingan' : 'Gagal menerbitkan postingan')
     } finally {
       setIsSaving(false)
       setIsPublishing(false)
@@ -302,7 +286,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
                 value={thumbnail}
                 onChange={handleThumbnailChange}
                 onDelete={handleThumbnailDelete}
-                folder="posts/thumbnails"
+                folder="posts"
                 disabled={isLoading}
                 label="Gambar Thumbnail"
                 aspectRatio="video"

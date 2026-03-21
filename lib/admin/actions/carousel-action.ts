@@ -152,10 +152,15 @@ export async function deleteCarouselPhoto(id: number) {
       return { success: false, error: 'Photo not found' };
     }
 
-    const deleteResult = await deleteCarouselImageFromAssets(photo.imageUrl);
-
-    if (!deleteResult.success) {
-      return { success: false, error: deleteResult.error };
+    // Only delete local files, skip external URLs
+    if (
+      !photo.imageUrl.startsWith('http://') &&
+      !photo.imageUrl.startsWith('https://')
+    ) {
+      const deleteResult = await deleteCarouselImageFromAssets(photo.imageUrl);
+      if (!deleteResult.success) {
+        return { success: false, error: deleteResult.error };
+      }
     }
 
     await db.delete(carouselPhoto).where(eq(carouselPhoto.id, id));

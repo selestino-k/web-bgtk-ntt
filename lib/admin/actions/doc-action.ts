@@ -44,7 +44,7 @@ export async function uploadDocument(formData: FormData) {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Gagal mengunggah dokumen",
+      error: error instanceof Error ? error.message : "Gagal mengunggah dokumen", 
     }
   }
 }
@@ -67,8 +67,7 @@ export async function deleteDocument(id: number) {
     const deleteResult = await deleteDocumentFromAssets(existingDocument.fileUrl)
 
     if (!deleteResult.success) {
-      console.error(deleteResult.error || "Gagal menghapus dokumen dari Server")
-      // Continue with database deletion even if Assets deletion fails
+      (deleteResult.error || "Gagal menghapus dokumen dari Server")
     }
 
     // Delete from database
@@ -79,7 +78,7 @@ export async function deleteDocument(id: number) {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Gagal menghapus dokumen",
+      error: error instanceof Error ? error.message : "Gagal menghapus dokumen", 
     }
   }
 }
@@ -144,7 +143,7 @@ export async function updateDocument(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Gagal memperbarui dokumen",
+      error: error instanceof Error ? error.message : "Gagal memperbarui dokumen", 
     }
   }
 }

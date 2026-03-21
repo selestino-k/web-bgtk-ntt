@@ -84,17 +84,12 @@ export default function EditPostForm({
         content: [],
       };
     } catch  {
-      toast({
-        title: "Error",
-        description: "Gagal memuat konten postingan. Konten akan direset.",
-        variant: "destructive",
-      });
-      return {
-        type: "doc",
-        content: [],
-      };
+      // Remove toast here — this is a silent parse error, not user-facing
+      // toast({ title: "Error", description: "Gagal memuat konten postingan...", variant: "destructive" })
+      console.warn("Gagal memuat konten postingan. Konten akan direset.");
+      return { type: "doc", content: [] };
     }
-  }, [post.content, toast]);
+  }, [post.content]); // also remove toast from deps
 
   // TipTap editor content state
   const [editorContent, setEditorContent] = useState<JSONContent>(parseInitialContent());
@@ -147,11 +142,9 @@ export default function EditPostForm({
         return node.content && Array.isArray(node.content) && node.content.length > 0;
       });
     } catch {
-      toast({
-        title: "Error",
-        description: "Gagal memeriksa konten postingan.",
-        variant: "destructive",
-      });
+      // Remove toast here — this runs silently on every keystroke check
+      // toast({ title: "Error", description: "Gagal memeriksa konten postingan.", variant: "destructive" })
+      console.warn("Gagal memeriksa konten postingan.");
       return false;
     }
   };

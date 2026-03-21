@@ -64,7 +64,7 @@ export default async function RencanaStrategisPage() {
                     <div className="mb-10 text-md md:text-lg font-inter">
                         Halaman ini menyajikan dokumen perencanaan strategis yang menjadi panduan utama dalam menentukan arah, tujuan, dan prioritas kami dalam menjalankan program dan layanan. Rencana strategis ini disusun dengan cermat untuk memastikan bahwa setiap langkah yang kami ambil selaras dengan visi, misi, dan nilai-nilai yang kami pegang, serta responsif terhadap kebutuhan dan harapan masyarakat. Melalui dokumen ini, kami berkomitmen untuk meningkatkan kinerja, inovasi, dan akuntabilitas dalam setiap aspek pelayanan.
                     </div>
-                    <div className="w-full flex-wrap">
+                    <div className="w-full flex-wrap font-inter">
                         <DataTable columns={columns} data={docsDataWithTableNumber} />
                     </div>
                 </div>

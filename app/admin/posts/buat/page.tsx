@@ -38,13 +38,10 @@ export default function NewPostPage() {
       formData.append("published", "false")
       formData.append("authorId", session.user!.id)
       
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
-      } else if (data.thumbnail) {
-        formData.append("thumbnailUrl", data.thumbnail)
+      if (data.thumbnail) {
+        formData.append("existingThumbnailUrl", data.thumbnail)  // ✅ fixed key
       }
 
-      // Add single document URL
       if (data.document) {
         formData.append("document", data.document)
       }
@@ -71,7 +68,7 @@ export default function NewPostPage() {
     }
   }
 
-  const handlePublish = async (data: PostData) => {
+   const handlePublish = async (data: PostData) => {
     try {
       const formData = new FormData()
       formData.append("title", data.title)
@@ -81,13 +78,10 @@ export default function NewPostPage() {
       formData.append("published", "true")
       formData.append("authorId", session.user!.id)
       
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
-      } else if (data.thumbnail) {
-        formData.append("thumbnailUrl", data.thumbnail)
+      if (data.thumbnail) {
+        formData.append("existingThumbnailUrl", data.thumbnail)  // ✅ fixed key
       }
 
-      // Add single document URL
       if (data.document) {
         formData.append("document", data.document)
       }
@@ -95,12 +89,12 @@ export default function NewPostPage() {
       const result = await createPost(formData)
 
       if (!result.success) {
-        throw new Error(result.error || 'Gagal menerbitkan postingan')
+        throw new Error(result.error)
       }
 
       toast({
         title: "Sukses",
-        description: result.message || 'Postingan berhasil diterbitkan',
+        description: result.message,
       })
       
       router.push('/admin/posts')

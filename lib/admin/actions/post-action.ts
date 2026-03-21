@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { eq, and, ne } from "drizzle-orm"
+import { eq, and, ne, max } from "drizzle-orm"
 import {db} from "@/lib/db/db"
 import { post, tag, postTag } from "@/lib/db/schema"
 import { uploadImageToAssets, deleteFileFromAssets } from "./file-actions"
@@ -46,8 +46,14 @@ export async function createPost(formData: FormData) {
       }
     }
 
+    // In createPost: only upload if no URL already set
     let thumbnailUrl = ""
-    if (thumbnailFile && thumbnailFile.size > 0) {
+    const existingThumbnailUrl = formData.get("existingThumbnailUrl") as string
+
+    if (existingThumbnailUrl) {
+      // Already uploaded by ImageUploader component
+      thumbnailUrl = existingThumbnailUrl
+    } else if (thumbnailFile && thumbnailFile.size > 0) {
       const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
 
       if (!uploadResult.success) {
@@ -61,11 +67,12 @@ export async function createPost(formData: FormData) {
     }
 
     const contentJson = JSON.parse(content)
-
     const tagNames = tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : []
 
-    // Generate a post ID using +1 to the current max ID in the database
-    const postId = (await db.select({ maxId: post.id }).from(post)).map(row => row.maxId || 0)[0] + 1
+    // Generate a post ID using MAX(id) + 1
+    const [maxResult] = await db.select({ maxId: max(post.id) }).from(post)
+    const postId = (maxResult?.maxId ?? 0) + 1
+
     const [newPost] = await db
       .insert(post)
       .values({
@@ -77,6 +84,7 @@ export async function createPost(formData: FormData) {
         document: document || null,
         published,
         authorId,
+        updatedAt: new Date(),
       })
       .returning()
 
@@ -125,12 +133,12 @@ export async function createPost(formData: FormData) {
     return {
       success: true,
       post: newPost,
-      message: published ? "Post published successfully" : "Draft saved successfully"
+      message: published ? "Postingan berhasil diterbitkan" : "Draft berhasil disimpan"
     }
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create post"
+      error: error instanceof Error ? error.message : "Gagal menyimpan postingan",
     }
   }
 }
@@ -144,7 +152,6 @@ export async function updatePost(postId: string, formData: FormData) {
     const tags = formData.get("tags") as string
     const document = formData.get("document") as string
     const published = formData.get("published") === "true"
-    const thumbnailFile = formData.get("thumbnail") as File | null
     const existingThumbnail = formData.get("existingThumbnail") as string
 
     const [existingPost] = await db
@@ -175,24 +182,11 @@ export async function updatePost(postId: string, formData: FormData) {
       }
     }
 
-    let thumbnailUrl = existingThumbnail || existingPost.thumbnail || ""
-
-    if (thumbnailFile && thumbnailFile.size > 0) {
-      if (existingPost.thumbnail) {
-        await deleteFileFromAssets(existingPost.thumbnail)
-      }
-
-      const uploadResult = await uploadImageToAssets(thumbnailFile, "posts")
-
-      if (!uploadResult.success) {
-        return {
-          success: false,
-          error: uploadResult.error || "Failed to upload thumbnail"
-        }
-      }
-
-      thumbnailUrl = uploadResult.url || ""
-    }
+    // Thumbnail is always pre-uploaded by ImageUploader — use URL directly
+    const thumbnailUrl = (formData.get("existingThumbnailUrl") as string)
+      || existingThumbnail
+      || existingPost.thumbnail
+      || ""
 
     const contentJson = JSON.parse(content)
     const tagsArray = tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : []
