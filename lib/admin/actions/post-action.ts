@@ -6,6 +6,12 @@ import {db} from "@/lib/db/db"
 import { post, tag, postTag } from "@/lib/db/schema"
 import { uploadImageToAssets, deleteFileFromAssets } from "./file-actions"
 
+// Helper function to validate UUID
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return uuidRegex.test(uuid)
+}
+
 // Create new post
 export async function createPost(formData: FormData) {
   try {
@@ -331,8 +337,3 @@ export async function getPost(postId: string) {
   }
 }
 
-// Helper function to validate UUID
-function isValidUUID(uuid: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-  return uuidRegex.test(uuid)
-}

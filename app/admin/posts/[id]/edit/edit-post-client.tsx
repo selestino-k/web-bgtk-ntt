@@ -34,8 +34,8 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       formData.append("published", "false") // Save as draft
 
       // Handle thumbnail
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail)
       } else if (data.thumbnail) {
         formData.append("existingThumbnail", data.thumbnail)
       }
@@ -77,8 +77,8 @@ export function EditPostClient({ postId, initialData }: EditPostClientProps) {
       formData.append("published", "true") // Publish
 
       // Handle thumbnail
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail)
       } else if (data.thumbnail) {
         formData.append("existingThumbnail", data.thumbnail)
       }
