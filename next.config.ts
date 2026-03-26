@@ -49,6 +49,10 @@ const nextConfig: NextConfig = {
   compress:false,
   productionBrowserSourceMaps: false,
   output: "standalone",
+  env: {
+    PORT: process.env.PORT,
+    HOSTNAME: process.env.HOSTNAME,
+  },
   experimental: {
     optimizePackageImports: ["@radix-ui/react-*"],
     serverActions: {
