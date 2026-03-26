@@ -7,183 +7,424 @@ Website resmi Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur ya
 Website ini merupakan platform digital utama BGTK NTT yang menyediakan:
 
 - **Informasi Profil Lembaga** - Sejarah, visi misi, struktur organisasi, dan tugas pokok fungsi
-- **Portal Publikasi** - Berita terkini, pengumuman, peraturan, dan dokumen yang dapat diunduh
-- **Sistem Pelayanan** - ULT (Unit Layanan Terpadu), SAKIP, dan akses aplikasi terkait
-- **Program Prioritas** - Informasi tentang program-program unggulan BGTK NTT
+- **Portal Publikasi** - Berita terkini, pengumuman, dan dokumen yang dapat diunduh
+- **PPID** - Informasi terkait keterbukaan informasi publik
+- **Program Prioritas** - IKM, PPM, PPG, dan PKB
+- **SSD (Soal Sering Ditanya)** - FAQ dan informasi layanan
+- **ULT (Unit Layanan Terpadu)** - Informasi sarana dan prasarana layanan
+- **ZI WBK** - Halaman Zona Integritas Wilayah Bebas Korupsi
 - **Admin Panel** - Dashboard untuk manajemen konten website
 
 ## 📋 Teknologi yang Digunakan
 
 ### Framework & Libraries Utama
 
-- **Next.js 15+** - React framework untuk production-ready applications dengan App Router
-- **TypeScript** - Type-safe JavaScript untuk development yang lebih aman
-- **Tailwind CSS** - Utility-first CSS framework untuk styling modern
-- **Prisma** - Next-generation ORM untuk database management
-- **Radix UI** - Unstyled, accessible component library
-- **Framer Motion** - Animation library untuk smooth transitions dan interaksi
-- **React Table** - Headless table library untuk data tables yang powerful
+| Paket | Versi | Kegunaan |
+|-------|-------|----------|
+| **Next.js** | ^16.2.0 | React framework dengan App Router |
+| **React** | 19.2.0 | UI library |
+| **TypeScript** | ^5 | Type-safe JavaScript |
+| **Tailwind CSS** | ^4 | Utility-first CSS framework |
+| **Drizzle ORM** | ^0.45.1 | Type-safe ORM untuk database |
+| **next-auth** | ^4.24.13 | Autentikasi |
+| **Radix UI** | various | Headless accessible components |
+| **Framer Motion** | ^12.23.25 | Animasi dan transisi |
+| **TanStack Table** | ^8.21.3 | Headless data table |
+| **Tiptap** | ^3.15.3 | Rich text editor |
+| **Hono** | ^4.11.10 | Web framework untuk API routes |
+| **Zod** | ^4.2.1 | Schema validation |
+| **React Hook Form** | ^7.69.0 | Form management |
+| **Embla Carousel** | ^8.6.0 | Carousel/slider |
+| **Recharts** | ^2.15.4 | Chart dan grafik |
+| **Sonner** | ^2.0.7 | Toast notifications |
+| **Lucide React** | ^0.555.0 | Icon library |
+| **date-fns** | ^4.1.0 | Utilitas tanggal |
+| **bcrypt** | ^6.0.0 | Password hashing |
 
-### Development Tools
+### Database & Storage
 
-- **ESLint** - Code quality dan style checker
-- **PostCSS** - CSS processing dan transformasi
+- **PostgreSQL** - Relational database utama
+- **Drizzle ORM** - Type-safe query builder dan migrations
+- **Prisma** - Database client (adapter pg)
+- **Upstash Redis** - Caching dan penghitungan views/pengunjung
+- **AWS S3 / Compatible Storage** - Penyimpanan gambar dan dokumen
 
-### Database & Backend
+### DevDependencies
 
-- **Prisma ORM** - Type-safe database client
-- **PostgreSQL** - Relational database (konfigurasi ada di prisma.config.ts)
-- **Supabase** - Hosting online database PostgreSQL
-- **AWS S3 Storage** - Bucket penyimpanan gambar thumbnail postingan dan unggahan dokumen
-- **Redis** - Database vector untuk caching (digunakan untuk menghitung jumlah pengunjung dan pembaca postingan)
-- **Upstash** - Hosting online database Redis
-
+| Paket | Versi | Kegunaan |
+|-------|-------|----------|
+| **Drizzle Kit** | ^0.31.9 | CLI migrations Drizzle |
+| **Supabase** | ^2.78.1 | Tooling database Supabase |
+| **ESLint** | ^10.0.0 | Linter kode |
+| **Sass** | ^1.97.2 | CSS preprocessor |
+| **tsx** | ^4.21.0 | TypeScript executor |
 
 ## 📁 Struktur Proyek
 
 ```
 web-bgtk-ntt/
-├── app/                          # Next.js App Router
-│   ├── (home)/                   # Home layout group
-│   │   ├── page.tsx              # Homepage
-│   │   ├── profil/               # Halaman profil
-│   │   │   ├── sambutan-kata/
-│   │   │   ├── sejarah/
-│   │   │   ├── struktur-organisasi/
-│   │   │   ├── tupoksi/
-│   │   │   └── visi-misi/
-│   │   ├── publikasi/            # Halaman publikasi
-│   │   │   ├── berita-terkini/
-│   │   │   ├── pengumuman/
-│   │   │   ├── dokumen/
-│   │   │   └── siaran-pers/
-│   │   ├── lainnya/              # Halaman lainnya
-│   │   │   └── faq/
-│   │   ├── sakip/                # Halaman SAKIP
+├── app/                                    # Next.js App Router
+│   ├── globals.css                         # Global styles
+│   ├── layout.tsx                          # Root layout
+│   ├── not-found.tsx                       # Halaman 404
+│   ├── robots.ts                           # SEO robots.txt
+│   │
+│   ├── (auth)/                             # Route group autentikasi
+│   │   ├── layout.tsx
+│   │   └── sign-in/
+│   │       └── page.tsx                    # Halaman login
+│   │
+│   ├── (home)/                             # Route group halaman publik
+│   │   ├── layout.tsx                      # Layout dengan navbar & footer
+│   │   ├── page.tsx                        # Homepage
+│   │   │
+│   │   ├── ppid/                           # PPID - Keterbukaan Informasi Publik
+│   │   │   ├── page.tsx
 │   │   │   ├── laporan-kinerja/
+│   │   │   │   └── page.tsx
+│   │   │   ├── penghargaan/
 │   │   │   ├── perjanjian-kinerja/
-│   │   │   ├── rencana-strategis/
-│   │   │   └── penghargaan/
-│   │   ├── program/               # Halaman Program Prioritas
+│   │   │   │   └── page.tsx
+│   │   │   └── rencana-strategis/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── profil/                         # Halaman profil lembaga
+│   │   │   ├── sambutan-kata/
+│   │   │   │   └── page.tsx
+│   │   │   ├── sejarah/
+│   │   │   │   └── page.tsx
+│   │   │   ├── struktur-organisasi/
+│   │   │   │   └── page.tsx
+│   │   │   ├── tupoksi/
+│   │   │   │   └── page.tsx
+│   │   │   └── visi-misi/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── program/                        # Program prioritas
 │   │   │   ├── ikm/
+│   │   │   │   └── page.tsx
 │   │   │   ├── pkb/
 │   │   │   ├── ppg/
 │   │   │   └── ppm/
-│   │   └── layout.tsx            # Layout wrapper untuk home
-│   ├── api/                      # API routes
-│   ├── admin/                    # Admin panel & dashboard
-│   ├── layout.tsx                # Root layout
-│   ├── globals.css               # Global styles
-│   └── not-found.tsx             # 404 page
-├── components/                   # Komponen React yang dapat digunakan ulang
-│   ├── ui/                       # Shadcn/ui components
-│   │   ├── card.tsx
-│   │   ├── button.tsx
-│   │   ├── dialog.tsx
-│   │   ├── dropdown-menu.tsx
-│   │   ├── navigation-menu.tsx
-│   │   ├── sheet.tsx
-│   │   ├── table.tsx
-│   │   └── ...
-│   ├── motion/                   # Animation components
-│   │   ├── presence-motion.tsx
-│   │   └── program-card-hover-motion.tsx
-│   ├── navbar.tsx                # Navigation bar
-│   ├── footer.tsx                # Footer component
-│   ├── nav-menu.tsx              # Desktop navigation menu
-│   ├── nav-dropdown.tsx          # Dropdown menus
-│   ├── nav-sheet.tsx             # Mobile navigation sheet
-│   ├── dark-switch.tsx           # Dark mode toggle
-│   ├── news-card.tsx             # News card component
-│   ├── news-carousel.tsx         # News carousel
-│   ├── mobile-news-carousel.tsx  # Mobile news carousel
-│   ├── pengumuman-card.tsx       # Announcement cards
-│   └── program-card.tsx          # Program cards
-├── hooks/                        # Custom React hooks
-│   └── use-mobile.tsx            # Mobile detection hook
-├── lib/                          # Utility functions & configurations
-│   └── utils.ts                  # Helper functions
-├── prisma/                       # Prisma ORM setup
-│   ├── schema.prisma             # Database schema
-│   └── migrations/               # Database migrations
-├── public/                       # Static assets
-│   ├── images/                   # Image files
-│   ├── logo/                     # Logo files
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── publikasi/                      # Portal publikasi
+│   │   │   ├── layout.tsx
+│   │   │   ├── berita-terkini/
+│   │   │   │   ├── loading.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── detail/
+│   │   │   │       └── [slug]/
+│   │   │   │           ├── berita-sidebar.tsx
+│   │   │   │           ├── image-preview-dialog.tsx
+│   │   │   │           ├── loading.tsx
+│   │   │   │           ├── opengraph-image.tsx
+│   │   │   │           └── page.tsx
+│   │   │   ├── dokumen/
+│   │   │   │   ├── columns.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── pengumuman/
+│   │   │       ├── page.tsx
+│   │   │       └── detail/
+│   │   │           └── [slug]/
+│   │   │               ├── image-preview-dialog.tsx
+│   │   │               ├── loading.tsx
+│   │   │               ├── opengraph-image.tsx
+│   │   │               └── page.tsx
+│   │   │
+│   │   ├── ssd/                            # Sistem Satu Data
+│   │   │   ├── faq-accordion.tsx
+│   │   │   └── page.tsx
+│   │   │
+│   │   ├── ult/                            # Unit Layanan Terpadu
+│   │   │   └── sarana-prasarana/
+│   │   │       ├── page.tsx
+│   │   │       └── sarana-card.tsx
+│   │   │
+│   │   └── zi-wbk/                         # Zona Integritas WBK
+│   │       └── page.tsx
+│   │
+│   ├── admin/                              # Panel admin (protected)
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                        # Dashboard admin
+│   │   ├── carousel/                       # Manajemen carousel/banner
+│   │   │   ├── columns.tsx
+│   │   │   ├── delete-foto-dialog.tsx
+│   │   │   ├── foto-data-table.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── [id]/edit/
+│   │   │   │   └── page.tsx
+│   │   │   └── tambah/
+│   │   │       └── page.tsx
+│   │   ├── docs/                           # Manajemen dokumen
+│   │   │   ├── columns.tsx
+│   │   │   ├── delete-document-dialog.tsx
+│   │   │   ├── edit-document-dialog.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── upload/
+│   │   │       └── page.tsx
+│   │   ├── pengaturan-akun/                # Pengaturan akun pengguna
+│   │   │   ├── edit-current-user-form.tsx
+│   │   │   └── page.tsx
+│   │   ├── pengumuman/                     # Manajemen pengumuman
+│   │   │   ├── columns.tsx
+│   │   │   └── page.tsx
+│   │   ├── posts/                          # Manajemen berita / postingan
+│   │   │   ├── columns.tsx
+│   │   │   ├── delete-post-dialog.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── post-data-table.tsx
+│   │   │   ├── [id]/edit/
+│   │   │   │   ├── edit-post-client.tsx
+│   │   │   │   ├── edit-post-form.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── buat/
+│   │   │       └── page.tsx
+│   │   └── users/                          # Manajemen pengguna
+│   │       ├── columns.tsx
+│   │       ├── delete-user-dialog.tsx
+│   │       ├── opr-columns.tsx
+│   │       ├── page.tsx
+│   │       ├── [id]/edit/
+│   │       │   └── page.tsx
+│   │       └── buat/
+│   │           └── page.tsx
+│   │
+│   └── api/                                # API Routes
+│       ├── auth/
+│       │   └── [...nextauth]/
+│       │       └── route.ts                # NextAuth handler
+│       ├── increment/
+│       │   └── route.ts                    # Increment view counter
+│       ├── stats/
+│       │   └── route.ts                    # Statistik pengunjung
+│       └── upload/
+│           └── route.ts                    # Upload file handler
+│
+├── components/                             # Komponen React reusable
+│   ├── ui/                                 # Shadcn/ui components
 │   └── ...
-├── styles/                       # Additional style files
-├── utils/                        # Utility functions
-│   └── scroll.ts                 # Scroll utilities
-├── .env                          # Environment variables (production)
-├── .env.local                    # Environment variables (local development)
-├── .gitignore                    # Git ignore rules
-├── components.json               # Shadcn/ui configuration
-├── eslint.config.mjs             # ESLint configuration
-├── next.config.ts                # Next.js configuration
-├── next-env.d.ts                 # Next.js TypeScript declarations
-├── package.json                  # Project dependencies & scripts
-├── postcss.config.mjs            # PostCSS configuration
-├── prisma.config.ts              # Prisma configuration
-├── tailwind.config.ts            # Tailwind CSS configuration
-└── tsconfig.json                 # TypeScript configuration
+├── hooks/                                  # Custom React hooks
+├── lib/                                    # Utility & konfigurasi
+├── public/                                 # Static assets
+├── server.js                               # Custom server (untuk cPanel/VPS)
+├── .env                                    # Environment variables (production)
+├── .env.local                              # Environment variables (lokal)
+├── components.json                         # Shadcn/ui config
+├── drizzle.config.ts                       # Drizzle ORM config
+├── next.config.ts                          # Next.js config
+├── package.json                            # Dependencies & scripts
+├── prisma.config.ts                        # Prisma config
+└── tsconfig.json                           # TypeScript config
 ```
+
+## 🗺️ Rute Halaman Publik
+
+| Halaman | Route |
+|---------|-------|
+| Homepage | `/` |
+| Sambutan Kata | `/profil/sambutan-kata` |
+| Sejarah | `/profil/sejarah` |
+| Visi & Misi | `/profil/visi-misi` |
+| Struktur Organisasi | `/profil/struktur-organisasi` |
+| Tugas Pokok & Fungsi | `/profil/tupoksi` |
+| Berita Terkini | `/publikasi/berita-terkini` |
+| Detail Berita | `/publikasi/berita-terkini/detail/[slug]` |
+| Pengumuman | `/publikasi/pengumuman` |
+| Detail Pengumuman | `/publikasi/pengumuman/detail/[slug]` |
+| Dokumen | `/publikasi/dokumen` |
+| PPID | `/ppid` |
+| Laporan Kinerja | `/ppid/laporan-kinerja` |
+| Perjanjian Kinerja | `/ppid/perjanjian-kinerja` |
+| Rencana Strategis | `/ppid/rencana-strategis` |
+| Penghargaan | `/ppid/penghargaan` |
+| Program IKM | `/program/ikm` |
+| Program PPM | `/program/ppm` |
+| Program PPG | `/program/ppg` |
+| Program PKB | `/program/pkb` |
+| SSD / FAQ | `/ssd` |
+| ULT Sarana Prasarana | `/ult/sarana-prasarana` |
+| ZI WBK | `/zi-wbk` |
+| Login Admin | `/sign-in` |
+
+## 🔐 Rute Admin Panel
+
+| Halaman | Route |
+|---------|-------|
+| Dashboard | `/admin` |
+| Manajemen Postingan | `/admin/posts` |
+| Buat Postingan | `/admin/posts/buat` |
+| Edit Postingan | `/admin/posts/[id]/edit` |
+| Manajemen Pengumuman | `/admin/pengumuman` |
+| Manajemen Dokumen | `/admin/docs` |
+| Upload Dokumen | `/admin/docs/upload` |
+| Manajemen Carousel | `/admin/carousel` |
+| Tambah Carousel | `/admin/carousel/tambah` |
+| Edit Carousel | `/admin/carousel/[id]/edit` |
+| Manajemen Pengguna | `/admin/users` |
+| Buat Pengguna | `/admin/users/buat` |
+| Edit Pengguna | `/admin/users/[id]/edit` |
+| Pengaturan Akun | `/admin/pengaturan-akun` |
 
 ## 🛠️ Instalasi & Setup
 
 ### Prerequisites
 
-- **Node.js 18+** atau npm 9+
+- **Node.js 20+**
+- **npm 9+**
 - **Git**
-- **PostgreSQL** atau **MySQL** (untuk database)
+- **PostgreSQL**
 
-### Langkah-langkah Instalasi
-
-1. **Clone repository**
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/selestino-k/web-bgtk-ntt.git
 cd web-bgtk-ntt
 ```
 
-2. **Install dependencies**
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-3. **Konfigurasi environment variables**
+### 3. Konfigurasi Environment Variables
 
-Buat file `.env.local` di root folder dan tambahkan konfigurasi berikut:
+Buat file `.env.local` untuk development lokal:
 
 ```env
-# Database
+# Database PostgreSQL
 DATABASE_URL="postgresql://user:password@localhost:5432/bgtk_ntt"
 
-# Next.js
-NEXT_PUBLIC_API_URL="http://localhost:3000"
+# NextAuth
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
 
-# Tambahkan variabel lain sesuai kebutuhan
+# Upstash Redis (untuk view counter)
+UPSTASH_REDIS_REST_URL="https://your-redis.upstash.io"
+UPSTASH_REDIS_REST_TOKEN="your-token"
+
+# S3 Storage (untuk upload file)
+S3_ENDPOINT="https://your-s3-endpoint"
+S3_ACCESS_KEY="your-access-key"
+S3_SECRET_KEY="your-secret-key"
+S3_BUCKET_NAME="your-bucket"
+S3_REGION="your-region"
 ```
 
-4. **Setup Database dengan Prisma**
+### 4. Setup Database
 
 ```bash
-# Generate Prisma Client
-npx prisma generate
+# Generate Drizzle migrations
+npx drizzle-kit generate
 
-# Run migrations
-npx prisma migrate dev
+# Jalankan migrations
+npx drizzle-kit migrate
 
-# (Opsional) Seed database
-npx prisma db seed
+# Atau push schema langsung (development)
+npx drizzle-kit push
 ```
 
-5. **Run development server**
+### 5. Jalankan Development Server
 
 ```bash
 npm run dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000) di browser untuk melihat hasilnya.
+Buka [http://localhost:3000](http://localhost:3000) di browser.
+
+---
+
+## 🖥️ Deployment di cPanel (Node.js App)
+
+### Prerequisites cPanel
+
+- cPanel dengan fitur **Node.js Selector** (CloudLinux + EasyApache)
+- Node.js **20.x** atau lebih baru
+- Akses ke **Terminal** atau **SSH**
+- Database **PostgreSQL** sudah dikonfigurasi di cPanel
+
+### Langkah-langkah Deploy
+
+#### 1. Upload Source Code
+
+Upload seluruh source code ke folder aplikasi di cPanel (misalnya `/home/username/web-bgtk-ntt`) melalui:
+- **File Manager** cPanel, atau
+- **Git Clone** via SSH terminal:
+
+```bash
+git clone https://github.com/selestino-k/web-bgtk-ntt.git /home/username/web-bgtk-ntt
+```
+
+#### 2. Buat Node.js App di cPanel
+
+1. Buka **cPanel** → **Software** → **Setup Node.js App**
+2. Klik **Create Application**
+3. Isi konfigurasi:
+   - **Node.js version**: `20.x` (atau terbaru)
+   - **Application mode**: `Production`
+   - **Application root**: `/home/username/web-bgtk-ntt`
+   - **Application URL**: domain atau subdomain Anda
+   - **Application startup file**: `server.js`
+4. Klik **Create**
+
+#### 3. Set Environment Variables
+
+Masih di halaman Node.js App, tambahkan environment variables berikut di bagian **Environment Variables**:
+
+```
+NODE_ENV=production
+DATABASE_URL=postgresql://user:password@localhost:5432/bgtk_ntt
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=https://yourdomain.com
+UPSTASH_REDIS_REST_URL=https://your-redis.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-token
+S3_ENDPOINT=https://your-s3-endpoint
+S3_ACCESS_KEY=your-access-key
+S3_SECRET_KEY=your-secret-key
+S3_BUCKET_NAME=your-bucket
+S3_REGION=your-region
+```
+
+#### 4. Install Dependencies via Terminal
+
+Klik tombol **Enter to terminal** di halaman Node.js App, lalu jalankan:
+
+```bash
+# Aktifkan virtual environment Node.js cPanel
+source /home/username/nodevenv/web-bgtk-ntt/20/bin/activate
+
+# Masuk ke direktori aplikasi
+cd /home/username/web-bgtk-ntt
+
+# Install dependencies
+npm install
+
+# Jalankan database migrations
+npx drizzle-kit migrate
+
+# Build aplikasi Next.js
+npm run build
+```
+
+#### 5. Jalankan Aplikasi
+
+Kembali ke halaman **Setup Node.js App** di cPanel dan klik tombol **Run JS Script** atau **Restart** untuk menjalankan aplikasi.
+
+Aplikasi akan berjalan menggunakan `server.js` sebagai entry point.
+
+#### 6. Konfigurasi `.htaccess` (jika diperlukan)
+
+Jika menggunakan subdomain atau folder, pastikan `.htaccess` mengarahkan traffic ke port Node.js:
+
+```apache
+RewriteEngine On
+RewriteRule ^(.*)$ http://localhost:PORT/$1 [P,L]
+```
+
+> Ganti `PORT` dengan port yang ditetapkan cPanel untuk aplikasi Node.js Anda.
+
+---
 
 ## 📝 Scripts Tersedia
 
@@ -191,193 +432,63 @@ Buka [http://localhost:3000](http://localhost:3000) di browser untuk melihat has
 # Development server
 npm run dev
 
-# Production build
+# Build production
 npm run build
 
-# Start production server
+# Start production server (menggunakan server.js)
 npm start
 
 # Linting
 npm run lint
 
-# Format code dengan ESLint
-npm run lint:fix
+# Drizzle - generate migrations
+npx drizzle-kit generate
 
-# Prisma Studio (Database GUI)
-npx prisma studio
+# Drizzle - jalankan migrations
+npx drizzle-kit migrate
 
-# Generate Prisma Client
-npx prisma generate
+# Drizzle - push schema (development)
+npx drizzle-kit push
 
-# Run database migrations
-npx prisma migrate dev
+# Drizzle Studio - GUI database
+npx drizzle-kit studio
 ```
 
 ## 🎨 Fitur Utama
 
 ### 1. **Responsive Design**
-- Mobile-first approach dengan Tailwind CSS
-- Breakpoints yang optimal untuk mobile, tablet, dan desktop
-- Touch-friendly interface untuk perangkat mobile
+- Mobile-first dengan Tailwind CSS v4
+- Tampilan optimal di mobile, tablet, dan desktop
 
 ### 2. **Dark Mode**
-- Toggle dark/light mode dengan smooth transition
-- Theme provider menggunakan Context API
-- Simpan preferensi pengguna di localStorage
+- Toggle dark/light mode dengan `next-themes`
+- Preferensi tersimpan di localStorage
 
-### 3. **Smooth Animations**
+### 3. **Rich Text Editor**
+- Tiptap editor untuk pembuatan konten berita dan pengumuman di admin panel
+- Mendukung gambar, highlight, list, heading, dan lainnya
+
+### 4. **Animasi**
 - Framer Motion untuk page transitions dan micro-interactions
-- Hover effects yang halus pada cards dan buttons
-- Scroll-triggered animations dengan `PresenceMotion`
+- Scroll-triggered animations
 
-### 4. **Navigation**
-- **Desktop**: Navigation menu dengan dropdown yang elegan
-- **Mobile**: Sheet navigation dengan accordion
-- SEO-friendly routing dengan Next.js App Router
+### 5. **Content Management System (Admin Panel)**
+- CRUD berita, pengumuman, dokumen, dan carousel
+- Upload dan manajemen gambar/dokumen ke S3
+- Manajemen pengguna dengan role-based access
 
-### 5. **Content Management System**
-- Admin panel untuk manajemen konten
-- CRUD operations untuk berita, pengumuman, dan dokumen
-- Upload dan manajemen file/gambar
-- Data table dengan sorting, filtering, dan pagination
+### 6. **View Counter & Statistik**
+- Upstash Redis untuk menghitung pengunjung dan views postingan
+- Dashboard statistik di panel admin
 
-### 6. **Database Integration**
-- Prisma ORM untuk type-safe database queries
-- Migrations untuk version control database schema
-- Relational data modeling
+### 7. **SEO & Open Graph**
+- Metadata dinamis per halaman
+- Open Graph image untuk berita dan pengumuman
+- `robots.ts` untuk konfigurasi SEO
 
-### 7. **Accessibility**
-- Semantic HTML untuk struktur yang jelas
-- ARIA labels untuk screen readers
-- Keyboard navigation support
-- WCAG 2.1 compliant
-
-## 🚢 Deployment
-
-### Deploy ke Vercel (Recommended)
-
-1. Push code ke GitHub
-2. Buka [Vercel Dashboard](https://vercel.com)
-3. Import repository `web-bgtk-ntt`
-4. Tambahkan environment variables di Vercel
-5. Vercel akan otomatis detect Next.js dan deploy
-
-```bash
-# Atau gunakan Vercel CLI
-npm i -g vercel
-vercel
-```
-
-### Deploy ke Server Lain
-
-1. **Build aplikasi**
-
-```bash
-npm run build
-```
-
-2. **Setup environment variables di production server**
-
-3. **Run database migrations**
-
-```bash
-npx prisma migrate deploy
-```
-
-4. **Start production server**
-
-```bash
-npm start
-```
-
-## 📱 Fitur Mobile
-
-- **Responsive Carousel** - Berita dengan swipe support
-- **Mobile Navigation** - Sheet-based menu yang user-friendly
-- **Touch Optimized** - Button dan touch target yang sesuai standar
-- **Image Optimization** - Lazy loading dan responsive images
-- **Fast Loading** - Optimized untuk koneksi mobile yang lambat
-
-## 🔐 Best Practices
-
-- **TypeScript** untuk type safety dan better developer experience
-- **Component composition** untuk reusability maksimal
-- **Tailwind CSS** untuk consistent styling
-- **Prisma ORM** untuk type-safe database operations
-- **SEO optimization** dengan Meta tags dan Open Graph
-- **Performance optimization** melalui code splitting dan image optimization
-- **Security** dengan environment variables dan API route protection
-
-## 📚 Struktur Komponen
-
-### UI Components (dari Shadcn/ui)
-
-- **Card** - Container untuk konten
-- **Button** - Interactive buttons dengan variants
-- **Dialog** - Modal dialogs
-- **Dropdown Menu** - Menu dropdowns
-- **Navigation Menu** - Radix-based navigation
-- **Sheet** - Side sheet untuk mobile navigation
-- **Table** - Data tables dengan React Table
-- **Accordion** - Collapsible sections
-- **Badge** - Labels dan tags
-- **Form** - Form components dengan validasi
-
-### Custom Components
-
-- **Navbar** - Header dengan logo dan navigation
-- **Footer** - Footer dengan links dan informasi kontak
-- **NewsCard** - Card untuk menampilkan berita
-- **ProgramCard** - Card untuk program prioritas dengan hover effects
-- **Carousel** - Custom carousel untuk content rotation
-- **DarkSwitch** - Toggle untuk dark mode
-
-## 🎯 Halaman Utama
-
-| Halaman | Route | Deskripsi |
-|---------|-------|-----------|
-| Homepage | `/` | Halaman utama dengan hero section |
-| Sambutan | `/profil/sambutan-kata` | Sambutan kepala balai |
-| Sejarah | `/profil/sejarah` | Sejarah berdirinya BGTK NTT |
-| Visi Misi | `/profil/visi-misi` | Visi dan misi lembaga |
-| Struktur Org | `/profil/struktur-organisasi` | Struktur organisasi |
-| Tugas & Fungsi | `/profil/tupoksi` | Tugas pokok dan fungsi |
-| Berita | `/publikasi/berita-terkini` | Berita terkini |
-| Pengumuman | `/publikasi/pengumuman` | Pengumuman penting |
-| Peraturan | `/publikasi/peraturan-juknis` | Peraturan dan juknis |
-| Unduh | `/publikasi/unduh` | Download resources |
-| FAQ | `/lainnya/faq` | Frequently asked questions |
-| Admin Panel | `/admin` | Dashboard admin untuk manajemen konten |
-
-## 🗄️ Database Schema
-
-Database dikelola menggunakan Prisma ORM. Schema dapat dilihat di [prisma/schema.prisma](prisma/schema.prisma).
-
-Untuk melihat dan mengelola database, jalankan:
-
-```bash
-npx prisma studio
-```
-
-## 🤝 Kontribusi
-
-Untuk berkontribusi pada proyek ini:
-
-1. Fork repository
-2. Clone fork Anda: `git clone https://github.com/username/web-bgtk-ntt.git`
-3. Buat branch feature: `git checkout -b feature/AmazingFeature`
-4. Commit changes: `git commit -m 'Add: AmazingFeature'`
-5. Push ke branch: `git push origin feature/AmazingFeature`
-6. Buat Pull Request ke branch `dev`
-
-### Branching Strategy
-
-- **master** - Production branch
-- **dev** - Development branch
-
-## 📄 Lisensi
-
-GNU General Public License v3.0
+### 8. **Autentikasi**
+- NextAuth.js dengan credentials provider
+- Session management dan route protection untuk admin
 
 ## 📞 Hubungi Kami
 
@@ -388,14 +499,14 @@ GNU General Public License v3.0
 - 🌐 Website: [https://bgtkntt.kemendikdasmen.go.id](https://bgtkntt.kemendikdasmen.go.id)
 - 📱 Media Sosial:
   - Facebook: [@balaigurupenggerakntt](https://www.facebook.com/balaigurupenggerakntt/)
-  - Twitter: [@BGTK_NTT](https://twitter.com/BGTK_NTT)
+  - Twitter/X: [@BGTK_NTT](https://twitter.com/BGTK_NTT)
   - Instagram: [@bgtkntt](https://www.instagram.com/bgtkntt/)
   - YouTube: [@bgtkntt](https://www.youtube.com/@bgtkntt/)
-  - TikTok : [@bgtkntt](https://www.tiktok.com/@bgtkntt)
+  - TikTok: [@bgtkntt](https://www.tiktok.com/@bgtkntt)
 
-## 🙏 Terima Kasih
+## 📄 Lisensi
 
-Terima kasih atas kunjungan Anda ke website BGTK Provinsi NTT. Semoga website ini dapat memberikan informasi dan layanan yang bermanfaat bagi pengembangan pendidikan di Nusa Tenggara Timur.
+GNU General Public License v3.0
 
 ---
 
@@ -403,4 +514,4 @@ Terima kasih atas kunjungan Anda ke website BGTK Provinsi NTT. Semoga website in
 
 **Repository:** [github.com/selestino-k/web-bgtk-ntt](https://github.com/selestino-k/web-bgtk-ntt)
 
-**Terakhir Diperbarui:** Januari 2025
+**Terakhir Diperbarui:** Maret 2026

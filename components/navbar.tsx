@@ -6,7 +6,7 @@ import { NavSheet } from "./nav-sheet";
 export default async function NavBar() {
 
   return (
-    <header className="shadow-lg fixed top-0 z-20 w-full py-2 bg-secondary/85 dark:bg-gray-950/85 blur-effect">
+    <header className="fixed top-0 z-20 w-full py-2 bg-secondary/85 dark:bg-gray-950/85">
       <div className="flex h-16 max-w-screen items-center text-primary xl:justify-between px-4 md:px-4" >
         
         <div className="xl:hidden flex">

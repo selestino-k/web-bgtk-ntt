@@ -1,17 +1,21 @@
 const path = require('path');
-const fs = require('fs');
+const http = require('http');
+const { parse } = require('url');
+const next = require('next');
 
-// Log everything for debugging
-const logFile = path.join(__dirname, 'debug.log');
-fs.writeFileSync(logFile, JSON.stringify({
-  PORT: process.env.PORT,
-  HOSTNAME: process.env.HOSTNAME,
-  NODE_ENV: process.env.NODE_ENV,
-  allEnv: Object.keys(process.env)
-}, null, 2));
+const app = next({
+  dev: false,
+  dir: __dirname
+});
 
-const port = parseInt(process.env.PORT, 10);
-process.env.PORT = (!port || isNaN(port)) ? '3000' : String(port);
-process.env.HOSTNAME = '0.0.0.0';
+const handle = app.getRequestHandler();
 
-require(path.join(__dirname, '.next', 'standalone', 'server.js'));
+app.prepare().then(() => {
+  http.createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    handle(req, res, parsedUrl);
+  }).listen(process.env.PORT || 8080, '0.0.0.0', (err) => {
+    if (err) throw err;
+    console.log('> Server ready on port', process.env.PORT || 8080);
+  });
+});
