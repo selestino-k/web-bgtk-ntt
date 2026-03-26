@@ -1,23 +1,9 @@
-const sharp = require('sharp');
-sharp.concurrency(1);
-sharp.cache(false);
+const path = require('path');
 
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
+// Ensure PORT is always a valid number for Passenger/cPanel
+const port = parseInt(process.env.PORT, 10);
+process.env.PORT = (!port || isNaN(port) || port <= 0 || port >= 65536) ? '3000' : String(port);
+process.env.HOSTNAME = process.env.HOSTNAME || '0.0.0.0';
 
-const dev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 8080; // Standard for cPanel
-
-const app = next({ dev });
-const handle = app.getRequestHandler();
-
-app.prepare().then(() => {
-  createServer((req, res) => {
-    const parsedUrl = parse(req.url, true);
-    handle(req, res, parsedUrl);
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on port ${port}`);
-  });
-});
+// Point to the Next.js standalone server
+require(path.join(__dirname, '.next', 'standalone', 'server.js'));
