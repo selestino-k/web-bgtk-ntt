@@ -1,53 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 
-// Validate resource type to prevent issues
 const validateResourceType = (type: string) => {
   const allowedTypes = ['general'];
   return allowedTypes.includes(type) ? type : 'general';
 };
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const formData = await request.formData();
   const file = formData.get('file') as File;
-  
+
   const resourceType = ((formData.get('resourceType') as string) || '').trim() || 'general';
   const validatedType = validateResourceType(resourceType);
 
   if (!file) {
-    return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+    return Response.json({ error: 'No file uploaded' }, { status: 400 });
   }
 
   try {
-    // Create a unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/\s+/g, '-').toLowerCase();
     const filename = `${timestamp}-${originalName}`;
-    
-    // Define upload directory
+
     const uploadDir = path.join(process.cwd(), 'public', 'uploads', validatedType);
-    
-    // Ensure directory exists
     await mkdir(uploadDir, { recursive: true });
-    
-    // Convert the file to a Buffer
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
-    // Save file locally
+
     const filePath = path.join(uploadDir, filename);
     await writeFile(filePath, buffer);
-    
-    // Return the public URL
+
     const imageUrl = `/uploads/${validatedType}/${filename}`;
-    
-    return NextResponse.json({ 
+
+    return Response.json({
       success: true,
       imageUrl: imageUrl
     });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    return Response.json({ error: 'Failed to upload file' }, { status: 500 });
   }
 }

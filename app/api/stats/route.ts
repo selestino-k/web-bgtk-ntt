@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Redis } from "@upstash/redis";
-import { NextResponse } from "next/server";
 
 const redis = Redis.fromEnv();
 const cache = new Map<string, { data: any; expires: number }>();
@@ -40,7 +39,7 @@ export async function GET(request: Request) {
     // Check cache first
     const cached = cache.get(cacheKey);
     if (cached && cached.expires > Date.now()) {
-      return NextResponse.json(cached.data);
+      return Response.json(cached.data);
     }
 
     const days = parseInt(searchParams.get('days') || '7');
@@ -49,7 +48,7 @@ export async function GET(request: Request) {
     // For chart data
     if (type === 'chart') {
       const chartData = await getChartData(days);
-      return NextResponse.json(chartData);
+      return Response.json(chartData);
     }
 
     // For summary stats (homepage, total visits, etc)
@@ -121,7 +120,7 @@ export async function GET(request: Request) {
       };
       
       cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json(result);
+      return Response.json(result);
     }
 
     // For 90, 30, or 7 days summary
@@ -136,7 +135,7 @@ export async function GET(request: Request) {
       const result = { chartData };
       
       cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json(result);
+      return Response.json(result);
     }
 
     // For individual post stats
@@ -155,12 +154,11 @@ export async function GET(request: Request) {
       };
       
       cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
-      return NextResponse.json(result);
+      return Response.json(result);
     }
 
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return Response.json({ error: "Invalid request" }, { status: 400 });
   } catch (error) {
-    console.error("Failed to fetch stats:", error);
-    return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
+    return Response.json({ error: "Failed to fetch stats" }, { status: 500 });
   }
 }

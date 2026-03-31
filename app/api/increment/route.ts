@@ -1,12 +1,11 @@
 // app/api/increment/route.ts
 import { Redis } from "@upstash/redis";
-import { NextRequest, NextResponse } from "next/server";
 
 const redis = Redis.fromEnv();
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   const { slug, deviceType } = await req.json();
-  if (!slug) return new NextResponse("Missing slug", { status: 400 });
+  if (!slug) return new Response("Missing slug", { status: 400 });
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || 
              req.headers.get("x-real-ip") || 
@@ -47,5 +46,5 @@ export async function POST(req: NextRequest) {
     ]);
   }
 
-  return new NextResponse(null, { status: 202 });
+  return new Response(null, { status: 202 });
 }
