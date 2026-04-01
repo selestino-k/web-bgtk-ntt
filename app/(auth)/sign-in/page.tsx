@@ -18,7 +18,7 @@ declare module "next-auth" {
 
 export const metadata: Metadata = {
     title: "Masuk | Panel Admin CMS BGTK NTT",
-    description: "Silahkan masuk ke akun Anda untuk melanjutkan.",
+    description: "Selamat datang di panel admin CMS BGTK Provinsi NTT. Masuk untuk mengelola konten dan informasi terkait BGTK NTT dengan mudah dan efisien.",
 };
 
 export default async function SignInPage() {
@@ -43,7 +43,14 @@ export default async function SignInPage() {
                                     alt="Logo BGTK NTT"
                                     width={300}
                                     height={100}
-                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity"
+                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity dark:hidden"
+                                />
+                                <Image
+                                    src="/logo/logo-web-bgtk-ntt-dark.svg"
+                                    alt="Logo BGTK NTT Dark"
+                                    width={300}
+                                    height={100}
+                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity hidden dark:block"
                                 />
                             </Link>
                         </div>

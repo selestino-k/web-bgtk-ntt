@@ -8,14 +8,11 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 async function getDashboardData() {
-    const baseUrl = process.env.NEXT_PROD_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     
     const [dbStats, viewStats] = await Promise.all([
         {
             totalPosts: await prisma.post.count(),
-            totalMedia: await prisma.post.count({
-                where: { thumbnail: { not: null } },
-            }),
             totalDocuments: await prisma.document.count({
             }),
             totalAdmins: await prisma.user.count(),
@@ -76,13 +73,6 @@ export default async function AdminPage() {
                             <h2 className="text-3xl font-bold">
                                 <Newspaper className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalPosts}
-                            </h2>
-                        </div>
-                        <div className="p-4 border rounded-lg shadow-sm">
-                            <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Media</h4>
-                            <h2 className="text-3xl font-bold">
-                                <ImagePlay className="inline-block mr-2 h-6 w-6 text-primary" />
-                                {dashboardData.totalMedia}
                             </h2>
                         </div>
                         <div className="p-4 border rounded-lg shadow-sm">

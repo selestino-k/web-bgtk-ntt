@@ -59,7 +59,7 @@ export default async function PengumumanPage() {
     <div className="items-stretch w-full min-h-screen p-8 pb-20">
       <main className="flex flex-col gap-3 w-full">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold font-montserrat sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+          <h2 className="text-5xl font-bold font-montserrat text-primary">
             Pengumuman
           </h2>
         </div>

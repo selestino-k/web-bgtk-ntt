@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Redis } from "@upstash/redis";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const redis = Redis.fromEnv();
 const cache = new Map<string, { data: any; expires: number }>();
@@ -31,9 +31,9 @@ async function getChartData(days: number) {
   return chartData;
 }
 
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const cacheKey = `${type}-${searchParams.toString()}`;
 

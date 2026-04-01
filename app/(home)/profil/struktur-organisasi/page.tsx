@@ -17,7 +17,7 @@ export default function StrukturOrg() {
                 <main className="relative z-10 flex flex-row gap-3 p-8 w-full justify-items-center">
                    
                     <div className="flex flex-col gap-5 w-full">
-                         <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
+                         <Breadcrumb className="font-montserrat" aria-label="Breadcrumb">
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
@@ -34,7 +34,7 @@ export default function StrukturOrg() {
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
-                        <h2 className="text-4xl font-bold sm:tracking-tight mt-2 font-montserrat text-primary">
+                        <h2 className="text-5xl font-bold mb-2 sm:tracking-tight font-montserrat text-primary">
                             Struktur Organisasi
                         </h2>
                         <Image

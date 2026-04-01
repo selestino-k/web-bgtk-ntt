@@ -189,7 +189,7 @@ export default async function Home() {
         <div id="program" className="xl:mt-5 mt-10 mb-5 lg:mb-10 flex relative max-w-7xl items-center">
           <main className="relative z-10 flex flex-col gap-3 justify-center">
             <div className="text-center mb-8">
-              <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold font-montserrat sm:tracking-tight font-montserrat text-primary">
+              <h2 className="md:text-3xl lg:text-5xl text-3xl font-semibold font-montserrat sm:tracking-tight text-primary">
                 Program Prioritas
               </h2>
             </div>
@@ -257,7 +257,7 @@ export default async function Home() {
                 </Link>
               </h2>
             </div>
-            <div className="md:max-w-full max-w-xs mx-auto overflow-x-scroll xl:overflow-x-hidden">
+            <div className="md:max-w-full max-w-xs mx-auto overflow-x-scroll xl:overflow-x-hidden font-inter">
               <DataTable columns={columns} data={docsDataWithTableNumber} />
             </div>
           </main>

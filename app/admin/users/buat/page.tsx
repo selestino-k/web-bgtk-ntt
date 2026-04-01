@@ -106,7 +106,7 @@ export default function CreateUserPage() {
     <div className="container mx-auto py-8 space-y-6">
       <main className="flex flex-col gap-6 max-w-4xl mx-auto">
         <div className="grid justify-between items-center gap-6 px-2">
-          <h2 className="text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+          <h2 className="text-5xl font-bold font-montserrat text-primary">
             Buat Pengguna Baru
           </h2>
         

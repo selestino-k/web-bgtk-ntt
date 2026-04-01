@@ -58,10 +58,10 @@ export default async function DokumenPage() {
                     <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Dokumen
                     </h2>
-                    <div className="mb-10 text-md md:text-lg">
+                    <div className="mb-10 text-md md:text-base font-inter">
                         Unduh berbagai regulasi, dokumen, dan buku yang dapat membantu Anda dalam pengembangan profesionalisme.
                     </div>
-                    <div className="w-full flex-wrap">
+                    <div className="w-full flex-wrap font-inter">
                         <DataTable columns={columns} data={docsDataWithTableNumber} />
                     </div>
                 </div>

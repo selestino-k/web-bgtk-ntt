@@ -38,10 +38,8 @@ export default function NewPostPage() {
       formData.append("published", "false")
       formData.append("authorId", session.user!.id)
       
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
-      } else if (data.thumbnail) {
-        formData.append("thumbnailUrl", data.thumbnail)
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail)
       }
 
       // Add single document URL
@@ -81,11 +79,9 @@ export default function NewPostPage() {
       formData.append("published", "true")
       formData.append("authorId", session.user!.id)
       
-      if (data.thumbnailFile) {
-        formData.append("thumbnail", data.thumbnailFile)
-      } else if (data.thumbnail) {
-        formData.append("thumbnailUrl", data.thumbnail)
-      }
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail)
+      } 
 
       // Add single document URL
       if (data.document) {

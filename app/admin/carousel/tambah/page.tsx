@@ -117,7 +117,7 @@ export default function AddCarouselPhotoPage() {
     <div className="items-stretch w-full min-h-screen p-8 pb-20]">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
         <div className="grid justify-between items-center gap-6 px-2">
-         <h2 className="text-2xl font-montserrat font-bold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+         <h2 className="text-5xl font-bold font-montserrat text-primary">
           Tambah Carousel Photo
         </h2>
     

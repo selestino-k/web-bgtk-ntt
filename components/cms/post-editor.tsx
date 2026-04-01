@@ -51,7 +51,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   const [slug, setSlug] = useState(initialData?.slug || "")
   const [isSlugManuallyEdited] = useState(false)
   const [thumbnail, setThumbnail] = useState(initialData?.thumbnail || "")
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || [])
   const [documentUrl, setDocumentUrl] = useState<string | null>(initialData?.document || null)
   const [isSaving, setIsSaving] = useState(false)
@@ -104,17 +103,13 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     setSelectedTags(selectedTags.filter(t => t !== tag))
   }
 
-  const handleThumbnailChange = (url: string, file?: File) => {
+  const handleThumbnailChange = (url: string) => {
     setThumbnail(url)
-    if (file) {
-      setThumbnailFile(file)
-    }
   }
 
   const handleThumbnailDelete = () => {
     setThumbnail('')
-    setThumbnailFile(null)
-  }
+    }
 
   const handleAddDocument = (driveUrl: string) => {
     setDocumentUrl(driveUrl)
@@ -175,7 +170,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       slug,
       content: editorContent as Prisma.JsonValue,
       thumbnail,
-      thumbnailFile: thumbnailFile || undefined,
       tags: selectedTags,
       document: documentUrl,
       published: publish,
@@ -189,9 +183,9 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         setIsSaving(true)
         await onSave?.(postData)
       }
-      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil disimpan')
+      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil diterbitkan')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
+      toast.error(isEditMode ? 'Gagal memperbarui postingan' : 'Gagal menerbitkan postingan')
     } finally {
       setIsSaving(false)
       setIsPublishing(false)
