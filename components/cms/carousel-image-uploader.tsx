@@ -24,7 +24,7 @@ export function CarouselImageUploader({
   value,
   onChange,
   onDelete,
-  maxSizeMB = 10,
+  maxSizeMB = 5,
   disabled = false,
   showUrlInput = true,
   label = "Gambar",

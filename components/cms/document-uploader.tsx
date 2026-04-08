@@ -21,7 +21,7 @@ export function DocumentUploader({
   required = false 
 }: DocumentUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
-  const maxSizeMB = 30
+  const maxSizeMB = 10
 
   const handleFileValidation = (selectedFile: File) => {
     const allowedTypes = [

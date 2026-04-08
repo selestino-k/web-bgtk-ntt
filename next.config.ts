@@ -47,7 +47,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@radix-ui/react-*"],
     serverActions: {
-      bodySizeLimit: "31mb",
+      bodySizeLimit: "15mb",
     },
   },
   allowedDevOrigins: [
