@@ -5,11 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 import Link from "next/link"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-
-
 export type DocsPage = {
   tableNumber: number
   title: string
@@ -32,10 +27,19 @@ export const columns: ColumnDef<DocsPage>[] = [
   {
     accessorKey: "title",
     header: "Judul",
+    cell : ({ row }) => {
+      const truncatedTitle = row.original.title.length > 30 ? row.original.title.slice(0, 30) + "..." : row.original.title
+      return <span title={row.original.title}>{truncatedTitle}</span>
+    }
   },
   {
     accessorKey: "description",
     header: "Deskripsi (Opsional)",
+    cell: ({ row }) => {
+      const description = row.original.description || "Tidak ada deskripsi"
+      const truncatedDescription = description.length > 50 ? description.slice(0, 50) + "..." : description
+      return <span title={description}>{truncatedDescription}</span>
+    }
   },
   {
     accessorKey: "category",

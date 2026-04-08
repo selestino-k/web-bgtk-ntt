@@ -8,11 +8,10 @@
 
 * {
   transition-property: color, background-color, border-color;
-  transition-duration: 90ms;
 }
 
 html, body {
-  transition: background-color 0.09s ease, color 0.09s ease;
+  transition: background-color 0.04s ease, color 0.04s ease;
 }
 
 @theme inline {

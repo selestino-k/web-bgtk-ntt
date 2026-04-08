@@ -9,8 +9,6 @@ export const metadata = {
     description: "Halaman Dokumen BGTK NTT",
 };
 
-
-
 async function getDocsData() {
     return await prisma.document.findMany({
         orderBy: {
@@ -19,7 +17,8 @@ async function getDocsData() {
     });
 
 }
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 300;
 
 export default async function DokumenPage() {
     const docsData = await getDocsData()

@@ -11,12 +11,14 @@ import PengumumanSidebar from "@/components/pengumuman-sidebar";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "@/app/(home)/publikasi/dokumen/home-columns";
 import { ArrowRightIcon } from "lucide-react";
+import { YouTubeFacade } from "@/components/yt-facade";
 
 async function getDocsData() {
   return await prisma.document.findMany({
     orderBy: {
       createdAt: 'desc',
     },
+    take: 10,
   });
 }
 
@@ -80,7 +82,7 @@ async function getCarouselPhotos() {
 }
 
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function Home() {
   const carouselPhotos = await getCarouselPhotos();
@@ -106,55 +108,13 @@ export default async function Home() {
             <div className="text-center">
               <div className="max-w-full mx-auto lg:mx-8 xl:flex font-montserrat">
 
-                <div id="sambutan-video-mobile" className="md:hidden sm:grid justify-items-center mb-6">
-                  <div className="rounded-lg overflow-hidden shadow-lg ">
-                    <iframe
-                      width="300"
-                      height="170"
-                      src="https://www.youtube-nocookie.com/embed/kWEl6wepuO4?si=hdhp-Gjd-cRPK4x4"
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen>
-                    </iframe>
-                  </div>
-                </div>
 
-                <div id="sambutan-video-tablet" className="hidden md:grid lg:hidden justify-items-center mb-6">
-                  <div className="rounded-lg overflow-hidden shadow-lg ">
-                    <iframe
-                      width="480"
-                      height="270"
-                      src="https://www.youtube-nocookie.com/embed/kWEl6wepuO4?si=hdhp-Gjd-cRPK4x4"
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen>
-                    </iframe>
-                  </div>
-                </div>
-
-                <div id="sambutan-video-laptop" className="hidden lg:grid xl:hidden justify-items-center mb-6">
-                  <div className="rounded-lg overflow-hidden shadow-lg ">
-                    <iframe
-                      width="480"
-                      height="270"
-                      src="https://www.youtube-nocookie.com/embed/kWEl6wepuO4?si=hdhp-Gjd-cRPK4x4"
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen>
-                    </iframe>
-                  </div>
-                </div>
 
                 <div id="sambutan-text" className="lg:grid xl:flex mb-6 flex-1">
                   <div className="w-full xs:sm:grid md:lg:px-8 xs:sm:max-w-md lg:max-w-full justify-items-center items-center">
                     <Image
                       src="/images/foto-pak-kepala+textbox.png"
+                      priority
                       alt="Kepala BGTK NTT"
                       width={400}
                       height={400}
@@ -164,18 +124,12 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div id="sambutan-video-desktop" className="hidden xl:w-2/5 xl:ml-2 xl:flex justify-center items-start">
+                <div className="grid justify-items-center mb-6 xl:w-2/5 xl:ml-2 xl:order-last xl:flex xl:justify-center xl:items-start">
                   <div className="rounded-lg overflow-hidden shadow-lg">
-                    <iframe
-                      width="540"
-                      height="540"
-                      src="https://www.youtube-nocookie.com/embed/kWEl6wepuO4?si=hdhp-Gjd-cRPK4x4"
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen>
-                    </iframe>
+                    <YouTubeFacade
+                      videoId="kWEl6wepuO4"
+                      className="w-[300px] h-[170px] md:w-[480px] md:h-[270px] xl:w-[540px] xl:h-[540px]"
+                    />
                   </div>
                 </div>
 
@@ -253,7 +207,7 @@ export default async function Home() {
             <div className="text-center">
               <h2 className="md:text-5xl text-3xl font-semibold sm:tracking-tight font-montserrat text-primary">
                 <Link href="/publikasi/dokumen" className="hover:text-primary/70 transition-colors flex items-center gap-2 justify-center">
-                Dokumen
+                  Dokumen
                 </Link>
               </h2>
             </div>
