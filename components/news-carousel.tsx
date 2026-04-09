@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import Image from "next/image"
-import { User, Calendar } from "lucide-react"
+import { User, Calendar, ArrowRightIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import { Badge } from "./ui/badge"
 import Link from "next/link"
@@ -111,7 +111,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {Array.from({ length: 3 }).map((_, index) => (
-            <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+            <CarouselItem key={index} className="pl-2 md:pl-4 lg:basis-1/3">
               <div className="p-1">
                 <Card className="shadow-lg border border-primary/30">
                   <CardContent className="p-0 h-full min-h-[400px]">
@@ -128,8 +128,6 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="-left-10" />
-        <CarouselNext className="-right-10" />
       </Carousel>
     );
   }
@@ -147,7 +145,7 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
       opts={{
         align: "start"
       }}
-      className="max-w-7xl mx-auto"
+      className="max-w-5xl mx-auto"
     >
       <CarouselContent className="-ml-2 md:-ml-4">
         {news.map((post) => {
@@ -232,9 +230,16 @@ export default function NewsCarousel({ initialPosts = [] }: NewsCarouselProps) {
           );
         })}
       </CarouselContent>
-
-      <CarouselPrevious className="-left-10 md:hidden" />
-      <CarouselNext className="-right-10 md:hidden" />
+      <div className="text-md font-semibold font-montserrat text-primary absolute -bottom-10   left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 max-w-xs mx-auto">
+      <CarouselPrevious className="relative bg-primary/20 hover:bg-white/50  border-white/50 left-0 translate-y-0" />
+      <CarouselNext className="relative bg-primary/20 hover:bg-white/50 border-white/50 right-0 translate-y-0" />
+      <h4 className="items-center gap-2   flex justify-center">
+        <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors flex items-center gap-2">
+          Lainnya          
+           <ArrowRightIcon className="h-5 w-5 text-primary hover:text-primary/70" />
+        </Link>
+      </h4>
+      </div>
     </Carousel>
   );
 }

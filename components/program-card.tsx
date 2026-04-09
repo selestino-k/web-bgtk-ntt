@@ -62,7 +62,7 @@ export default function ProgramCardList() {
     }, [api]);
 
     return (
-        <div className="w-full md:max-w-6xl lg:max-w-7xl max-w-xs px-8">
+        <div className="w-full xl:max-w-7xl max-w-xs md:lg:max-w-3xl px-8">
             <Carousel
                 plugins={Plugin.current}
                 className="w-full"
@@ -74,7 +74,7 @@ export default function ProgramCardList() {
             >
                 <CarouselContent className="-ml-4">
                     {features.map((feature, index) => (
-                        <CarouselItem key={index} className="pl-4 lg:w-full max-w-xs md:basis-1/2 xl:basis-1/4">
+                        <CarouselItem key={index} className="pl-4 lg:w-full max-w-xs md:lg:basis-1/3 xl:basis-1/4">
                             <div className="h-full flex items-center justify-center">
                                 <FeatureCard
                                     title={feature.title}
@@ -85,8 +85,8 @@ export default function ProgramCardList() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="bg-white/20 hover:bg-white/50 border-gray-300" />
-                <CarouselNext className="bg-white/20 hover:bg-white/50 border-gray-300" />
+                <CarouselPrevious className="bg-primary/20 text-primary hover:bg-white/50 border-gray-300" />
+                <CarouselNext className="bg-primary/20 text-primary hover:bg-white/50 border-gray-300" />
             </Carousel>
 
             

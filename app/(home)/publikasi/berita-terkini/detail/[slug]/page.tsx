@@ -535,7 +535,7 @@ export default async function BeritaTerkiniDetail({
         </div>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-1/4 mt-8 md:mt-0">
+        <aside className="w-full md:w-1/4 mt-8 md:mt-0 mb-10">
           <BeritaSidebar currentSlug={slug} />
         </aside>
       </main>

@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-
 import { useIsMobile } from "@/hooks/use-mobile"
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,8 +15,7 @@ import { Button } from "./ui/button"
 
 
 export default function NavMenu() {
-  const isMobile = useIsMobile()
-
+  const isMobile = useIsMobile();
   return (
     <NavigationMenu viewport={isMobile} className="text-black dark:text-white max-w-full">
       <NavigationMenuList className="flex-wrap font-montserrat gap-6">

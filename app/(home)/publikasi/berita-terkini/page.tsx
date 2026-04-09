@@ -173,13 +173,13 @@ export default async function BeritaTerkini({
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                        <div className="flex justify-center gap-2 mt-8">
+                        <div className="flex justify-center gap-2 mt-8 font-montserrat font-semibold">
                             {page > 1 && (
                                 <Link 
                                     href={`/publikasi/berita-terkini?page=${page - 1}${tagId ? `&tag=${tagId}` : ''}`}
                                 >
                                     <Button variant="outline" size="sm">
-                                        Previous
+                                        Sebelumnya
                                     </Button>
                                 </Link>
                             )}
@@ -205,7 +205,7 @@ export default async function BeritaTerkini({
                                     href={`/publikasi/berita-terkini?page=${page + 1}${tagId ? `&tag=${tagId}` : ''}`}
                                 >
                                     <Button variant="outline" size="sm">
-                                        Next
+                                        Selanjutnya
                                     </Button>
                                 </Link>
                             )}
