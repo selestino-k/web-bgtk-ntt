@@ -1,0 +1,281 @@
+/*
+Theme Name: BGTK NTT
+Theme URI: https://bgtkntt.kemendikdasmen.go.id/
+Author: Balai GTK Provinsi NTT
+Author URI: https://bgtkntt.kemendikdasmen.go.id/
+Description: A fully customizable WordPress theme mirroring the BGTK NTT Next.js website design. Compatible with WordPress 6.5+.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: bgtk-ntt
+Tags: custom-colors, custom-logo, custom-menu, featured-images, full-site-editing, rtl-language-support, two-columns, wide-blocks, block-patterns
+*/
+
+/* =========================================================
+   CSS Custom Properties — Design System
+   ========================================================= */
+:root {
+  /* Primary color — approx. #297bbf */
+  --primary:             oklch(0.5675 0.1305 247.94);
+  --primary-foreground:  oklch(0.97 0.014 254.604);
+
+  /* Backgrounds */
+  --background:          oklch(1 0 0);
+  --foreground:          oklch(0.141 0.005 285.823);
+
+  /* Card / Popover */
+  --card:                oklch(1 0 0);
+  --card-foreground:     oklch(0.141 0.005 285.823);
+  --popover:             oklch(1 0 0);
+  --popover-foreground:  oklch(0.141 0.005 285.823);
+
+  /* Secondary */
+  --secondary:           oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+
+  /* Muted */
+  --muted:               oklch(0.967 0.001 286.375);
+  --muted-foreground:    oklch(0.552 0.016 285.938);
+
+  /* Accent */
+  --accent:              oklch(0.967 0.001 286.375);
+  --accent-foreground:   oklch(0.21 0.006 285.885);
+
+  /* Destructive */
+  --destructive:         oklch(0.577 0.245 27.325);
+
+  /* Border / Input / Ring */
+  --border:              oklch(0.92 0.004 286.32);
+  --input:               oklch(0.92 0.004 286.32);
+  --ring:                oklch(0.623 0.214 259.815);
+
+  /* Border radius */
+  --radius:              0.65rem;
+  --radius-sm:           calc(var(--radius) - 4px);
+  --radius-md:           calc(var(--radius) - 2px);
+  --radius-lg:           var(--radius);
+  --radius-xl:           calc(var(--radius) + 4px);
+
+  /* Sidebar */
+  --sidebar:             oklch(0.985 0 0);
+  --sidebar-foreground:  oklch(0.141 0.005 285.823);
+
+  /* Hex fallbacks (for browsers without oklch support) */
+  --primary-hex:         #297bbf;
+  --background-hex:      #ffffff;
+  --foreground-hex:      #1c1c22;
+  --secondary-hex:       #f5f5f7;
+  --destructive-hex:     #e53935;
+
+  /* Typography */
+  --font-sans:           'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading:        'Montserrat', 'Inter', sans-serif;
+  --font-body:           'Inter', system-ui, sans-serif;
+}
+
+/* =========================================================
+   Dark mode overrides — toggled by .dark on <html>
+   ========================================================= */
+html.dark,
+.dark {
+  --background:          oklch(0.141 0.005 285.823);
+  --foreground:          oklch(0.985 0 0);
+  --card:                oklch(0.21 0.006 285.885);
+  --card-foreground:     oklch(0.985 0 0);
+  --popover:             oklch(0.21 0.006 285.885);
+  --popover-foreground:  oklch(0.985 0 0);
+  --primary:             oklch(0.5675 0.1305 247.94);
+  --primary-foreground:  oklch(0.97 0.014 254.604);
+  --secondary:           oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted:               oklch(0.274 0.006 286.033);
+  --muted-foreground:    oklch(0.705 0.015 286.067);
+  --accent:              oklch(0.274 0.006 286.033);
+  --accent-foreground:   oklch(0.985 0 0);
+  --destructive:         oklch(0.704 0.191 22.216);
+  --border:              oklch(1 0 0 / 10%);
+  --input:               oklch(1 0 0 / 15%);
+  --ring:                oklch(57.878% 0.23169 259.655);
+  --sidebar:             oklch(0.21 0.006 285.885);
+  --sidebar-foreground:  oklch(0.985 0 0);
+}
+
+/* =========================================================
+   Base Reset & Global Styles
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition-property: color, background-color, border-color;
+  transition-duration: 90ms;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  transition: background-color 0.09s ease, color 0.09s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   Typography
+   ========================================================= */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--foreground);
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: clamp(1.75rem, 4vw, 2.25rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol {
+  margin: 0 0 1rem 0;
+  padding-left: 1.5rem;
+}
+
+/* =========================================================
+   Layout Helpers
+   ========================================================= */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.site-content {
+  padding-top: 80px; /* navbar height offset */
+  min-height: calc(100vh - 80px);
+}
+
+/* =========================================================
+   Utility classes
+   ========================================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  text-decoration: none;
+}
+
+/* =========================================================
+   Accessibility
+   ========================================================= */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  top: 0;
+}

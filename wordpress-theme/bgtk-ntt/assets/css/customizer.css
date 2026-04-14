@@ -1,0 +1,29 @@
+/**
+ * BGTK NTT Customizer Preview Styles
+ *
+ * Styles injected by the Customizer for live preview overrides.
+ * These are loaded only in the Customizer preview context.
+ *
+ * @package bgtk-ntt
+ */
+
+/* Customizer highlight outlines — helps identify customizable regions */
+[data-customizer-primary-color] {
+  outline: 2px dashed var(--primary);
+  outline-offset: 2px;
+}
+
+/* Typography preview utilities */
+.customizer-font-preview {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.5rem;
+}
+
+/* Smooth transition for live preview color changes */
+:root {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
