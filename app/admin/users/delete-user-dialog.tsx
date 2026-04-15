@@ -52,7 +52,6 @@ export function DeleteUserDialog({
       setOpen(false)
       router.refresh()
     } catch (error) {
-      console.error("Gagal menghapus pengguna:", error)
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Gagal menghapus pengguna",
@@ -76,13 +75,13 @@ export function DeleteUserDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Pengguna</AlertDialogTitle>
+          <AlertDialogTitle className="font-montserrat">Hapus Pengguna</AlertDialogTitle>
           <AlertDialogDescription>
             Apakah Anda yakin ingin menghapus pengguna <strong>{userName}</strong>?
             Tindakan ini tidak dapat dibatalkan.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="font-montserrat">
           <AlertDialogCancel disabled={isDeleting}>Batal</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}

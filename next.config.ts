@@ -47,13 +47,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@radix-ui/react-*"],
     serverActions: {
-      bodySizeLimit: "31mb",
+      bodySizeLimit: "15mb",
     },
   },
   allowedDevOrigins: [
     "http://localhost:3000",
-    "http://10.11.237.80:3000",
     "https://web-bgtk-ntt.vercel.app",
+    "https://bgtkntt.kemendikdasmen.go.id",
   ],
 };
 

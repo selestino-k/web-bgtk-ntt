@@ -2,7 +2,7 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
-import { User, Calendar } from "lucide-react"
+import { User, Calendar, ArrowRightIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import { Badge } from "./ui/badge"
 import { useEffect, useState } from "react"
@@ -67,6 +67,8 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
       
       return ''
     }
+
+    
     
     const fullText = contentObj.content.map(extractText).join(' ').trim()
 
@@ -76,13 +78,30 @@ function extractTextFromContent(content: Prisma.JsonValue): string {
   }
 }
 
+const postTitleTruncate = (title: string, maxLength: number) => {
+      if (title.length <= maxLength) return title;
+      return title.slice(0, maxLength) + "...";
+    }
+
 export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCarouselProps) {
   const [news, setNews] = useState<NewsPost[]>(initialPosts);
   const [isLoading, setIsLoading] = useState(initialPosts.length === 0);
+      const [, setCurrent] = useState(0)
+      const [api, setApi] = useState<any>(null)
   const tagnametruncate = (name: string, maxLength: number) => {
     if (name.length <= maxLength) return name;
     return name.slice(0, maxLength) + "...";
   }
+
+  useEffect(() => {
+          if (!api) return
+  
+          setCurrent(api.selectedScrollSnap())
+  
+          api.on("select", () => {
+              setCurrent(api.selectedScrollSnap())
+          })
+      }, [api])
 
   useEffect(() => {
     // Only fetch if no initial posts were provided
@@ -115,7 +134,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {Array.from({ length: 3 }).map((_, index) => (
-            <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/4">
+            <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:lg:basis-1/3">
               <div className="p-1">
                 <Card className="shadow-lg border border-primary/30 dark:border-gray-700">
                   <CardContent className="p-0 h-full min-h-[400px]">
@@ -132,8 +151,6 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-0" />
-        <CarouselNext className="right-0" />
       </Carousel>
     );
   }
@@ -151,7 +168,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
       opts={{
         align: "start",
       }}
-      className="w-full mt-5 mx-auto"
+      className="w-full mt-5 mb-10 mx-auto"
     >
       <CarouselContent className="-ml-2 md:-ml-4">
         {news.map((post) => {
@@ -162,7 +179,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
           });
 
           return (
-            <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/4">
+            <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
               <div className="p-1 h-full">
                 <Link href={`/publikasi/berita-terkini/detail/${post.slug}`} className="block h-full">
                   <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/30 dark:border-gray-700 cursor-pointer h-full">
@@ -206,7 +223,7 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
                           </div>
 
                           <h3 className="text-base font-montserrat font-bold mb-1 line-clamp-2 min-h-[3rem] hover:text-primary transition-colors">
-                            {post.title}
+                            {postTitleTruncate(post.title, 60)}
                           </h3>
                           <p className="text-sm text-gray-600 flex-1 font-inter mb-4 line-clamp-3">
                             {extractTextFromContent(post.content)}...
@@ -234,10 +251,21 @@ export default function MobileNewsCarousel({ initialPosts = [] }: MobileNewsCaro
             </CarouselItem>
           );
         })}
-      </CarouselContent>
          
-      <CarouselPrevious className="-left-10" />
-      <CarouselNext className="-right-10" />
+      </CarouselContent>
+      <CarouselPrevious className="absolute top-1/2 -translate-y-1/2 -left-10 z-10 text-primary" />
+      <CarouselNext className="absolute top-1/2 -translate-y-1/2 -right-10 z-10 text-primary  " />
+        <div className="text-md font-semibold font-montserrat text-primary absolute -bottom-10   left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 max-w-xs mx-auto">
+     
+      <h4 className="items-center gap-2   flex justify-center">
+        <Link href="/publikasi/berita-terkini" className="hover:text-primary/70 transition-colors flex items-center gap-2">
+          Lainnya
+          <ArrowRightIcon className="h-5 w-5 text-primary hover:text-primary/70" />
+        </Link>
+      </h4>
+      </div>
     </Carousel>
+    
   );
+  
 }

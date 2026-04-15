@@ -8,7 +8,6 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { JSX } from "react";
 import Link from "next/link";
 import ImagePreviewDialog from "./image-preview-dialog";
-import { toast } from "sonner";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ReportView } from "@/components/view-counter";
 import { Redis } from "@upstash/redis";
@@ -63,7 +62,6 @@ async function getPostBySlug(slug: string) {
       id: post.id.toString(),
     };
   } catch {
-    toast.error("Error fetching post");
     return null;
   }
 }
@@ -436,11 +434,13 @@ export default async function PengumumanDetail({
   const redis = Redis.fromEnv();
   const viewCount = await redis.get<number>(`views:post:${post.slug}`) || 0;
 
+  await redis.incr(`views:post:${post.slug}`);
+
   return (
     <div id="pengumuman-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 p-8 md:flex w-full">
         <div className="text-left w-full">
-          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
+          <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
             <BreadcrumbList className="flex flex-wrap gap-2">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
@@ -470,7 +470,7 @@ export default async function PengumumanDetail({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+          <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
             {post.title}
           </h2>
           <div className="mb-4 text-sm text-gray-500 flex space-x-4">
@@ -561,6 +561,8 @@ export default async function PengumumanDetail({
     </div>
   );
 }
+
+export const revalidate = 3600;
 
 // Generate static params for static generation (optional)
 export async function generateStaticParams() {

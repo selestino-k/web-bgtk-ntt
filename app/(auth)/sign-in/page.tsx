@@ -18,7 +18,7 @@ declare module "next-auth" {
 
 export const metadata: Metadata = {
     title: "Masuk | Panel Admin CMS BGTK NTT",
-    description: "Silahkan masuk ke akun Anda untuk melanjutkan.",
+    description: "Selamat datang di panel admin CMS BGTK Provinsi NTT. Masuk untuk mengelola konten dan informasi terkait BGTK NTT dengan mudah dan efisien.",
 };
 
 export default async function SignInPage() {
@@ -26,7 +26,7 @@ export default async function SignInPage() {
         <div className="relative grid w-full min-h-screen">
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/intro-web.png"
+                    src="/images/bgtk-background.png"
                     alt="Background"
                     fill
                     className="object-cover opacity-85 dark:opacity-40"
@@ -34,7 +34,7 @@ export default async function SignInPage() {
                 />
             </div>
             <Suspense fallback={<AuthLoading />}>
-                <main className="relative z-10 w-full max-w-md mx-auto my-auto space-y-6 p-8 rounded-xl shadow-lg bg-white/90 dark:bg-gray-900/90">
+                <main className="font-montserrat relative z-10 w-full max-w-md mx-auto my-auto space-y-6 p-8 rounded-xl shadow-lg bg-white/90 dark:bg-gray-900/90">
                     <div className="space-y-2 text-center">
                         <div className="pb-6 flex items-center justify-center space-x-6">
                             <Link href="/">
@@ -43,14 +43,20 @@ export default async function SignInPage() {
                                     alt="Logo BGTK NTT"
                                     width={300}
                                     height={100}
-                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity"
+                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity dark:hidden"
+                                />
+                                <Image
+                                    src="/logo/logo-web-bgtk-ntt-dark.svg"
+                                    alt="Logo BGTK NTT Dark"
+                                    width={300}
+                                    height={100}
+                                    className="object-contain opacity-100 hover:opacity-80 transition-opacity hidden dark:block"
                                 />
                             </Link>
                         </div>
-                        <h1 className="text-3xl font-geist font-bold text-primary mb-1">Selamat Datang</h1>
-                        <h2 className="text-md">Panel Admin CMS <br />BGTK Provinsi NTT</h2>
+                        <h1 className="text-3xl font-bold text-primary mb-1">Selamat Datang</h1>
+                        <h2 className="text-md font">Panel Admin CMS <br />BGTK Provinsi NTT</h2>
                     </div>
-
                     <LoginForm />
                 </main>
             </Suspense>

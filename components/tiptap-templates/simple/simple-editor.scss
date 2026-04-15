@@ -52,7 +52,31 @@ body,
 
 .tiptap.ProseMirror {
   font-family: "DM Sans", sans-serif;
+  caret-color: #000000 !important; /* Force cursor color to be visible */
+  
+  .dark & {
+    caret-color: #fff !important; /* White cursor for dark mode */
+  }
 }
+.tiptap.ProseMirror:focus {
+  outline: none;
+  caret-color: #000000 !important; /* Ensure cursor is visible when focused */
+  
+  .dark & {
+    caret-color: #fff !important;
+  }
+}
+
+.tiptap.ProseMirror::selection,
+.tiptap.ProseMirror ::selection {
+  background: rgba(0, 123, 255, 0.3) !important; /* Ensure text selection is visible */ 
+}
+
+.tiptap.ProseMirror::-moz-selection,
+.tiptap.ProseMirror ::-moz-selection {
+  background: rgba(0, 123, 255, 0.3) !important; /* Ensure text selection is visible for Firefox */
+}
+
 
 .simple-editor-wrapper {
   width: 100%;
@@ -68,11 +92,13 @@ body,
   display: flex;
   flex-direction: column;
   flex: 1;
+  
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
   flex: 1;
   padding: 3rem 3rem 30vh;
+  
 }
 
 @media screen and (max-width: 480px) {

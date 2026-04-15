@@ -67,7 +67,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto font-montserrat">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
           Masuk ke Akun Anda
@@ -99,7 +99,7 @@ export function LoginForm() {
                 required
                 autoComplete="email"
                 disabled={isLoading}
-                className="pl-10"
+                className="pl-10 font-inter"
               />
             </div>
           </div>
@@ -118,7 +118,7 @@ export function LoginForm() {
                 required
                 autoComplete="current-password"
                 disabled={isLoading}
-                className="pl-10 pr-10"
+                className="pl-10 pr-10 font-inter"
               />
               <Button
                 type="button"

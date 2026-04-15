@@ -26,7 +26,7 @@ export function ImageUploader({
   onChange,
   onDelete,
   folder = "images",
-  maxSizeMB = 10,
+  maxSizeMB = 3,
   disabled = false,
   showUrlInput = true,
   label = "Gambar",

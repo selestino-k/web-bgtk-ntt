@@ -49,23 +49,11 @@ export default function AddCarouselPhotoPage() {
     }))
   }
 
-  
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+  
    
-
-    if (!formData.imageFile && !externalUrl) {
-      toast({
-        title: "Error",
-        description: "Harap unggah file gambar atau masukkan URL gambar",
-        variant: "destructive",
-      })
-      return
-    }
 
     if (!formData.order && formData.order !== 0) {
       toast({
@@ -90,10 +78,13 @@ export default function AddCarouselPhotoPage() {
     try {
       const submitData = new FormData()
       submitData.append("caption", formData.caption)
-      submitData.append ("imageUrl" , formData.imageUrl)
       submitData.append("order", formData.order.toString())
       
-      if (formData.imageFile) {
+      // If imageUrl already exists (uploaded via CarouselImageUploader), use it
+      if (formData.imageUrl) {
+        submitData.append("externalUrl", formData.imageUrl)
+      } else if (formData.imageFile) {
+        // Fallback: only upload file if imageUrl doesn't exist
         submitData.append("file", formData.imageFile)
       } else if (externalUrl) {
         submitData.append("externalUrl", externalUrl)
@@ -123,10 +114,10 @@ export default function AddCarouselPhotoPage() {
   }
 
   return (
-    <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="items-stretch w-full min-h-screen p-8 pb-20]">
       <main className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
         <div className="grid justify-between items-center gap-6 px-2">
-         <h2 className="text-2xl/7 font-geist font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+         <h2 className="text-5xl font-bold font-montserrat text-primary">
           Tambah Carousel Photo
         </h2>
     
@@ -194,7 +185,7 @@ export default function AddCarouselPhotoPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting || isValidating || (!formData.imageFile && !externalUrl) || (useExternalUrl && imageError)}
-                  className="min-w-[150px]"
+                  className="min-w-[150px] font-montserrat"
                 >
                   {isSubmitting ? (
                     <>
@@ -211,6 +202,7 @@ export default function AddCarouselPhotoPage() {
                 <Button
                   type="button"
                   variant="outline"
+                  className="font-montserrat"
                   onClick={() => router.push("/admin/daftar-foto")}
                   disabled={isSubmitting}
                 >

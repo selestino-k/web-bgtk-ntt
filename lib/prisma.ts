@@ -12,6 +12,9 @@ const globalForPool = globalThis as unknown as {
 
 const pool = globalForPool.pool ?? new Pool({ 
   connectionString,
+  max: 1, // CRITICAL: Set to 1 for serverless/Vercel
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 })
 
 if (process.env.NODE_ENV !== 'production') globalForPool.pool = pool

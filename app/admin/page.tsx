@@ -13,9 +13,6 @@ async function getDashboardData() {
     const [dbStats, viewStats] = await Promise.all([
         {
             totalPosts: await prisma.post.count(),
-            totalMedia: await prisma.post.count({
-                where: { thumbnail: { not: null } },
-            }),
             totalDocuments: await prisma.document.count({
             }),
             totalAdmins: await prisma.user.count(),
@@ -53,10 +50,10 @@ export default async function AdminPage() {
     }
 
     return (
-        <div className="items-stretch w-full min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="items-stretch w-full min-h-screen p-8 pb-20 font-montserrat">
             <main className="flex flex-col gap-3 w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+                    <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
                         Dashboard
                     </h2>
                     <Button variant="default" size="lg" asChild>
@@ -76,13 +73,6 @@ export default async function AdminPage() {
                             <h2 className="text-3xl font-bold">
                                 <Newspaper className="inline-block mr-2 h-6 w-6 text-primary" />
                                 {dashboardData.totalPosts}
-                            </h2>
-                        </div>
-                        <div className="p-4 border rounded-lg shadow-sm">
-                            <h4 className="text-lg text-muted-foreground font-medium font-montserrat">Jumlah Media</h4>
-                            <h2 className="text-3xl font-bold">
-                                <ImagePlay className="inline-block mr-2 h-6 w-6 text-primary" />
-                                {dashboardData.totalMedia}
                             </h2>
                         </div>
                         <div className="p-4 border rounded-lg shadow-sm">
@@ -155,7 +145,6 @@ export default async function AdminPage() {
         </div>
     );
 }
-
 
 
 

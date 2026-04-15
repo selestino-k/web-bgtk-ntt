@@ -67,21 +67,21 @@ export function DeleteFotoDialog({ id, photoName }: DeleteFotoDialogProps) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Foto?</AlertDialogTitle>
+          <AlertDialogTitle className="font-bold font-montserrat">Hapus Foto?</AlertDialogTitle>
           <AlertDialogDescription>
             Apakah Anda yakin ingin menghapus foto <strong>&quot;{photoName}&quot;</strong>?
             Tindakan ini tidak dapat dibatalkan.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Kembali</AlertDialogCancel>
+          <AlertDialogCancel className="font-montserrat" disabled={isDeleting}>Kembali</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault()
               handleDelete()
             }}
             disabled={isDeleting}
-            className="bg-destructive hover:bg-destructive/90"
+            className="bg-destructive hover:bg-destructive/90 font-montserrat"
           >
             {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Hapus

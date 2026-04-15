@@ -82,7 +82,6 @@ export default function EditPostForm({
         return parsed;
       }
       
-      console.warn('Content format not recognized, returning empty doc');
       return {
         type: "doc",
         content: [],
@@ -98,7 +97,7 @@ export default function EditPostForm({
         content: [],
       };
     }
-  }, [post.content, toast]);
+  }, [post.content]);
 
   // TipTap editor content state
   const [editorContent, setEditorContent] = useState<JSONContent>(parseInitialContent());
@@ -150,12 +149,8 @@ export default function EditPostForm({
         }
         return node.content && Array.isArray(node.content) && node.content.length > 0;
       });
-    } catch {
-      toast({
-        title: "Error",
-        description: "Gagal memeriksa konten postingan.",
-        variant: "destructive",
-      });
+    } catch  {
+      console.warn("Gagal memeriksa konten postingan");
       return false;
     }
   };

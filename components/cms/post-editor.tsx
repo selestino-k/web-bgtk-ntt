@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { X, Loader2, ArrowLeft } from "lucide-react"
+import { X, Loader2 } from "lucide-react"
 import { ImageUploader } from "@/components/cms/image-uploader"
 import { DocumentCard } from "@/components/cms/document-card"
 import { DocumentDialog } from "@/components/cms/document-dialog"
@@ -51,7 +51,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
   const [slug, setSlug] = useState(initialData?.slug || "")
   const [isSlugManuallyEdited] = useState(false)
   const [thumbnail, setThumbnail] = useState(initialData?.thumbnail || "")
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags || [])
   const [documentUrl, setDocumentUrl] = useState<string | null>(initialData?.document || null)
   const [isSaving, setIsSaving] = useState(false)
@@ -104,17 +103,13 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     setSelectedTags(selectedTags.filter(t => t !== tag))
   }
 
-  const handleThumbnailChange = (url: string, file?: File) => {
+  const handleThumbnailChange = (url: string) => {
     setThumbnail(url)
-    if (file) {
-      setThumbnailFile(file)
-    }
   }
 
   const handleThumbnailDelete = () => {
     setThumbnail('')
-    setThumbnailFile(null)
-  }
+    }
 
   const handleAddDocument = (driveUrl: string) => {
     setDocumentUrl(driveUrl)
@@ -175,7 +170,6 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
       slug,
       content: editorContent as Prisma.JsonValue,
       thumbnail,
-      thumbnailFile: thumbnailFile || undefined,
       tags: selectedTags,
       document: documentUrl,
       published: publish,
@@ -189,9 +183,9 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
         setIsSaving(true)
         await onSave?.(postData)
       }
-      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil disimpan')
+      toast.success(isEditMode ? 'Postingan berhasil diperbarui' : 'Postingan berhasil diterbitkan')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Gagal menyimpan postingan')
+      toast.error(isEditMode ? 'Gagal memperbarui postingan' : 'Gagal menerbitkan postingan')
     } finally {
       setIsSaving(false)
       setIsPublishing(false)
@@ -204,23 +198,19 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link href="/admin/posts">
-            <Button type="button" variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <h2 className="text-2xl/7 font-semibold sm:text-5xl sm:tracking-tight text-primary">
+          <h2 className="text-2xl font-bold font-montserrat sm:text-5xl sm:tracking-tight text-primary">
             {isEditMode ? 'Edit Berita' : 'Buat Berita Baru'}
           </h2>
         </div>
         <div className="space-x-2">
           <Link href="/admin/posts">
-            <Button type="button" variant="outline" disabled={isLoading}>
+            <Button type="button" variant="outline" className="font-montserrat" disabled={isLoading}>
               Batal
             </Button>
           </Link>
           <Button
             variant="outline"
+            className="font-montserrat"
             onClick={() => handleSave(false)}
             disabled={isLoading}
           >
@@ -229,6 +219,7 @@ export function PostEditor({ initialData, onSave, onPublish }: PostEditorProps) 
           </Button>
           <Button
             onClick={() => handleSave(true)}
+            className="font-montserrat"
             disabled={isLoading}
           >
             {isPublishing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

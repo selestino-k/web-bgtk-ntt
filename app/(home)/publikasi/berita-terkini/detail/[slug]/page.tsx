@@ -9,7 +9,6 @@ import { JSX } from "react";
 import Link from "next/link";
 import BeritaSidebar from "./berita-sidebar";
 import ImagePreviewDialog from "./image-preview-dialog";
-import { toast } from "sonner";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb";
 import { ReportView } from "@/components/view-counter";
 import { Redis } from "@upstash/redis";
@@ -64,7 +63,6 @@ async function getPostBySlug(slug: string) {
       id: post.id.toString(),
     };
   } catch {
-    toast.error("Error fetching post");
     return null;
   }
 }
@@ -362,6 +360,8 @@ function renderTipTapContent(content: Prisma.JsonValue): JSX.Element {
   }
 }
 
+export const revalidate = 3600; 
+
 
 export default async function BeritaTerkiniDetail({
   params,
@@ -422,7 +422,7 @@ export default async function BeritaTerkiniDetail({
     <div id="berita-terkini-detail" className="mt-20 flex place-items-start w-full px-10">
       <main className="relative z-10 gap-8 md:p-8 p-1 md:flex w-full">
         <div className="text-left w-full md:w-3/4 md:pr-8">
-          <Breadcrumb className="mb-4 font-geist" aria-label="Breadcrumb">
+          <Breadcrumb className="mb-4 font-montserrat" aria-label="Breadcrumb">
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
@@ -448,7 +448,7 @@ export default async function BeritaTerkiniDetail({
               </BreadcrumbList>
             </Breadcrumb>
           </Breadcrumb>
-          <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+          <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
             {post.title}
           </h2>
           <div className="mb-6 text-sm text-gray-500 md: flex space-x-4 space-y-2 md:space-y-0 flex-wrap">
@@ -535,7 +535,7 @@ export default async function BeritaTerkiniDetail({
         </div>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-1/4 mt-8 md:mt-0">
+        <aside className="w-full md:w-1/4 mt-8 md:mt-0 mb-10">
           <BeritaSidebar currentSlug={slug} />
         </aside>
       </main>
@@ -570,26 +570,46 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  const postDescriptionTruncated = (content: Prisma.JsonValue) => {
-    const text = typeof content === 'string' ? content : JSON.stringify(content);
-    const plainText = text.replace(/<[^>]*>/g, '');
-    return plainText.length > 100 ? plainText.slice(0, 100) + "..." : plainText;
-  }
-
+  
+  const metadescription = post && typeof post.content === 'string'
+    ? post.content.replace(/<[^>]*>/g, '').slice(0, 160)
+    : "Baca berita terkini dan informasi terbaru seputar pendidikan di NTT hanya di Website BGTK Provinsi NTT.";  
+    
   if (!post) {
     return {
-      title: "Post Not Found",
-      description: "The requested post does not exist.",
+      title: "Postingan Tidak Ditemukan | BGTK Provinsi NTT",
+      description: "Postingan yang diminta tidak ditemukan.",
     };
   }
 
+  // Use thumbnail if available, otherwise use the generated opengraph-image
+  const ogImage = post.thumbnail 
+    ? post.thumbnail 
+    : `/publikasi/berita-terkini/detail/${slug}/opengraph-image`;
+
   return {
     title: post.title + " | Berita Terkini | BGTK Provinsi NTT",
-    description: postDescriptionTruncated(post.content),
+    description: metadescription,
     openGraph: {
       title: post.title,
-      images: post.thumbnail ? [post.thumbnail] : [],
+      description: metadescription,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ],
+      type: 'article',
+      publishedTime: post.createdAt.toISOString(),
+      authors: [post.author?.name || 'Admin'],
     },
-
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: metadescription,
+      images: [ogImage],
+    },
   };
 }

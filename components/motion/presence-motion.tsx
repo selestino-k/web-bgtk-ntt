@@ -4,7 +4,8 @@ import { motion } from "framer-motion"
 import { ReactNode } from "react"
 
 interface PrescenceMotionProps {
-  children: ReactNode
+  children: ReactNode;
+  className?: string;
 }
 
 export function PrescenceMotion({ children }: PrescenceMotionProps) {

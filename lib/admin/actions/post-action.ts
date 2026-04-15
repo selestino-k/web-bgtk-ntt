@@ -5,6 +5,12 @@ import { revalidatePath } from "next/cache"
 import { Prisma } from "@/lib/generated/prisma/client"
 import { uploadImageToS3, deleteImageFromS3 } from "./s3-actions"
 
+// Helper function to validate UUID
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return uuidRegex.test(uuid)
+}
+
 // Create new post
 export async function createPost(formData: FormData) {
   try {
@@ -15,7 +21,6 @@ export async function createPost(formData: FormData) {
     const published = formData.get("published") === "true"
     const authorId = formData.get("authorId") as string
     const document = formData.get("document") as string
-    const thumbnailFile = formData.get("thumbnail") as File | null
 
     // Validate required fields
     if (!title || !slug || !content) {
@@ -46,18 +51,22 @@ export async function createPost(formData: FormData) {
     }
 
     // Upload thumbnail to S3 if provided
+    // ImageUploader pre-uploads the file and passes back an S3 URL string.
+    // Handle both cases: a raw File (not yet uploaded) or an already-uploaded URL string.
+    const thumbnailField = formData.get("thumbnail")
     let thumbnailUrl = ""
-    if (thumbnailFile && thumbnailFile.size > 0) {
-      const uploadResult = await uploadImageToS3(thumbnailFile, "posts/thumbnails")
-      
+    if (thumbnailField instanceof File && thumbnailField.size > 0) {
+      const uploadResult = await uploadImageToS3(thumbnailField, "posts/thumbnails")
       if (!uploadResult.success) {
-        return { 
-          success: false, 
-          error: uploadResult.error || "Failed to upload thumbnail" 
+        return {
+          success: false,
+          error: uploadResult.error || "Failed to upload thumbnail",
         }
       }
-      
       thumbnailUrl = uploadResult.url || ""
+    } else if (typeof thumbnailField === "string" && thumbnailField.length > 0) {
+      // Already uploaded by ImageUploader — use the URL directly
+      thumbnailUrl = thumbnailField
     }
 
     // Parse content as JSON (same as updatePost)
@@ -325,8 +334,3 @@ export async function getPost(postId: string) {
   }
 }
 
-// Helper function to validate UUID
-function isValidUUID(uuid: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-  return uuidRegex.test(uuid)
-}

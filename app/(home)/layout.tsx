@@ -18,9 +18,10 @@ async function getTags() {
 
 
 export const metadata: Metadata = {
-  title: "Balai Guru dan Tenaga Kependidikan (BGTK) Provinsi NTT",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  title: "BGTK Provinsi NTT",
   keywords: ["Balai GTK NTT", "Balai GTK Provinsi NTT", "BGTK NTT", "Balai Guru dan Tenaga Kependidikan NTT"],
-  description: "Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
+  description: "Website Resmi Balai Guru dan Tenaga Kependidikan Provinsi Nusa Tenggara Timur",
 };
 
 export const viewport: Viewport = {

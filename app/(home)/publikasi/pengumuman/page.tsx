@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     description: "Halaman Pengumuman",
 };
 
+export const revalidate = 90; 
+
 async function fetchNews(page = 1, limit = 10, tagId?: number) {
     const where = tagId 
         ? {
@@ -122,7 +124,7 @@ export default async function Pengumuman({
         <div id="pengumuman" className="mt-20 flex place-items-start w-full px-10">
             <main className="relative z-10 gap-20 p-8 w-full">
                 <div className="text-left w-full">
-                    <h2 className="text-2xl md:text-5xl font-semibold sm:tracking-tight mb-1 md:mb-5 font-geist text-primary">
+                    <h2 className="text-2xl md:text-5xl font-bold sm:tracking-tight mb-1 md:mb-5 font-montserrat text-primary">
                         Pengumuman
                     </h2>
                     

@@ -37,7 +37,7 @@ import { updateUser, getUserById } from "@/lib/admin/actions/user-action"
 
 const editUserFormSchema = z.object({
   name: z.string().min(1, "Nama diperlukan").optional(),
-  email: z.string().email("Alamat email tidak valid").optional(),
+  email: z.email("Alamat email tidak valid").optional(),
   password: z.string().min(8, "Password harus terdiri dari minimal 8 karakter").optional().or(z.literal("")),
   confirmPassword: z.string().optional(),
   role: z.enum(["Admin", "Operator"]).optional(),
@@ -96,7 +96,6 @@ export default function EditUserPage({ params }: EditUserPageProps) {
           confirmPassword: "",
         })
       } catch (error) {
-        console.error("Error fetching user:", error)
         toast({
           title: "Error",
           description: error instanceof Error ? error.message : "Gagal memuat data pengguna",
@@ -153,7 +152,6 @@ export default function EditUserPage({ params }: EditUserPageProps) {
       router.push("/admin/users")
       router.refresh()
     } catch (error) {
-      console.error("Gagal memperbarui pengguna:", error)
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Gagal memperbarui pengguna",
@@ -175,7 +173,7 @@ export default function EditUserPage({ params }: EditUserPageProps) {
   return (
     <div className="container mx-10 py-8 space-y-6">
       <div className="grid justify-between items-center gap-6 px-2">
-        <h2 className="pb-8 text-2xl/7 font-semibold sm:truncate sm:text-5xl sm:tracking-tight text-primary">
+        <h2 className="pb-8 text-5xl font-montserrat font-bold text-primary">
           Edit Pengguna
         </h2>
       </div>
@@ -346,7 +344,7 @@ export default function EditUserPage({ params }: EditUserPageProps) {
                 )}
               />
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 font-montserrat">
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
